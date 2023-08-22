@@ -1,0 +1,1 @@
+# delics_retail
