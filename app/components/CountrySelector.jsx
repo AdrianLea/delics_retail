@@ -37,7 +37,7 @@ export function CountrySelector() {
   // Get available countries list when in view
   useEffect(() => {
     if (!inView || fetcher.data || fetcher.state === 'loading') return;
-    fetcher.load('/api/countries');
+    fetcher.load('api/countries');
   }, [inView, fetcher]);
 
   const closeDropdown = useCallback(() => {
@@ -47,23 +47,21 @@ export function CountrySelector() {
   return (
     <section
       ref={observerRef}
-      className="grid w-full gap-4"
+      className="grid w-[200px] gap-4"
       onMouseLeave={closeDropdown}
     >
-      <Heading size="lead" className="cursor-default" as="h3">
-        Country
-      </Heading>
-      <div className="relative">
+      <div className="relative bottom-5">
         <details
-          className="absolute w-full border rounded border-contrast/30 dark:border-white open:round-b-none overflow-clip"
+          className="absolute w-[200px]  dark:border-white overflow-clip"
           ref={closeRef}
         >
-          <summary className="flex items-center justify-between w-full px-4 py-3 cursor-pointer">
+          <summary className="flex items-center justify-between w-[200px] px-4 py-3 cursor-pointer">
             {selectedLocale.label}
           </summary>
-          <div className="w-full overflow-auto border-t border-contrast/30 dark:border-white bg-contrast/30 max-h-36">
+          <div className="w-[200px] overflow-auto border-t border-contrast/30 dark:border-white bg-contrast/30 max-h-36">
             {countries &&
               Object.keys(countries).map((countryPath) => {
+                console.log(countries)
                 const countryLocale = countries[countryPath];
                 const isSelected =
                   countryLocale.language === selectedLocale.language &&
@@ -104,7 +102,7 @@ function Country({closeDropdown, countryLocale, countryUrlPath, isSelected}) {
       <Button
         className={clsx([
           'text-contrast dark:text-primary',
-          'bg-primary dark:bg-contrast w-full p-2 transition rounded flex justify-start',
+          'bg-primary dark:bg-contrast w-full p-2 border-2 border-black transition flex justify-start',
           'items-center text-left cursor-pointer py-2 px-4',
         ])}
         type="submit"

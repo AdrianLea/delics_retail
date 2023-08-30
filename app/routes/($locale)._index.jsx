@@ -3,7 +3,7 @@ import {Suspense} from 'react';
 import {Await, useLoaderData} from '@remix-run/react';
 import {AnalyticsPageType} from '@shopify/hydrogen';
 
-import {ProductSwimlane, FeaturedCollections, Hero} from '~/components';
+import {ProductSwimlane} from '~/components';
 import {MEDIA_FRAGMENT, PRODUCT_CARD_FRAGMENT} from '~/data/fragments';
 import {getHeroPlaceholder} from '~/lib/placeholders';
 import {seoPayload} from '~/lib/seo.server';
@@ -48,26 +48,6 @@ export async function loader({params, context}) {
         },
       },
     ),
-    secondaryHero: context.storefront.query(COLLECTION_HERO_QUERY, {
-      variables: {
-        handle: 'backcountry',
-        country,
-        language,
-      },
-    }),
-    featuredCollections: context.storefront.query(FEATURED_COLLECTIONS_QUERY, {
-      variables: {
-        country,
-        language,
-      },
-    }),
-    tertiaryHero: context.storefront.query(COLLECTION_HERO_QUERY, {
-      variables: {
-        handle: 'winter-2022',
-        country,
-        language,
-      },
-    }),
     analytics: {
       pageType: AnalyticsPageType.home,
     },
@@ -76,23 +56,10 @@ export async function loader({params, context}) {
 }
 
 export default function Homepage() {
-  const {
-    primaryHero,
-    secondaryHero,
-    tertiaryHero,
-    featuredCollections,
-    featuredProducts,
-  } = useLoaderData();
-
-  // TODO: skeletons vs placeholders
-  const skeletons = getHeroPlaceholder([{}, {}, {}]);
+  const {featuredProducts} = useLoaderData();
 
   return (
     <>
-      {primaryHero && (
-        <Hero {...primaryHero} height="full" top loading="eager" />
-      )}
-
       {featuredProducts && (
         <Suspense>
           <Await resolve={featuredProducts}>
@@ -105,44 +72,6 @@ export default function Homepage() {
                   count={4}
                 />
               );
-            }}
-          </Await>
-        </Suspense>
-      )}
-
-      {secondaryHero && (
-        <Suspense fallback={<Hero {...skeletons[1]} />}>
-          <Await resolve={secondaryHero}>
-            {({hero}) => {
-              if (!hero) return <></>;
-              return <Hero {...hero} />;
-            }}
-          </Await>
-        </Suspense>
-      )}
-
-      {featuredCollections && (
-        <Suspense>
-          <Await resolve={featuredCollections}>
-            {({collections}) => {
-              if (!collections?.nodes) return <></>;
-              return (
-                <FeaturedCollections
-                  collections={collections}
-                  title="Collections"
-                />
-              );
-            }}
-          </Await>
-        </Suspense>
-      )}
-
-      {tertiaryHero && (
-        <Suspense fallback={<Hero {...skeletons[2]} />}>
-          <Await resolve={tertiaryHero}>
-            {({hero}) => {
-              if (!hero) return <></>;
-              return <Hero {...hero} />;
             }}
           </Await>
         </Suspense>
@@ -189,16 +118,6 @@ const HOMEPAGE_SEO_QUERY = `#graphql
     shop {
       name
       description
-    }
-  }
-  ${COLLECTION_CONTENT_FRAGMENT}
-`;
-
-const COLLECTION_HERO_QUERY = `#graphql
-  query heroCollectionContent($handle: String, $country: CountryCode, $language: LanguageCode)
-  @inContext(country: $country, language: $language) {
-    hero: collection(handle: $handle) {
-      ...CollectionContent
     }
   }
   ${COLLECTION_CONTENT_FRAGMENT}

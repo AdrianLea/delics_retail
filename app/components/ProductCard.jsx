@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import {flattenConnection, Image, Money, useMoney} from '@shopify/hydrogen';
+
 import {Text, Link, AddToCartButton, Button} from '~/components';
 import {isDiscounted, isNewArrival} from '~/lib/utils';
 import {getProductPlaceholder} from '~/lib/placeholders';

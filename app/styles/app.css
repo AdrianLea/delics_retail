@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  background-color: black;
+}
 /* Tokens */
 :root {
   --color-primary: 20 20 20; /* Text, buttons, etc. */

@@ -2,7 +2,8 @@ import {useParams, Form, Await, useMatches} from '@remix-run/react';
 import {useWindowScroll} from 'react-use';
 import {Disclosure} from '@headlessui/react';
 import {Suspense, useEffect, useMemo} from 'react';
-import {CartForm} from '@shopify/hydrogen';
+import {Image, CartForm} from '@shopify/hydrogen';
+
 import {
   Drawer,
   useDrawer,
@@ -35,7 +36,9 @@ export function Layout({children, layout}) {
             Skip to content
           </a>
         </div>
-        {headerMenu && <Header title={layout.shop.name} menu={headerMenu} />}
+        {headerMenu && (
+          <Header title={layout.shop.name} menu={headerMenu} layout={layout} />
+        )}
         <main role="main" id="mainContent" className="flex-grow">
           {children}
         </main>
@@ -45,7 +48,7 @@ export function Layout({children, layout}) {
   );
 }
 
-function Header({title, menu}) {
+function Header({title, menu, layout}) {
   const isHome = useIsHomePath();
 
   const {
@@ -78,6 +81,7 @@ function Header({title, menu}) {
         isHome={isHome}
         title={title}
         menu={menu}
+        layout={layout}
         openCart={openCart}
       />
       <MobileHeader
@@ -144,15 +148,20 @@ function MobileHeader({title, isHome, openCart, openMenu}) {
   // useHeaderStyleFix(containerStyle, setContainerStyle, isHome);
 
   const params = useParams();
-
+  const {y} = useWindowScroll();
   return (
     <header
       role="banner"
       className={`${
         isHome
-          ? 'bg-primary/80 dark:bg-contrast/60 text-contrast dark:text-primary shadow-darkHeader'
+          ? 'bg-white shadow-darkHeader hover:bg-opacity-100 hover:text-black '
           : 'bg-contrast/80 text-primary'
-      } flex lg:hidden items-center h-nav sticky backdrop-blur-lg z-40 top-0 justify-between w-full leading-none gap-4 px-4 md:px-8`}
+      } ${
+        isHome && y < 10
+          ? 'bg-opacity-0 text-white '
+          : 'bg-opacity-100 text-black'
+      }
+      flex lg:hidden items-center h-nav sticky z-40 top-0 justify-between w-full leading-none gap-4 px-4 md:px-8 transition duration-300`}
     >
       <div className="flex items-center justify-start w-full gap-4">
         <button
@@ -206,7 +215,7 @@ function MobileHeader({title, isHome, openCart, openMenu}) {
   );
 }
 
-function DesktopHeader({isHome, menu, openCart, title}) {
+function DesktopHeader({isHome, menu, openCart, layout}) {
   const params = useParams();
   const {y} = useWindowScroll();
   return (
@@ -214,59 +223,77 @@ function DesktopHeader({isHome, menu, openCart, title}) {
       role="banner"
       className={`${
         isHome
-          ? 'bg-primary/80 dark:bg-contrast/60 text-contrast dark:text-primary shadow-darkHeader'
-          : 'bg-contrast/80 text-primary'
+          ? 'bg-white shadow-darkHeader hover:bg-opacity-100 hover:text-black '
+          : 'bg-white text-black'
       } ${
-        !isHome && y > 50 && ' shadow-lightHeader'
-      } hidden h-nav lg:flex items-center sticky transition duration-300 backdrop-blur-lg z-40 top-0 justify-between w-full leading-none gap-8 px-12 py-8`}
+        isHome && y < 10
+          ? 'bg-opacity-0 text-white '
+          : 'bg-opacity-100 text-black'
+      } hidden h-auto lg:flex items-center sticky transition duration-300 z-40 top-0 justify-center w-full leading-none  px-12 py-4`}
     >
-      <div className="flex gap-12">
-        <Link className="font-bold" to="/" prefetch="intent">
-          {title}
-        </Link>
-        <nav className="flex gap-8">
-          {/* Top level menu items */}
-          {(menu?.items || []).map((item) => (
-            <Link
-              key={item.id}
-              to={item.to}
-              target={item.target}
-              prefetch="intent"
-              className={({isActive}) =>
-                isActive ? 'pb-1 border-b -mb-px' : 'pb-1'
-              }
-            >
-              {item.title}
-            </Link>
-          ))}
-        </nav>
-      </div>
-      <div className="flex items-center gap-1">
-        <Form
-          method="get"
-          action={params.locale ? `/${params.locale}/search` : '/search'}
-          className="flex items-center gap-2"
-        >
-          <Input
-            className={
-              isHome
-                ? 'focus:border-contrast/20 dark:focus:border-primary/20'
-                : 'focus:border-primary/20'
-            }
-            type="search"
-            variant="minisearch"
-            placeholder="Search"
-            name="q"
-          />
-          <button
-            type="submit"
-            className="relative flex items-center justify-center w-8 h-8 focus:ring-primary/5"
+      <div className="flex-col items-center w-full">
+        <div className="flex items-center justify-between w-full">
+          <div className="flex w-[200px] h-[80px] grow items-center basis-0">
+            <CountrySelector />
+          </div>
+          <Link
+            className="font-bold flex justify-center items-center"
+            to="/"
+            prefetch="intent"
           >
-            <IconSearch />
-          </button>
-        </Form>
-        <AccountLink className="relative flex items-center justify-center w-8 h-8 focus:ring-primary/5" />
-        <CartCount isHome={isHome} openCart={openCart} />
+            {layout.shop?.brand?.logo && (
+              <Image
+                className=" w-10 h-20 object-cover"
+                src={layout.shop.brand.logo.image.url}
+                alt="Delics"
+                aspectRatio="1"
+                height="80"
+              ></Image>
+            )}
+          </Link>
+          <div className="flex items-center grow justify-end basis-0">
+            <Form
+              method="get"
+              action={params.locale ? `/${params.locale}/search` : '/search'}
+              className="flex items-center gap-2"
+            >
+              <Input
+                className={
+                  isHome
+                    ? 'focus:border-contrast/20 dark:focus:border-primary/20'
+                    : 'focus:border-primary/20'
+                }
+                type="search"
+                variant="minisearch"
+                placeholder="Search"
+                name="q"
+              />
+              <button
+                type="submit"
+                className="relative flex items-center justify-center w-8 h-8 focus:ring-primary/5"
+              >
+                <IconSearch />
+              </button>
+            </Form>
+            <AccountLink className="relative flex items-center justify-center w-8 h-8 focus:ring-primary/5" />
+            <CartCount isHome={isHome} openCart={openCart} />
+          </div>
+        </div>
+        <div>
+          <nav className="flex gap-8 items-center justify-center">
+            {/* Top level menu items */}
+            {(menu?.items || []).map((item) => (
+              <Link
+                key={item.id}
+                to={item.to}
+                target={item.target}
+                prefetch="intent"
+              >
+                {item.title}
+              </Link>
+            ))}
+          </nav>
+        </div>
       </div>
     </header>
   );
