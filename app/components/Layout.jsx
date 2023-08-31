@@ -86,9 +86,9 @@ function Header({title, menu, layout}) {
       />
       <MobileHeader
         isHome={isHome}
-        title={title}
         openCart={openCart}
         openMenu={openMenu}
+        layout={layout}
       />
     </>
   );
@@ -140,11 +140,12 @@ function MenuMobileNav({menu, onClose}) {
           </Link>
         </span>
       ))}
+      <CountrySelector />
     </nav>
   );
 }
 
-function MobileHeader({title, isHome, openCart, openMenu}) {
+function MobileHeader({layout, isHome, openCart, openMenu}) {
   // useHeaderStyleFix(containerStyle, setContainerStyle, isHome);
 
   const params = useParams();
@@ -155,13 +156,13 @@ function MobileHeader({title, isHome, openCart, openMenu}) {
       className={`${
         isHome
           ? 'bg-white shadow-darkHeader hover:bg-opacity-100 hover:text-black '
-          : 'bg-contrast/80 text-primary'
+          : 'bg-white text-black'
       } ${
         isHome && y < 10
           ? 'bg-opacity-0 text-white '
           : 'bg-opacity-100 text-black'
       }
-      flex lg:hidden items-center h-nav sticky z-40 top-0 justify-between w-full leading-none gap-4 px-4 md:px-8 transition duration-300`}
+      flex lg:hidden items-center h-nav sticky z-50 top-0 justify-between w-full leading-none gap-4 px-4 md:px-8 transition duration-300`}
     >
       <div className="flex items-center justify-start w-full gap-4">
         <button
@@ -199,12 +200,13 @@ function MobileHeader({title, isHome, openCart, openMenu}) {
         className="flex items-center self-stretch leading-[3rem] md:leading-[4rem] justify-center flex-grow w-full h-full"
         to="/"
       >
-        <Heading
-          className="font-bold text-center leading-none"
-          as={isHome ? 'h1' : 'h2'}
-        >
-          {title}
-        </Heading>
+        <Image
+          className=" w-auto h-[90px] object-contain"
+          src={layout.shop.brand.logo.image.url}
+          alt="Delics"
+          aspectRatio="1"
+          height="40"
+        ></Image>
       </Link>
 
       <div className="flex items-center justify-end w-full gap-4">
@@ -229,7 +231,7 @@ function DesktopHeader({isHome, menu, openCart, layout}) {
         isHome && y < 10
           ? 'bg-opacity-0 text-white '
           : 'bg-opacity-100 text-black'
-      } hidden h-auto lg:flex items-center sticky transition duration-300 z-40 top-0 justify-center w-full leading-none  px-12 py-4`}
+      } hidden h-auto lg:flex items-center sticky transition duration-300 z-50 top-0 justify-center w-full leading-none  px-12 pb-4`}
     >
       <div className="flex-col items-center w-full">
         <div className="flex items-center justify-between w-full">
@@ -280,7 +282,7 @@ function DesktopHeader({isHome, menu, openCart, layout}) {
           </div>
         </div>
         <div>
-          <nav className="flex gap-8 items-center justify-center">
+          <nav className="flex gap-12 items-center justify-center">
             {/* Top level menu items */}
             {(menu?.items || []).map((item) => (
               <Link
@@ -288,8 +290,9 @@ function DesktopHeader({isHome, menu, openCart, layout}) {
                 to={item.to}
                 target={item.target}
                 prefetch="intent"
+                className="font-extrabold font-serif"
               >
-                {item.title}
+                Trophy Wives
               </Link>
             ))}
           </nav>

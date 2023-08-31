@@ -37,7 +37,7 @@ export function CountrySelector() {
   // Get available countries list when in view
   useEffect(() => {
     if (!inView || fetcher.data || fetcher.state === 'loading') return;
-    fetcher.load('api/countries');
+    fetcher.load('admin/api/countries');
   }, [inView, fetcher]);
 
   const closeDropdown = useCallback(() => {
@@ -61,7 +61,6 @@ export function CountrySelector() {
           <div className="w-[200px] overflow-auto border-t border-contrast/30 dark:border-white bg-contrast/30 max-h-36">
             {countries &&
               Object.keys(countries).map((countryPath) => {
-                console.log(countries)
                 const countryLocale = countries[countryPath];
                 const isSelected =
                   countryLocale.language === selectedLocale.language &&
