@@ -155,14 +155,14 @@ function MobileHeader({layout, isHome, openCart, openMenu}) {
       role="banner"
       className={`${
         isHome
-          ? 'bg-white shadow-darkHeader hover:bg-opacity-100 hover:text-black '
-          : 'bg-white text-black'
+          ? 'bg-white hover:bg-opacity-100 hover:text-black -mb-nav'
+          : 'bg-white text-black shadow-darkHeader'
       } ${
         isHome && y < 10
-          ? 'bg-opacity-0 text-white '
-          : 'bg-opacity-100 text-black'
+          ? 'bg-opacity-0 text-white border-b border-b-white border-opacity-50'
+          : 'bg-opacity-100 text-black shadow-darkHeader'
       }
-      flex lg:hidden items-center h-nav sticky z-50 top-0 justify-between w-full leading-none gap-4 px-4 md:px-8 transition duration-300`}
+      flex lg:hidden items-center h-nav sticky z-50 top-0 justify-between w-full leading-none gap-4 px-4 md:px-8 transition duration-300 `}
     >
       <div className="flex items-center justify-start w-full gap-4">
         <button
@@ -225,13 +225,13 @@ function DesktopHeader({isHome, menu, openCart, layout}) {
       role="banner"
       className={`${
         isHome
-          ? 'bg-white shadow-darkHeader hover:bg-opacity-100 hover:text-black '
-          : 'bg-white text-black'
+          ? 'bg-white hover:bg-opacity-100 hover:text-black -mb-[112px]'
+          : 'bg-white text-black shadow-darkHeader'
       } ${
         isHome && y < 10
-          ? 'bg-opacity-0 text-white '
-          : 'bg-opacity-100 text-black'
-      } hidden h-auto lg:flex items-center sticky transition duration-300 z-50 top-0 justify-center w-full leading-none  px-12 pb-4`}
+          ? 'bg-opacity-0 text-white border-b border-b-white border-opacity-50'
+          : 'bg-opacity-100 text-black shadow-darkHeader'
+      } hidden h-[112px] lg:flex items-center sticky transition duration-300 z-50 top-0 justify-center w-full leading-none  px-12 pb-4`}
     >
       <div className="flex-col items-center w-full">
         <div className="flex items-center justify-between w-full">

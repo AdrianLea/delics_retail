@@ -67,14 +67,17 @@ export default function Homepage() {
         <Suspense>
           <Await resolve={slider_images}>
             {(images) => {
-              console.log(images);
               if (!images?.collections?.nodes) return <></>;
-              return <Slider images={images} />;
+              return (
+                <Slider
+                  images={images}
+                  className={'overflow-hidden w-[100%] h-[100vh] bg-gray-600'}
+                />
+              );
             }}
           </Await>
           <Await resolve={featuredProducts}>
             {({products}) => {
-              console.log(products);
               if (!products?.nodes) return <></>;
               return (
                 <ProductSwimlane
@@ -122,14 +125,14 @@ const COLLECTION_CONTENT_FRAGMENT = `#graphql
 const HOMEPAGE_SLIDER_QUERY = `query heroimagesquery {
   collections(first: 20) {
     nodes {
-      metafields(first: 2) {
-        nodes {
-          reference {
-            ... on MediaImage {
-              image {
-                url
-                id
-              }
+      metafields(
+        identifiers: [{namespace: "custom", key: "herodesktop"}, {namespace: "custom", key: "heromobile"}]
+      ) {
+        reference {
+          ... on MediaImage {
+            id
+            image {
+              url
             }
           }
         }
