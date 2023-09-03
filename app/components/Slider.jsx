@@ -1,14 +1,14 @@
-import {React, useState, useEffect, useRef, createRef} from 'react';
+import {React, useState, useEffect, useRef} from 'react';
 import {Image} from '@shopify/hydrogen';
 import {gsap} from 'gsap';
+import { Link } from './Link';
 
 function Slider({images, className}) {
   const canClick = useRef(true);
   const [currentIndex, setIndex] = useState(0);
-  const indexHolder =useRef(1)
-  const testref = useRef(null)
+  const indexHolder = useRef(-1);
   const previousIndex = useRef(0);
-  var urls = []
+  var urls = [];
 
   for (let i = 0; i < images.collections.nodes.length + 1; i++) {
     if (
@@ -28,6 +28,10 @@ function Slider({images, className}) {
     new Array(urls.length).map(() => React.createRef(null)),
   );
   const tl = useRef(gsap.timeline({paused: true, duration: 1}));
+
+  const buttonRefs = useRef(
+    new Array(urls.length).map(() => React.createRef(null)),
+  );
 
   useEffect(() => {
     let ctx = gsap.context(() => {
@@ -62,7 +66,7 @@ function Slider({images, className}) {
       tl.current.play();
       setTimeout(() => {
         canClick.current = true;
-        tl.current.pause()
+        tl.current.kill();
       }, 2000);
     }
   };
@@ -71,9 +75,30 @@ function Slider({images, className}) {
     <div className={className}>
       {urls.map((element, index) => (
         <div
+          ref={(el) => (buttonRefs.current[index] = el)}
+          id={index}
+          className={`h-full w-full relative top-[80%] ${
+            index === indexHolder.current ? '' : ' hidden'
+          }`}
+          key={index}
+        >
+          <div>
+
+          </div>
+          <div>
+            <Link>
+            
+            </Link>
+          </div>
+        </div>
+      ))}
+      {urls.map((element, index) => (
+        <div
           ref={(el) => (divRefs.current[index] = el)}
           id={index}
-          className={`h-full w-full absolute ${index === indexHolder.current ? '' : ' hidden'}`}
+          className={`h-full w-full absolute ${
+            index === indexHolder.current ? '' : ' hidden'
+          }`}
           key={index}
         >
           <Image
