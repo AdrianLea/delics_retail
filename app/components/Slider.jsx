@@ -5,6 +5,7 @@ import {gsap} from 'gsap';
 function Slider({images, className}) {
   const canClick = useRef(true);
   const [currentIndex, setIndex] = useState(0);
+  const indexHolder =useRef(1)
   const testref = useRef(null)
   const previousIndex = useRef(0);
   var urls = []
@@ -26,37 +27,42 @@ function Slider({images, className}) {
   const divRefs = useRef(
     new Array(urls.length).map(() => React.createRef(null)),
   );
-  const tl = useRef(gsap.timeline({paused: true}));
+  const tl = useRef(gsap.timeline({paused: true, duration: 1}));
 
   useEffect(() => {
-    console.log(divRefs.current);
     let ctx = gsap.context(() => {
+      console.log(previousIndex.current,indexHolder.current)
       tl.current.fromTo(
         divRefs.current[previousIndex.current],
-        {duration: 1, opacity: 1, display: 'block'},
+        {duration: 0.5, opacity: 1, display: 'block'},
         {opacity: 0, display: 'none'},
+        0,
       );
       tl.current.fromTo(
-        divRefs.current[currentIndex],
-        {duration: 1, opacity: 0, display: 'block'},
+        divRefs.current[indexHolder.current],
+        {duration: 0.5, opacity: 0, display: 'block'},
         {opacity: 1, display: 'block'},
+        0,
       );
     });
-  }, [currentIndex]);
 
-  useEffect(() => {
-    canClick === true ? '' : tl.current.play();
-  }, [canClick]);
+    return () => {
+      ctx.revert();
+    };
+  }, [indexHolder.current,previousIndex.current]);
+
 
   let clickEvent = (index) => {
-    console.log(canClick.current)
     if (canClick.current === true && currentIndex != index) {
-      console.log('clicked')
-      previousIndex.current = currentIndex;
-      setIndex(index);
       canClick.current = false;
+      previousIndex.current = currentIndex;
+      indexHolder.current = index;
+      setIndex(index);
+      tl.current.restart();
+      tl.current.play();
       setTimeout(() => {
         canClick.current = true;
+        tl.current.pause()
       }, 2000);
     }
   };
@@ -67,7 +73,7 @@ function Slider({images, className}) {
         <div
           ref={(el) => (divRefs.current[index] = el)}
           id={index}
-          className={`h-full w-full absolute`}
+          className={`h-full w-full absolute ${index === indexHolder.current ? '' : ' hidden'}`}
           key={index}
         >
           <Image
@@ -82,7 +88,7 @@ function Slider({images, className}) {
           ></Image>
         </div>
       ))}
-      <div className="flex gap-4 items-center justify-center -translate-y-[25px] w-full top-full relative overflow-hidden ">
+      <div className="flex gap-4 items-center justify-center -translate-y-[25px] w-full top-full relative overflow-hidden  ">
         {urls.map((element, index) => (
           <button key={index} onClick={() => clickEvent(index)}>
             <svg height="12" width="12">
