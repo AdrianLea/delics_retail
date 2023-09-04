@@ -40,6 +40,7 @@ function Slider({images, className}) {
     let ctx = gsap.context(() => {
       console.log("buttons:",buttonRefs.current[previousIndex.current],buttonRefs.current[indexHolder.current])
       console.log("texts:",textRefs.current[previousIndex.current],textRefs.current[indexHolder.current])
+      clickEvent(0)
       tl.current.fromTo(
         buttonRefs.current[previousIndex.current],
         {duration: 1, opacity: 1, display: 'block', ease: Power2.easeOut, yPercent: 0},
@@ -78,10 +79,13 @@ function Slider({images, className}) {
       );
     });
 
+
     return () => {
       ctx.revert();
+      console.log('unmount')
     };
   }, [indexHolder.current,previousIndex.current]);
+
 
 
   let clickEvent = (index) => {
