@@ -1,13 +1,13 @@
-import {React, useState, useEffect, useRef} from 'react';
+import {React, useState, useEffect, useRef, ReactDOM} from 'react';
 import {Image} from '@shopify/hydrogen';
-import {gsap} from 'gsap';
+import {gsap, Power2} from 'gsap';
 import { Link } from './Link';
 
 function Slider({images, className}) {
   const canClick = useRef(true);
   const [currentIndex, setIndex] = useState(0);
-  const indexHolder = useRef(-1);
-  const previousIndex = useRef(0);
+  const indexHolder = useRef(0);
+  const previousIndex = useRef(-1);
   var urls = [];
 
   for (let i = 0; i < images.collections.nodes.length + 1; i++) {
@@ -27,26 +27,54 @@ function Slider({images, className}) {
   const divRefs = useRef(
     new Array(urls.length).map(() => React.createRef(null)),
   );
-  const tl = useRef(gsap.timeline({paused: true, duration: 1}));
+  const tl = useRef(gsap.timeline({}));
 
   const buttonRefs = useRef(
     new Array(urls.length).map(() => React.createRef(null)),
   );
 
+  const textRefs = useRef(
+    new Array(urls.length).map(() => React.createRef(null)),
+  );
   useEffect(() => {
     let ctx = gsap.context(() => {
-      console.log(previousIndex.current,indexHolder.current)
+      console.log("buttons:",buttonRefs.current[previousIndex.current],buttonRefs.current[indexHolder.current])
+      console.log("texts:",textRefs.current[previousIndex.current],textRefs.current[indexHolder.current])
       tl.current.fromTo(
-        divRefs.current[previousIndex.current],
-        {duration: 0.5, opacity: 1, display: 'block'},
-        {opacity: 0, display: 'none'},
+        buttonRefs.current[previousIndex.current],
+        {duration: 1, opacity: 1, display: 'block', ease: Power2.easeOut, yPercent: 0},
+        {opacity: 0, display: 'none', yPercent: 250},
         0,
       );
       tl.current.fromTo(
-        divRefs.current[indexHolder.current],
-        {duration: 0.5, opacity: 0, display: 'block'},
-        {opacity: 1, display: 'block'},
+        buttonRefs.current[indexHolder.current],
+        {duration: 1, opacity: 0, display: 'block', yPercent: 250, ease: Power2.easeIn},
+        {opacity: 1, display: 'block', yPercent: 0},
+        1,
+      );
+      tl.current.fromTo(
+        textRefs.current[previousIndex.current],
+        {duration: 1, opacity: 1, display: 'block',ease: Power2.easeOut, yPercent:0},
+        {opacity: 0, display: 'none', yPercent: 200},
         0,
+      );
+      tl.current.fromTo(
+        textRefs.current[indexHolder.current],
+        {duration: 1, opacity: 0, display: 'block', yPercent: 200, ease: Power2.easeIn},
+        {opacity: 1, display: 'block', yPercent: 0},
+        1,
+      );
+      tl.current.fromTo(
+        divRefs.current[previousIndex.current],
+        {duration: 0.8, opacity: 1, display: 'block'},
+        {opacity: 0, display: 'none'},
+        0.2,
+      );
+      tl.current.fromTo(
+        divRefs.current[indexHolder.current],
+        {duration: 0.8, opacity: 0, display: 'block'},
+        {opacity: 1, display: 'block'},
+        0.2,
       );
     });
 
@@ -65,8 +93,8 @@ function Slider({images, className}) {
       tl.current.restart();
       tl.current.play();
       setTimeout(() => {
+        previousIndex.current = indexHolder.current; // changes hidden on previous elements to hidden
         canClick.current = true;
-        tl.current.kill();
       }, 2000);
     }
   };
@@ -75,21 +103,14 @@ function Slider({images, className}) {
     <div className={className}>
       {urls.map((element, index) => (
         <div
-          ref={(el) => (buttonRefs.current[index] = el)}
           id={index}
-          className={`h-full w-full relative top-[80%] ${
-            index === indexHolder.current ? '' : ' hidden'
+          className={` text-white text-lg w-full absolute top-[80%] z-[60] flex flex-col justify-center items-center${
+            index === indexHolder.current || index === previousIndex.current ? '' : ' hidden'
           }`}
           key={index}
         >
-          <div>
-
-          </div>
-          <div>
-            <Link>
-            
-            </Link>
-          </div>
+          <div ref={(el) => (textRefs.current[index] = el)} id="desctext">{index}</div>
+          <div ref={(el) => (buttonRefs.current[index] = el)} id="button">Test</div>
         </div>
       ))}
       {urls.map((element, index) => (
@@ -97,7 +118,7 @@ function Slider({images, className}) {
           ref={(el) => (divRefs.current[index] = el)}
           id={index}
           className={`h-full w-full absolute ${
-            index === indexHolder.current ? '' : ' hidden'
+            index === indexHolder.current || index === previousIndex.current ? '' : ' hidden'
           }`}
           key={index}
         >
