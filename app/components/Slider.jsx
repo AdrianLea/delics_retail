@@ -1,6 +1,6 @@
 import {React, useState, useEffect, useRef, ReactDOM} from 'react';
 import {Image} from '@shopify/hydrogen';
-import {gsap, Power2} from 'gsap';
+import {gsap, Power2, random} from 'gsap';
 import { Link } from './Link';
 
 function Slider({images, className}) {
@@ -83,15 +83,16 @@ function Slider({images, className}) {
     return () => {
       ctx.revert();
       console.log('unmount')
+      clickEvent(0)
     };
   }, [indexHolder.current,previousIndex.current]);
 
-
+ 
 
   let clickEvent = (index) => {
-    if (canClick.current === true && currentIndex != index) {
+    if (canClick.current === true && indexHolder.current != index) {
       canClick.current = false;
-      previousIndex.current = currentIndex;
+      previousIndex.current = indexHolder.current;
       indexHolder.current = index;
       setIndex(index);
       tl.current.restart();
@@ -102,6 +103,28 @@ function Slider({images, className}) {
       }, 2000);
     }
   };
+
+  useEffect(() => {
+    console.log('Hello hello pLEASE PLEASE')
+    const intervalId = setInterval(() => {
+      let randomIndex = 0;
+      console.log(indexHolder.current)
+      if (indexHolder.current < urls.length - 1) {
+        randomIndex = indexHolder.current + 1
+      }
+      else{
+        randomIndex = 0;
+      }
+      console.log(randomIndex,canClick.current,currentIndex)
+      if (canClick.current === true){
+        clickEvent(randomIndex);
+      }
+
+    }, 10000);
+
+    // Clean up the interval on component unmount
+    return () => clearInterval(intervalId);
+  },[])
 
   return (
     <div className={className}>

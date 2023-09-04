@@ -154,7 +154,7 @@ function MobileHeader({layout, isHome, openCart, openMenu}) {
     <header
       role="banner"
       className={`${
-        isHome
+        isHome && y > 10
           ? 'bg-white hover:bg-opacity-100 hover:text-black -mb-nav'
           : 'bg-white text-black shadow-darkHeader'
       } ${
