@@ -3,7 +3,6 @@ import {useWindowScroll} from 'react-use';
 import {Disclosure} from '@headlessui/react';
 import {Suspense, useEffect, useMemo} from 'react';
 import {Image, CartForm} from '@shopify/hydrogen';
-
 import {
   Drawer,
   useDrawer,
@@ -28,6 +27,11 @@ import {useCartFetchers} from '~/hooks/useCartFetchers';
 
 export function Layout({children, layout}) {
   const {headerMenu, footerMenu} = layout;
+  useEffect(() => {
+    window.onbeforeunload = function () {
+      window.scrollTo(0, 0);
+    };
+  },[]);
   return (
     <>
       <div className="flex flex-col min-h-screen">

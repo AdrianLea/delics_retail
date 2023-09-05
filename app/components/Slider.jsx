@@ -71,12 +71,8 @@ function Slider({images, className}) {
         0.2,
       );
     });
-
-
     return () => {
-      
       ctx.revert();
-      console.log('revert a')
     };
   });
 
@@ -97,14 +93,6 @@ function Slider({images, className}) {
       }, 2100);
     }
   };
-
-  useEffect(() => {
-    console.log('hi');
-    return () => {
-      console.log('left')
-      window.scrollTo(0,0)
-    }
-  }, []);
 
   useEffect(() => {
     console.log('startA')
@@ -169,7 +157,7 @@ function Slider({images, className}) {
           id={index}
           className={`h-full w-full absolute ${
             index === indexHolder.current || index === previousIndex.current ? '' : ' hidden'
-          } ${index === previousIndex.current ? 'opacity-100' : 'opacity-0'}`}
+          } ${index === indexHolder.current ? 'opacity-0' : 'opacity-100'}`}
           key={index}
         >
           <Image
