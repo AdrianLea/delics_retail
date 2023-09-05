@@ -13,10 +13,7 @@ import {
 } from '@remix-run/react';
 import {ShopifySalesChannel, Seo} from '@shopify/hydrogen';
 import invariant from 'tiny-invariant';
-
-import {Layout} from '~/components';
-
-import {seoPayload} from '~/lib/seo.server';
+import {useEffect} from 'react';
 
 import favicon from '../public/favicon.svg';
 
@@ -25,6 +22,9 @@ import {NotFound} from './components/NotFound';
 import styles from './styles/app.css';
 import {DEFAULT_LOCALE, parseMenu} from './lib/utils';
 import {useAnalytics} from './hooks/useAnalytics';
+
+import {Layout} from '~/components';
+import {seoPayload} from '~/lib/seo.server';
 
 // This is important to avoid re-fetching root queries on sub-navigations
 export const shouldRevalidate = ({formMethod, currentUrl, nextUrl}) => {

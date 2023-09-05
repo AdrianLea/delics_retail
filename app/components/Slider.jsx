@@ -1,4 +1,4 @@
-import {React, useState, useEffect, useRef, ReactDOM} from 'react';
+import {React, useState, useEffect, useRef} from 'react';
 import {Image} from '@shopify/hydrogen';
 import {gsap, Power2, random} from 'gsap';
 import { Link } from './Link';
@@ -7,7 +7,7 @@ function Slider({images, className}) {
   const canClick = useRef(true);
   const [currentIndex, setIndex] = useState(0);
   const indexHolder = useRef(0);
-  const previousIndex = useRef(-1);
+  const previousIndex = useRef(-1); 
   var urls = [];
 
   for (let i = 0; i < images.collections.nodes.length + 1; i++) {
@@ -37,60 +37,54 @@ function Slider({images, className}) {
     new Array(urls.length).map(() => React.createRef(null)),
   );
   useEffect(() => {
+    console.log('rendered anims')
     let ctx = gsap.context(() => {
-      console.log("buttons:",buttonRefs.current[previousIndex.current],buttonRefs.current[indexHolder.current])
-      console.log("texts:",textRefs.current[previousIndex.current],textRefs.current[indexHolder.current])
       clickEvent(0)
-      tl.current.fromTo(
+      tl.current.to(
         buttonRefs.current[previousIndex.current],
-        {duration: 1, opacity: 1, display: 'block', ease: Power2.easeOut, yPercent: 0},
-        {opacity: 0, display: 'none', yPercent: 250},
+        {duration: 1, opacity: 0, display: 'none', ease: Power2.easeOut, yPercent: 250},
         0,
       );
-      tl.current.fromTo(
+      tl.current.to(
         buttonRefs.current[indexHolder.current],
-        {duration: 1, opacity: 0, display: 'block', yPercent: 250, ease: Power2.easeIn},
-        {opacity: 1, display: 'block', yPercent: 0},
+        {duration: 1, display: 'block', yPercent: -250, ease: Power2.easeIn, opacity: 1},
         1,
       );
-      tl.current.fromTo(
+      tl.current.to(
         textRefs.current[previousIndex.current],
-        {duration: 1, opacity: 1, display: 'block',ease: Power2.easeOut, yPercent:0},
-        {opacity: 0, display: 'none', yPercent: 200},
+        {duration: 1, opacity: 0, display: 'none', ease: Power2.easeOut, yPercent: 250},
         0,
       );
-      tl.current.fromTo(
+      tl.current.to(
         textRefs.current[indexHolder.current],
-        {duration: 1, opacity: 0, display: 'block', yPercent: 200, ease: Power2.easeIn},
-        {opacity: 1, display: 'block', yPercent: 0},
+        {duration: 1, display: 'block', yPercent: -200, ease: Power2.easeIn, opacity: 1},
         1,
       );
-      tl.current.fromTo(
+      tl.current.to(
         divRefs.current[previousIndex.current],
-        {duration: 0.8, opacity: 1, display: 'block'},
-        {opacity: 0, display: 'none'},
+        {duration: 0.8, opacity: 0, display: 'block'},
         0.2,
       );
-      tl.current.fromTo(
+      tl.current.to(
         divRefs.current[indexHolder.current],
-        {duration: 0.8, opacity: 0, display: 'block'},
-        {opacity: 1, display: 'block'},
+        {opacity: 1, display: 'block', duration: 0.8},
         0.2,
       );
     });
 
 
     return () => {
+      
       ctx.revert();
-      console.log('unmount')
-      clickEvent(0)
+      console.log('revert a')
     };
-  }, [indexHolder.current,previousIndex.current]);
+  });
 
  
 
   let clickEvent = (index) => {
     if (canClick.current === true && indexHolder.current != index) {
+
       canClick.current = false;
       previousIndex.current = indexHolder.current;
       indexHolder.current = index;
@@ -100,22 +94,28 @@ function Slider({images, className}) {
       setTimeout(() => {
         previousIndex.current = indexHolder.current; // changes hidden on previous elements to hidden
         canClick.current = true;
-      }, 2000);
+      }, 2100);
     }
   };
 
   useEffect(() => {
-    console.log('Hello hello pLEASE PLEASE')
+    console.log('hi');
+    return () => {
+      console.log('left')
+      window.scrollTo(0,0)
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log('startA')
     const intervalId = setInterval(() => {
       let randomIndex = 0;
-      console.log(indexHolder.current)
       if (indexHolder.current < urls.length - 1) {
         randomIndex = indexHolder.current + 1
       }
       else{
         randomIndex = 0;
       }
-      console.log(randomIndex,canClick.current,currentIndex)
       if (canClick.current === true){
         clickEvent(randomIndex);
       }
@@ -123,8 +123,10 @@ function Slider({images, className}) {
     }, 10000);
 
     // Clean up the interval on component unmount
-    return () => clearInterval(intervalId);
-  },[])
+    return () => {
+      console.log('clean a')
+      clearInterval(intervalId)};
+  })
 
   return (
     <div className={className}>
@@ -136,8 +138,29 @@ function Slider({images, className}) {
           }`}
           key={index}
         >
-          <div ref={(el) => (textRefs.current[index] = el)} id="desctext">{index}</div>
-          <div ref={(el) => (buttonRefs.current[index] = el)} id="button">Test</div>
+          <div
+            ref={(el) => (textRefs.current[index] = el)}
+            id="desctext"
+            className={`${
+              index === indexHolder.current
+                ? 'translate-y-[200%] opacity-0'
+                : 'opacity-100'
+            }`}
+          >
+            {index}
+          </div>
+          <div
+            ref={(el) => (buttonRefs.current[index] = el)}
+            id="button"
+            opacity={index === previousIndex.current ? 1 : 0}
+            className={`${
+              index === indexHolder.current
+                ? 'translate-y-[250%] opacity-0'
+                : 'opacity-100'
+            }`}
+          >
+            Test
+          </div>
         </div>
       ))}
       {urls.map((element, index) => (
@@ -146,7 +169,7 @@ function Slider({images, className}) {
           id={index}
           className={`h-full w-full absolute ${
             index === indexHolder.current || index === previousIndex.current ? '' : ' hidden'
-          }`}
+          } ${index === previousIndex.current ? 'opacity-100' : 'opacity-0'}`}
           key={index}
         >
           <Image
@@ -161,7 +184,7 @@ function Slider({images, className}) {
           ></Image>
         </div>
       ))}
-      <div className="flex gap-4 items-center justify-center -translate-y-[25px] w-full top-full relative overflow-hidden  ">
+      <div className="flex gap-4 items-center justify-center -translate-y-[25px] w-full top-full relative overflow-hidden ">
         {urls.map((element, index) => (
           <button key={index} onClick={() => clickEvent(index)}>
             <svg height="12" width="12">

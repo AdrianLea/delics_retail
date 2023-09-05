@@ -1,5 +1,5 @@
 import {defer} from '@shopify/remix-oxygen';
-import {Suspense} from 'react';
+import {Suspense,useEffect} from 'react';
 import {Await, useLoaderData} from '@remix-run/react';
 import {AnalyticsPageType} from '@shopify/hydrogen';
 
@@ -60,7 +60,6 @@ export async function loader({params, context}) {
 export default function Homepage() {
   const {featuredProducts} = useLoaderData();
   const {slider_images} = useLoaderData();
-
   return (
     <>
       {featuredProducts && (
