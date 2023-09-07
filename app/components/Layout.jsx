@@ -144,7 +144,6 @@ function MenuMobileNav({menu, onClose}) {
           </Link>
         </span>
       ))}
-      <CountrySelector />
     </nav>
   );
 }
@@ -239,9 +238,7 @@ function DesktopHeader({isHome, menu, openCart, layout}) {
     >
       <div className="flex-col items-center w-full">
         <div className="flex items-center justify-between w-full">
-          <div className="flex w-[200px] h-[80px] grow items-center basis-0">
-            <CountrySelector />
-          </div>
+          <div className="flex w-[200px] h-[80px] grow items-center basis-0"></div>
           <Link
             className="font-bold flex justify-center items-center"
             to="/"
@@ -294,7 +291,7 @@ function DesktopHeader({isHome, menu, openCart, layout}) {
                 to={item.to}
                 target={item.target}
                 prefetch="intent"
-                className="font-extrabold font-serif"
+                className="font-bold font-sans"
               >
                 Trophy Wives
               </Link>
@@ -393,7 +390,6 @@ function Footer({menu}) {
         bg-primary dark:bg-contrast dark:text-primary text-contrast overflow-hidden`}
     >
       <FooterMenu menu={menu} />
-      <CountrySelector />
       <div
         className={`self-end pt-8 opacity-50 md:col-span-2 lg:col-span-${itemsCount}`}
       >
