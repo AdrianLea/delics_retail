@@ -285,17 +285,19 @@ function DesktopHeader({isHome, menu, openCart, layout}) {
         <div>
           <nav className="flex gap-12 items-center justify-center">
             {/* Top level menu items */}
-            {(menu?.items || []).map((item) => (
-              <Link
-                key={item.id}
-                to={item.to}
-                target={item.target}
-                prefetch="intent"
-                className="font-bold font-sans"
-              >
-                Trophy Wives
-              </Link>
-            ))}
+            {(menu?.items || []).map((item, index) => {
+              return (
+                <Link
+                  key={item.id}
+                  to={item.to}
+                  target={item.target}
+                  prefetch="intent"
+                  className="font-bold font-sans"
+                >
+                  {item.title}
+                </Link>
+              );
+            })}
           </nav>
         </div>
       </div>

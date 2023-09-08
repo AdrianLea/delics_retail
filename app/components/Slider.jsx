@@ -1,28 +1,72 @@
 import {React, useState, useEffect, useRef, useLayoutEffect} from 'react';
 import {Image} from '@shopify/hydrogen';
 import {gsap} from 'gsap';
+import {TextPlugin} from 'gsap/TextPlugin';
+
+
 
 import {Text, Link} from '~/components';
 
-function Slider({images, className}) {
-  const canClick = useRef(true);
+function Slider({images, className, links}) {
   const currentIndex = useRef(0);
   const slidesRef = useRef(null);
   const clicked = useRef(0);
   const ctx = useRef(null);
   const anims = useRef([]);
   const [slideButton, changeButton] = useState(0);
-  var urls = [];
+  const touchStart = useRef(null);
+  const touchEnd = useRef(null);
 
+  const minSwipeDistance = 50;
+
+  const onTouchStart = (e) => {
+    touchEnd.current = null;
+    touchStart.current = e.targetTouches[0].clientX;
+  }
+
+  const onTouchMove = (e) => (touchEnd.current = e.targetTouches[0].clientX);
+
+  const onTouchEnd = () => {
+    if (!touchStart.current || !touchEnd.current) return;
+    const distance = touchStart.current - touchEnd.current;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+    if (isRightSwipe) {
+      clicked.current = true;
+      clickFunction(
+        currentIndex.current - 1 >= 0
+          ? currentIndex.current - 1
+          : urls.length - 1,
+      );
+    } else if (isLeftSwipe) {
+      clicked.current = true;
+      clickFunction(
+        currentIndex.current + 1 < urls.length ? currentIndex.current + 1 : 0,
+      );
+    }
+    // add your conditional logic here
+  };
+
+  var urls = [];
   for (let i = 0; i < images.collections.nodes.length + 1; i++) {
     if (
       images.collections.nodes[i] !== undefined &&
       images.collections.nodes[i].metafields[0] !== null
     ) {
       let node = images.collections.nodes[i];
+      let heldindex = null;
+      for (let x = 0; x < links.length; x++) {
+        if (links[x].title.trim() === node.title.trim()) {
+          heldindex = x;
+          break;
+        }
+      }
       urls.push([
         node.metafields[0].reference.image.url,
         node.metafields[1].reference.image.url,
+        node.metafields[2].value,
+        node.metafields[3].value,
+        heldindex != null ? links[heldindex] : null,
       ]);
     }
   }
@@ -30,6 +74,7 @@ function Slider({images, className}) {
 
   useLayoutEffect(() => {
     ctx.current = gsap.context((self) => {
+      gsap.registerPlugin(TextPlugin);
       const slide = gsap.utils.toArray('.slide');
       const links = gsap.utils.toArray('.information-holder');
       const text = links.map((link) => link.querySelector('.header'));
@@ -55,6 +100,9 @@ function Slider({images, className}) {
             y: -40,
             display: 'block',
             duration: 0.6,
+            text: {
+              value: urls[i][2],
+            },
           },
           0.5,
         );
@@ -76,17 +124,13 @@ function Slider({images, className}) {
   }, []);
 
   const clickFunction = (index) => {
-    if (canClick.current === true) {
-      canClick.current = false;
-      changeButton(index);
+    if (index != currentIndex.current) {
       anims.current[index].delay(0.8);
       anims.current[currentIndex.current].delay(0);
       anims.current[currentIndex.current].reversed(true);
       anims.current[index].reversed(false);
       currentIndex.current = index;
-      setTimeout(() => {
-        canClick.current = true;
-      }, 1100);
+      changeButton(index);
     }
   };
 
@@ -97,16 +141,22 @@ function Slider({images, className}) {
       }
       if (currentIndex.current < urls.length - 1 && clicked.current != true) {
         clickFunction(currentIndex.current + 1);
-      } else if (currentIndex.current != true) {
+      } else if (clicked.current != true) {
         clickFunction(0);
       }
     }, 7000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [urls.length]);
 
   return (
-    <section className={`slides ${className}`} ref={slidesRef}>
+    <section
+      className={`slides ${className}`}
+      ref={slidesRef}
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
+    >
       {urls.map((element, index) => (
         <>
           <div
@@ -128,13 +178,15 @@ function Slider({images, className}) {
               className={`information-holder absolute top-[80%] left-[10%]`}
               key={index}
             >
-              <h2 className={`header hidden bg-white opacity-0 p-1`}>
-                Lorem ipsum dolor sit amet,
-              </h2>
+              <h2 className={`header hidden bg-white opacity-0 py-1 px-2 w-fit`}></h2>
               <Link
-                className={`link hidden bg-white opacity-0 w-auto h-auto p-2 text-center font-sans text-lg font-bold justify-center`}
+                className={`link hidden bg-white opacity-0 w-fit h-auto py-2 px-5 text-center font-sans text-lg font-bold justify-center hover:bg-transparent hover:text-white hover:border`}
+                key={element[4]?.id}
+                to={element[4]?.to}
+                target={element[4]?.target}
+                prefetch="intent"
               >
-                SHOP NOW
+                {element[3]}
               </Link>
             </div>
           </div>
@@ -142,13 +194,10 @@ function Slider({images, className}) {
       ))}
       <div className="flex gap-4 items-center justify-center -translate-y-[25px] w-full top-full relative overflow-hidden ">
         {urls.map((element, index) => (
-          <button
-            key={index}
-            onClick={() => {
-              clicked.current = true;
-              clickFunction(index);
-            }}
-          >
+          <button key={index} onClick={() => {
+              clicked.current = true
+              clickFunction(index)
+            }}>
             <svg height="12" width="12">
               <circle
                 cx="6"

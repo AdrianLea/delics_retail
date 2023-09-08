@@ -1,6 +1,6 @@
 import {defer} from '@shopify/remix-oxygen';
 import {Suspense,useEffect} from 'react';
-import {Await, useLoaderData} from '@remix-run/react';
+import {Await, useLoaderData, useMatches, useRouteLoaderData} from '@remix-run/react';
 import {AnalyticsPageType} from '@shopify/hydrogen';
 
 import {ProductSwimlane} from '~/components';
@@ -60,6 +60,8 @@ export async function loader({params, context}) {
 export default function Homepage() {
   const {featuredProducts} = useLoaderData();
   const {slider_images} = useLoaderData();
+  const matches = useMatches()
+  const {layout} = useRouteLoaderData(matches[0].id)
   return (
     <>
       {featuredProducts && (
@@ -70,6 +72,7 @@ export default function Homepage() {
               return (
                 <Slider
                   images={images}
+                  links={layout?.headerMenu.items}
                   className={'overflow-hidden w-[100%] h-[100vh] bg-gray-600'}
                 />
               );
@@ -122,20 +125,24 @@ const COLLECTION_CONTENT_FRAGMENT = `#graphql
   ${MEDIA_FRAGMENT}
 `;
 const HOMEPAGE_SLIDER_QUERY = `query heroimagesquery {
-  collections(first: 20) {
+  collections(
+    first: 20
+  ) {
     nodes {
       metafields(
-        identifiers: [{namespace: "custom", key: "herodesktop"}, {namespace: "custom", key: "heromobile"}]
+        identifiers: [{namespace: "custom", key: "herodesktop"}, {namespace: "custom", key: "heromobile"}, {namespace: "custom", key: "herodescriptiontext"}, {namespace: "custom", key: "herobuttontext"}]
       ) {
         reference {
           ... on MediaImage {
-            id
             image {
               url
             }
           }
         }
+        value
       }
+      handle
+      title
     }
   }
 }`;
