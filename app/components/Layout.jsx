@@ -418,7 +418,7 @@ function FooterMenu({menu}) {
     <>
       <section className='flex flex-row gap-4 justify-evenly items-stretch flex-wrap'>
         <div className="flex flex-col gap-1">
-          <h2 className='text-lg font-bold w-auto'>Legal Information</h2>
+          <h2 className='text-lg font-bold w-auto text-white'>Legal Information</h2>
           {menu.items
             .filter((item) => tnclist.includes(item.title))
             .map((item) => (
@@ -426,7 +426,7 @@ function FooterMenu({menu}) {
             ))}
         </div>
         <div className="flex flex-col gap-1">
-          <h2 className='text-lg font-bold'>Help</h2>
+          <h2 className='text-lg font-bold text-white'>Help</h2>
           {menu.items
             .filter((item) => helplist.includes(item.title))
             .map((item) => (
