@@ -249,7 +249,6 @@ function DesktopHeader({isHome, menu, openCart, layout}) {
                 src={layout.shop.brand.logo.image.url}
                 alt="Delics"
                 aspectRatio="1"
-                height="80"
               ></Image>
             )}
           </Link>
