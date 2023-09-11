@@ -207,7 +207,7 @@ function MobileHeader({layout, isHome, openCart, openMenu}) {
           className=" w-auto h-[90px] object-contain"
           src={layout.shop.brand.logo.image.url}
           alt="Delics"
-          aspectRatio="1/5"
+          aspectRatio="1"
         ></Image>
       </Link>
 
@@ -245,7 +245,7 @@ function DesktopHeader({isHome, menu, openCart, layout}) {
           >
             {layout.shop?.brand?.logo && (
               <Image
-                className=" w-10 h-20 object-cover"
+                className=" h-[80px] object-cover"
                 src={layout.shop.brand.logo.image.url}
                 alt="Delics"
                 aspectRatio="1"
