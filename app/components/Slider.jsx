@@ -192,11 +192,11 @@ function Slider({images, className, links}) {
           </div>
         </>
       ))}
-      <div className="flex gap-4 items-center justify-center -translate-y-[25px] w-full top-full relative overflow-hidden ">
+      <div className="flex gap-4 items-center justify-center -translate-y-[25px] w-full top-full absolute overflow-hidden ">
         {urls.map((element, index) => (
           <button key={index} onClick={() => {
-              clicked.current = true
-              clickFunction(index)
+              clicked.current = true;
+              clickFunction(index);
             }}>
             <svg height="12" width="12">
               <circle

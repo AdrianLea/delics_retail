@@ -207,8 +207,7 @@ function MobileHeader({layout, isHome, openCart, openMenu}) {
           className=" w-auto h-[90px] object-contain"
           src={layout.shop.brand.logo.image.url}
           alt="Delics"
-          aspectRatio="1"
-          height="40"
+          aspectRatio="1/5"
         ></Image>
       </Link>
 
@@ -377,26 +376,17 @@ function Badge({openCart, dark, count}) {
 
 function Footer({menu}) {
   const isHome = useIsHomePath();
-  const itemsCount = menu
-    ? menu?.items?.length + 1 > 4
-      ? 4
-      : menu?.items?.length + 1
-    : [];
-
   return (
     <Section
       divider={isHome ? 'none' : 'top'}
       as="footer"
       role="contentinfo"
-      className={`grid min-h-[25rem] items-start grid-flow-row w-full gap-6 py-8 px-6 md:px-8 lg:px-12 md:gap-8 lg:gap-12 grid-cols-1 md:grid-cols-2 lg:grid-cols-${itemsCount}
+      className={`min-h-[25rem] w-full py-8 px-6 md:px-8 lg:px-12
         bg-primary dark:bg-contrast dark:text-primary text-contrast overflow-hidden`}
     >
       <FooterMenu menu={menu} />
-      <div
-        className={`self-end pt-8 opacity-50 md:col-span-2 lg:col-span-${itemsCount}`}
-      >
-        &copy; {new Date().getFullYear()} / Shopify, Inc. Hydrogen is an MIT
-        Licensed Open Source project.
+      <div className={`pt-8 opacity-50`}>
+        &copy; {new Date().getFullYear()} / Delics Retail
       </div>
     </Section>
   );
@@ -412,13 +402,15 @@ function FooterLink({item}) {
   }
 
   return (
-    <Link to={item.to} target={item.target} prefetch="intent">
+    <Link to={item.to} target={item.target} prefetch="intent" className="hover:text-gray-400 text-white">
       {item.title}
     </Link>
   );
 }
 
 function FooterMenu({menu}) {
+  const tnclist = ["Terms & Conditions","Priavcy Policy","Refund Policy"]
+  const helplist = ["Contact Us"]
   const styles = {
     section: 'grid gap-4',
     nav: 'grid gap-2 pb-6',
@@ -426,43 +418,24 @@ function FooterMenu({menu}) {
 
   return (
     <>
-      {(menu?.items || []).map((item) => (
-        <section key={item.id} className={styles.section}>
-          <Disclosure>
-            {({open}) => (
-              <>
-                <Disclosure.Button className="text-left md:cursor-default">
-                  <Heading className="flex justify-between" size="lead" as="h3">
-                    {item.title}
-                    {item?.items?.length > 0 && (
-                      <span className="md:hidden">
-                        <IconCaret direction={open ? 'up' : 'down'} />
-                      </span>
-                    )}
-                  </Heading>
-                </Disclosure.Button>
-                {item?.items?.length > 0 ? (
-                  <div
-                    className={`${
-                      open ? `max-h-48 h-fit` : `max-h-0 md:max-h-fit`
-                    } overflow-hidden transition-all duration-300`}
-                  >
-                    <Suspense data-comment="This suspense fixes a hydration bug in Disclosure.Panel with static prop">
-                      <Disclosure.Panel static>
-                        <nav className={styles.nav}>
-                          {item.items.map((subItem) => (
-                            <FooterLink key={subItem.id} item={subItem} />
-                          ))}
-                        </nav>
-                      </Disclosure.Panel>
-                    </Suspense>
-                  </div>
-                ) : null}
-              </>
-            )}
-          </Disclosure>
-        </section>
-      ))}
+      <section className='flex flex-row gap-4 justify-evenly items-stretch flex-wrap'>
+        <div className="flex flex-col gap-1">
+          <h2 className='text-lg font-bold w-auto'>Legal Information</h2>
+          {menu.items
+            .filter((item) => tnclist.includes(item.title))
+            .map((item) => (
+              <FooterLink item={item} key={item.id}  />
+            ))}
+        </div>
+        <div className="flex flex-col gap-1">
+          <h2 className='text-lg font-bold'>Help</h2>
+          {menu.items
+            .filter((item) => helplist.includes(item.title))
+            .map((item) => (
+              <FooterLink item={item} key={item.id}  />
+            ))}
+        </div>
+      </section>
     </>
   );
 }

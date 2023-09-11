@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import {flattenConnection, Image, Money, useMoney} from '@shopify/hydrogen';
+import {flattenConnection, Image, Money, useMoney, Video} from '@shopify/hydrogen';
 
 import {Text, Link, AddToCartButton, Button} from '~/components';
 import {isDiscounted, isNewArrival} from '~/lib/utils';
@@ -19,6 +19,14 @@ export function ProductCard({
   if (!cardProduct?.variants?.nodes?.length) return null;
 
   const firstVariant = flattenConnection(cardProduct.variants)[0];
+  const mediaRef = product?.metafields[0];
+  let backVideo = null;
+  let backImage = null;
+  if (mediaRef && mediaRef.reference.sources) {
+    backVideo = mediaRef.reference;
+  } else if (mediaRef && mediaRef.reference.image) {
+    backImage = mediaRef.reference.image;
+  }
 
   if (!firstVariant) return null;
   const {image, price, compareAtPrice} = firstVariant;
@@ -52,12 +60,34 @@ export function ProductCard({
           <div className="card-image aspect-[4/5] bg-primary/5">
             {image && (
               <Image
-                className="object-cover w-full fadeIn"
+                className="object-contain w-full absolute opacity-100 hover:opacity-0 transition duration-100 z-10 top-0 left-0"
                 sizes="(min-width: 64em) 25vw, (min-width: 48em) 30vw, 45vw"
-                aspectRatio="4/5"
+                aspectRatio="3/4"
                 data={image}
                 alt={image.altText || `Picture of ${product.title}`}
                 loading={loading}
+              />
+            )}
+            {backImage && (
+              <Image
+                className="object-contain w-full absolute opacity-0 hover:opacity-100 transition duration-100 z-2 top-0 left-0"
+                sizes="(min-width: 64em) 25vw, (min-width: 48em) 30vw, 45vw"
+                aspectRatio="4/5"
+                data={backImage.image}
+                alt={image.altText || `Picture of ${product.title}`}
+                loading={loading}
+              />
+            )}
+            {backVideo && (
+              <Video
+                className="object-contain w-full opacity-100 transition duration-100 absolute z-2 top-0 left-0"
+                data={backVideo}
+                alt={image.altText || `Picture of ${product.title}`}
+                loading={loading}
+                autoPlay={true}
+                muted={true}
+                loop={true}
+                controls={false}
               />
             )}
             <Text

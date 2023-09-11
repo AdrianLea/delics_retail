@@ -72,6 +72,27 @@ export const PRODUCT_CARD_FRAGMENT = `#graphql
         }
       }
     }
+    metafields(identifiers: [{namespace: "custom", key: "backmedia"}]) {
+      id
+      reference {
+        ... on MediaImage {
+          id
+          image {
+            url
+          }
+          mediaContentType
+        }
+        ... on Video {
+          id
+          sources {
+            url
+            format
+            mimeType
+          }
+          mediaContentType
+        }
+      }
+    }
   }
 `;
 
