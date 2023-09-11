@@ -165,7 +165,7 @@ function MobileHeader({layout, isHome, openCart, openMenu}) {
           ? 'bg-opacity-0 text-white border-b border-b-white border-opacity-50'
           : 'bg-opacity-100 text-black shadow-darkHeader'
       }
-      flex lg:hidden items-center h-nav sticky z-50 top-0 justify-between w-full leading-none gap-4 px-4 md:px-8 transition duration-300 `}
+      flex lg:hidden items-center h-nav sticky z-50 top-0 justify-between w-full leading-none gap-4 px-4 md:px-8 transition duration-300`}
     >
       <div className="flex items-center justify-start w-full gap-4">
         <button
@@ -381,8 +381,7 @@ function Footer({menu}) {
       divider={isHome ? 'none' : 'top'}
       as="footer"
       role="contentinfo"
-      className={`min-h-[25rem] w-full py-8 px-6 md:px-8 lg:px-12
-        bg-primary dark:bg-contrast dark:text-primary text-contrast overflow-hidden`}
+      className={`min-h-[25rem] w-full py-8 px-6 md:px-8 lg:px-12 overflow-hidden bg-black`}
     >
       <FooterMenu menu={menu} />
       <div className={`pt-8 opacity-50`}>

@@ -73,11 +73,12 @@ export default function Homepage() {
                 <Slider
                   images={images}
                   links={layout?.headerMenu.items}
-                  className={'overflow-hidden w-[100%] h-[100vh] bg-gray-600'}
+                  className={'overflow-hidden w-[100%] h-[100vh] bg-gray-600 absolute top-0 left-0'}
                 />
               );
             }}
           </Await>
+          <div className='h-[100vh] w-[100%]'></div>
           <Await resolve={featuredProducts}>
             {({products}) => {
               if (!products?.nodes) return <></>;
