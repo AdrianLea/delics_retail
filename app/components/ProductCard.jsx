@@ -88,6 +88,7 @@ export function ProductCard({
                 muted={true}
                 loop={true}
                 controls={false}
+                playsInline={true}
               />
             )}
             <Text
