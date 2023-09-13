@@ -57,10 +57,10 @@ export function ProductCard({
         prefetch="intent"
       >
         <div className={clsx('grid gap-4', className)}>
-          <div className="aspect-[4/5] bg-primary/5 min-h-full">
+          <div className="aspect-[4/5] bg-primary/5 min-h-full relative">
             {image && (
               <Image
-                className="object-contain opacity-100 hover:opacity-0 transition duration-100 z-10"
+                className="object-cover opacity-100 hover:opacity-0 transition duration-100 z-20 absolute top-0 left-0"
                 sizes="(min-width: 64em) 25vw, (min-width: 48em) 30vw, 45vw"
                 aspectRatio="4/5"
                 data={image}
@@ -70,17 +70,17 @@ export function ProductCard({
             )}
             {backImage && (
               <Image
-                className="object-contain w-full absolute opacity-0 hover:opacity-100 transition duration-100 z-2 top-0 left-0"
+                className="object-contain hover:opacity-100 transition duration-100 z-2 absolute top-0 left-0"
                 sizes="(min-width: 64em) 25vw, (min-width: 48em) 30vw, 45vw"
                 aspectRatio="4/5"
-                data={backImage.image}
+                data={backImage}
                 alt={image.altText || `Picture of ${product.title}`}
                 loading={loading}
               />
             )}
             {backVideo && (
               <Video
-                className="object-contain w-full opacity-100 transition duration-100 absolute z-2 top-0 left-0"
+                className="object-cover transition duration-100 z-0 aspect-[4/5] absolute top-0 left-0"
                 data={backVideo}
                 alt={image.altText || `Picture of ${product.title}`}
                 loading={loading}
