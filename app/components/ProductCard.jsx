@@ -60,7 +60,7 @@ export function ProductCard({
           <div className="card-image aspect-[4/5] bg-primary/5">
             {image && (
               <Image
-                className="object-contain w-full absolute opacity-100 hover:opacity-0 transition duration-100 z-10 top-0 left-0"
+                className="object-cover w-full absolute opacity-100 hover:opacity-0 transition duration-100 z-10 top-0 left-0 min-h-full"
                 sizes="(min-width: 64em) 25vw, (min-width: 48em) 30vw, 45vw"
                 aspectRatio="3/4"
                 data={image}
@@ -93,7 +93,7 @@ export function ProductCard({
             <Text
               as="label"
               size="fine"
-              className="absolute top-0 right-0 m-4 text-right text-notice"
+              className="absolute top-0 right-0 p-4 text-right text-notice"
             >
               {cardLabel}
             </Text>

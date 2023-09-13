@@ -1,9 +1,8 @@
 import {defer} from '@shopify/remix-oxygen';
 import {Suspense,useEffect} from 'react';
 import {Await, useLoaderData, useMatches, useRouteLoaderData} from '@remix-run/react';
-import {AnalyticsPageType} from '@shopify/hydrogen';
-
-import {ProductSwimlane} from '~/components';
+import {AnalyticsPageType,Image} from '@shopify/hydrogen';
+import {ProductSwimlane, Section} from '~/components';
 import {MEDIA_FRAGMENT, PRODUCT_CARD_FRAGMENT} from '~/data/fragments';
 import {seoPayload} from '~/lib/seo.server';
 import {routeHeaders} from '~/data/cache';
@@ -64,7 +63,7 @@ export default function Homepage() {
   const {layout} = useRouteLoaderData(matches[0].id)
   return (
     <>
-      {featuredProducts && (
+      {slider_images && (
         <Suspense>
           <Await resolve={slider_images}>
             {(images) => {
@@ -78,7 +77,37 @@ export default function Homepage() {
               );
             }}
           </Await>
-          <div className='h-screen w-[100%]'></div>
+        </Suspense>
+      )}
+      <div className="w-full h-screen"></div>
+      <section
+        className={`flex flex-row w-full flex-wrap items-center justify-center p-5 bg-gray-100`}
+      >
+        <div className="w-[400px] items-center p-5">
+          <h2 className="text-center text-xl font-bold">About Us</h2>
+          <p className="p-2">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+            quam ligula, porta fringilla orci at, condimentum euismod dui.
+            Quisque eleifend non libero sit amet consectetur. Donec placerat
+            erat eu nulla cursus aliquet. Integer in volutpat mauris. Vivamus
+            gravida tincidunt sapien, et viverra est ultrices et. In hac
+            habitasse platea dictumst. Vestibulum posuere ac quam quis
+            imperdiet. Nam condimentum sodales porttitor. Quisque lectus lorem,
+            pulvinar quis enim eu, blandit tempus ante. Aenean nec ullamcorper
+            enim. Vivamus iaculis nibh in sapien vulputate mollis. Nam risus
+            ante, lobortis eu tellus vel, ultrices ultrices urna.
+          </p>
+        </div>
+        <div className="w-[400px] p-5 h-fit">
+          <Image
+            aspectRatio="1/1"
+            src="https://cdn.shopify.com/s/files/1/0526/0463/3276/files/Websitedisplay-07.jpg?v=1689664545"
+            className="object-contain"
+          />
+        </div>
+      </section>
+      {featuredProducts && (
+        <Suspense>
           <Await resolve={featuredProducts}>
             {({products}) => {
               if (!products?.nodes) return <></>;

@@ -58,9 +58,10 @@ export async function action({request, context}) {
   const headers = cart.setCartId(result.cart.id);
 
   const redirectTo = formData.get('redirectTo') ?? null;
-  if (typeof redirectTo === 'string' && isLocalPath(redirectTo)) {
+  let carturl = await cart.get();
+  if (redirectTo === "true") {
     status = 303;
-    headers.set('Location', redirectTo);
+    headers.set('Location', carturl.checkoutUrl);
   }
 
   const {cart: cartResult, errors} = result;

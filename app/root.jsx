@@ -1,4 +1,5 @@
 import {defer} from '@shopify/remix-oxygen';
+import {ShopifyProvider} from '@shopify/hydrogen-react';
 import {
   isRouteErrorResponse,
   Links,
@@ -15,7 +16,7 @@ import {ShopifySalesChannel, Seo} from '@shopify/hydrogen';
 import invariant from 'tiny-invariant';
 import {useEffect} from 'react';
 
-import favicon from '../public/favicon.svg';
+import favicon from '../public/favicon.png';
 
 import {GenericError} from './components/GenericError';
 import {NotFound} from './components/NotFound';
@@ -82,6 +83,7 @@ export default function App() {
   const data = useLoaderData();
   const locale = data.selectedLocale ?? DEFAULT_LOCALE;
   const hasUserConsent = true;
+  console.log(locale.country, locale.language);
   useAnalytics(hasUserConsent);
   return (
     <html lang={locale.language}>

@@ -5,12 +5,13 @@ import {useLoaderData, Await} from '@remix-run/react';
 import {
   AnalyticsPageType,
   Money,
-  ShopPayButton,
   VariantSelector,
   getSelectedProductOptions,
 } from '@shopify/hydrogen';
+import {BuyNow} from '~/components'
 import invariant from 'tiny-invariant';
 import clsx from 'clsx';
+
 import {
   Heading,
   IconCaret,
@@ -353,6 +354,22 @@ export function ProductForm({variants}) {
                   )}
                 </Text>
               </AddToCartButton>
+            )}
+            {!isOutOfStock && (
+              <BuyNow
+                lines={[
+                  {
+                    merchandiseId: selectedVariant.id,
+                    quantity: 1,
+                  },
+                ]}
+                variant="primary"
+                data-test="add-to-cart"
+                analytics={{
+                  products: [productAnalytics],
+                  totalValue: parseFloat(productAnalytics.price),
+                }}
+              />
             )}
           </div>
         )}

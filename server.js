@@ -48,6 +48,8 @@ export default {
         storefrontHeaders: getStorefrontHeaders(request),
       });
 
+      console.log(env.PUBLIC_STORE_DOMAIN)
+
       const cart = createCartHandler({
         storefront,
         getCartId: cartGetIdDefault(request.headers),
