@@ -21,7 +21,7 @@ export function Grid({
   };
 
   const gaps = {
-    default: 'grid gap-2 gap-y-6 md:gap-4 lg:gap-6',
+    default: 'grid gap-1 gap-y-6 md:gap-1 lg:gap-1',
     blog: 'grid gap-6',
   };
 

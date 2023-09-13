@@ -79,9 +79,9 @@ export default function Homepage() {
           </Await>
         </Suspense>
       )}
-      <div className="w-full h-screen"></div>
+      <div className="w-full h-screen bg-gray-100"></div>
       <section
-        className={`flex flex-row w-full flex-wrap items-center justify-center p-5 bg-gray-100`}
+        className={`flex flex-row w-full flex-wrap items-center justify-center p-5 bg-gray-100 border-b border-gray-300`}
       >
         <div className="max-w-[600px] items-center py-5">
           <h2 className="text-center font-marker text-4xl">About Us</h2>

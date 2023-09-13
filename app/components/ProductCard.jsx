@@ -57,7 +57,7 @@ export function ProductCard({
         prefetch="intent"
       >
         <div className={clsx('grid gap-4', className)}>
-          <div className="aspect-[4/5] bg-primary/5 min-h-full relative">
+          <div className="aspect-[4/5] bg-primary/5 min-h-full relative border border-gray-100 border-b-0">
             {image && (
               <Image
                 className="object-cover opacity-100 hover:opacity-0 transition duration-100 z-20 absolute top-0 left-0"
@@ -99,15 +99,15 @@ export function ProductCard({
               {cardLabel}
             </Text>
           </div>
-          <div className="grid gap-1">
+          <div className="grid gap px-2">
             <Text
-              className="w-full overflow-hidden whitespace-nowrap text-ellipsis "
+              className="w-full overflow-hidden whitespace-nowrap text-ellipsis font-semibold text-[0.8rem] "
               as="h3"
             >
               {product.title}
             </Text>
-            <div className="flex gap-4">
-              <Text className="flex gap-4">
+            <div className="flex gap-4 ">
+              <Text className="flex gap-4 text-[0.7rem] pb-5">
                 <Money withoutTrailingZeros data={price} />
                 {isDiscounted(price, compareAtPrice) && (
                   <CompareAtPrice

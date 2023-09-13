@@ -222,12 +222,13 @@ function MobileHeader({layout, isHome, openCart, openMenu}) {
 function DesktopHeader({isHome, menu, openCart, layout}) {
   const params = useParams();
   const {y} = useWindowScroll();
+
   return (
     <header
       role="banner"
       className={`${
         isHome
-          ? 'bg-white hover:bg-opacity-100 hover:text-black -mb-[112px]'
+          ? 'bg-white hover:bg-opacity-100 hover:text-black -mb-nav'
           : 'bg-white text-black shadow-darkHeader'
       } ${
         isHome && y < 10
@@ -383,7 +384,7 @@ function Footer({menu}) {
       className={`min-h-[25rem] w-full py-8 px-6 md:px-8 lg:px-12 overflow-hidden bg-black`}
     >
       <FooterMenu menu={menu} />
-      <div className={`pt-8 opacity-50`}>
+      <div className={`pt-8 opacity-50 text-white`}>
         &copy; {new Date().getFullYear()} / Delics Retail
       </div>
     </Section>
@@ -416,7 +417,7 @@ function FooterMenu({menu}) {
 
   return (
     <>
-      <section className='flex flex-row gap-4 justify-evenly items-stretch flex-wrap'>
+      <section className='flex flex-row gap-4 justify-evenly items-stretch flex-wrap pt-10'>
         <div className="flex flex-col gap-1">
           <h2 className='text-lg font-bold w-auto text-white'>T&C</h2>
           {menu.items

@@ -180,7 +180,7 @@ function Slider({images, className, links}) {
             >
               <h2 className={`header hidden bg-white opacity-0 py-1 px-2 w-fit`}></h2>
               <Link
-                className={`link hidden bg-white opacity-0 w-fit h-auto py-2 px-5 text-center font-makro font-bold text-lg justify-center hover:bg-transparent hover:text-white hover:border text-black`}
+                className={`link hidden bg-white opacity-0 w-fit h-auto py-2 px-5 text-center font-anton font-bold text-2xl justify-center hover:bg-transparent hover:text-white hover:border text-black`}
                 key={element[4]?.id}
                 to={element[4]?.to}
                 target={element[4]?.target}
