@@ -83,9 +83,9 @@ export default function Homepage() {
       <section
         className={`flex flex-row w-full flex-wrap items-center justify-center p-5 bg-gray-100`}
       >
-        <div className="w-[400px] items-center p-5">
-          <h2 className="text-center text-xl font-bold">About Us</h2>
-          <p className="p-2">
+        <div className="max-w-[600px] items-center py-5">
+          <h2 className="text-center font-marker text-4xl">About Us</h2>
+          <p className="py-7 px-1 font-mono text-center">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
             quam ligula, porta fringilla orci at, condimentum euismod dui.
             Quisque eleifend non libero sit amet consectetur. Donec placerat
@@ -97,13 +97,6 @@ export default function Homepage() {
             enim. Vivamus iaculis nibh in sapien vulputate mollis. Nam risus
             ante, lobortis eu tellus vel, ultrices ultrices urna.
           </p>
-        </div>
-        <div className="w-[400px] p-5 h-fit">
-          <Image
-            aspectRatio="1/1"
-            src="https://cdn.shopify.com/s/files/1/0526/0463/3276/files/Websitedisplay-07.jpg?v=1689664545"
-            className="object-contain"
-          />
         </div>
       </section>
       {featuredProducts && (

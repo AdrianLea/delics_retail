@@ -30,7 +30,7 @@ export function SortFilter({
         </button>
         <SortMenu />
       </div>
-      <div className="flex flex-col flex-wrap md:flex-row">
+      <div className="flex flex-col md:flex-row">
         <div
           className={`transition-all duration-200 ${
             isOpen

@@ -233,7 +233,7 @@ function DesktopHeader({isHome, menu, openCart, layout}) {
         isHome && y < 10
           ? 'bg-opacity-0 text-white border-b border-b-white border-opacity-50'
           : 'bg-opacity-100 text-black shadow-darkHeader'
-      } hidden h-[112px] lg:flex items-center sticky transition duration-300 z-50 top-0 justify-center w-full leading-none  px-12 pb-4`}
+      } hidden h-fit lg:flex items-center sticky transition duration-300 z-50 top-0 justify-center w-full leading-none  px-12 pb-4`}
     >
       <div className="flex-col items-center w-full">
         <div className="flex items-center justify-between w-full">
@@ -290,7 +290,7 @@ function DesktopHeader({isHome, menu, openCart, layout}) {
                   to={item.to}
                   target={item.target}
                   prefetch="intent"
-                  className="font-bold font-sans"
+                  className=" font-anton text-lg"
                 >
                   {item.title}
                 </Link>

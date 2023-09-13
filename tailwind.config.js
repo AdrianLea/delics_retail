@@ -41,6 +41,12 @@ export default {
       fontFamily: {
         sans: ['Helvetica Neue', 'ui-sans-serif', 'system-ui', 'sans-serif'],
         serif: ['"IBMPlexSerif"', 'Palatino', 'ui-serif'],
+        sacco: ['Sacco'],
+        marker: ['PermanentMarker'],
+        anton: ['Anton'],
+        caveat: ['Caveat'],
+        tangerine: ['Tangerine'],
+        makro: ['Makro'],
       },
       fontSize: {
         display: ['var(--font-size-display)', '1.1'],
