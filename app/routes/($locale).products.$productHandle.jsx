@@ -405,7 +405,7 @@ function ProductDetail({title, content, learnMore, defaultOpen}) {
 
           <Disclosure.Panel className={'pb-4 pt-2 grid gap-2'}>
             <div
-              className="prose dark:prose-invert"
+              className="prose text-black"
               dangerouslySetInnerHTML={{__html: content}}
             />
             {learnMore && (
