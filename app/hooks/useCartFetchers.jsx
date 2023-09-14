@@ -9,7 +9,7 @@ export function useCartFetchers(actionName) {
     const formData = fetcher.submission?.formData;
     if (formData) {
       const formInputs = CartForm.getFormInput(formData);
-      if (formInputs.action === actionName) {
+      if (formInputs.action === actionName && !formInputs.inputs.redirectTo) {
         cartFetchers.push(fetcher);
       }
     }

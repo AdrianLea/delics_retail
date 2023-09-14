@@ -47,6 +47,7 @@ export default {
         caveat: ['Caveat'],
         tangerine: ['Tangerine'],
         makro: ['Makro'],
+        eight: ['EightOne'],
       },
       fontSize: {
         display: ['var(--font-size-display)', '1.1'],

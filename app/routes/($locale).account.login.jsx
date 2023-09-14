@@ -17,7 +17,7 @@ export async function loader({context, params}) {
   }
 
   // TODO: Query for this?
-  return json({shopName: 'Hydrogen'});
+  return json({shopName: 'Delics'});
 }
 
 const badRequest = (data) => json(data, {status: 400});

@@ -45,7 +45,7 @@ export function BuyNow({
               disabled={disabled ?? fetcher.state !== 'idle'}
               {...props}
             >
-              sad
+              Buy Now
             </Button>
           </AddToCartAnalytics>
         );

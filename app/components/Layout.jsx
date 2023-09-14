@@ -291,7 +291,7 @@ function DesktopHeader({isHome, menu, openCart, layout}) {
                   to={item.to}
                   target={item.target}
                   prefetch="intent"
-                  className=" font-anton text-lg"
+                  className=" font-eight text-[1rem] font-bold"
                 >
                   {item.title}
                 </Link>

@@ -121,6 +121,11 @@ export default function Product() {
   const {product, shop, recommended, variants} = useLoaderData();
   const {media, title, vendor, descriptionHtml} = product;
   const {shippingPolicy, refundPolicy} = shop;
+  const selectedVariant = product.selectedVariant;
+  const isOnSale =
+    selectedVariant?.price?.amount &&
+    selectedVariant?.compareAtPrice?.amount &&
+    selectedVariant?.price?.amount < selectedVariant?.compareAtPrice?.amount;
 
   return (
     <>
@@ -136,6 +141,21 @@ export default function Product() {
                 <Heading as="h1" className="whitespace-normal">
                   {title}
                 </Heading>
+                <span>
+                  <Money
+                    withoutTrailingZeros
+                    data={selectedVariant?.price}
+                    as="span"
+                  />
+                  {isOnSale && (
+                    <Money
+                      withoutTrailingZeros
+                      data={product.selectedVariant?.compareAtPrice}
+                      as="span"
+                      className="opacity-50 strike"
+                    />
+                  )}
+                </span>
               </div>
               <Suspense fallback={<ProductForm variants={[]} />}>
                 <Await
@@ -154,6 +174,7 @@ export default function Product() {
                   <ProductDetail
                     title="Product Details"
                     content={descriptionHtml}
+                    defaultOpen={true}
                   />
                 )}
                 {shippingPolicy?.body && (
@@ -201,11 +222,6 @@ export function ProductForm({variants}) {
    */
   const selectedVariant = product.selectedVariant;
   const isOutOfStock = !selectedVariant?.availableForSale;
-
-  const isOnSale =
-    selectedVariant?.price?.amount &&
-    selectedVariant?.compareAtPrice?.amount &&
-    selectedVariant?.price?.amount < selectedVariant?.compareAtPrice?.amount;
 
   const productAnalytics = {
     ...analytics.products[0],
@@ -335,20 +351,8 @@ export function ProductForm({variants}) {
                   as="span"
                   className="flex items-center justify-center gap-2"
                 >
-                  <span>Add to Cart</span> <span>·</span>{' '}
-                  <Money
-                    withoutTrailingZeros
-                    data={selectedVariant?.price}
-                    as="span"
-                  />
-                  {isOnSale && (
-                    <Money
-                      withoutTrailingZeros
-                      data={selectedVariant?.compareAtPrice}
-                      as="span"
-                      className="opacity-50 strike"
-                    />
-                  )}
+                  <span>Add to Cart</span>
+
                 </Text>
               </AddToCartButton>
             )}
@@ -375,9 +379,14 @@ export function ProductForm({variants}) {
   );
 }
 
-function ProductDetail({title, content, learnMore}) {
+function ProductDetail({title, content, learnMore, defaultOpen}) {
   return (
-    <Disclosure key={title} as="div" className="grid w-full gap-2">
+    <Disclosure
+      key={title}
+      as="div"
+      className="grid w-full gap-2"
+      defaultOpen={defaultOpen}
+    >
       {({open}) => (
         <>
           <Disclosure.Button className="text-left">
