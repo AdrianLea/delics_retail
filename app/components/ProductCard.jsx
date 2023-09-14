@@ -30,14 +30,15 @@ export function ProductCard({
 
   if (!firstVariant) return null;
   const {image, price, compareAtPrice} = firstVariant;
-
-  if (label) {
-    cardLabel = label;
-  } else if (isDiscounted(price, compareAtPrice)) {
-    cardLabel = 'Sale';
-  } else if (isNewArrival(product.publishedAt)) {
-    cardLabel = 'New';
-  }
+  /*
+    if (label) {
+      cardLabel = label;
+    } else if (isDiscounted(price, compareAtPrice)) {
+      cardLabel = 'Sale';
+    } else if (isNewArrival(product.publishedAt)) {
+      cardLabel = 'New';
+    }
+  */
 
   const productAnalytics = {
     productGid: product.id,
@@ -100,14 +101,11 @@ export function ProductCard({
             </Text>
           </div>
           <div className="grid gap px-2">
-            <Text
-              className="w-full overflow-hidden whitespace-nowrap text-ellipsis font-semibold text-[0.79rem] "
-              as="h3"
-            >
+            <h3 className="w-full overflow-hidden whitespace-nowrap text-ellipsis font-bold text-[0.72rem] font-sans">
               {product.title}
-            </Text>
+            </h3>
             <div className="flex gap-4 ">
-              <Text className="flex gap-4 text-[0.69rem] pb-5">
+              <span className="flex gap-4 text-[0.69rem] pb-5">
                 <Money withoutTrailingZeros data={price} />
                 {isDiscounted(price, compareAtPrice) && (
                   <CompareAtPrice
@@ -115,7 +113,7 @@ export function ProductCard({
                     data={compareAtPrice}
                   />
                 )}
-              </Text>
+              </span>
             </div>
           </div>
         </div>
