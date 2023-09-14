@@ -163,7 +163,7 @@ export default function Register() {
           </div>
           <div className="flex items-center justify-between">
             <button
-              className="bg-primary text-contrast rounded py-2 px-4 focus:shadow-outline block w-full"
+              className="bg-black text-white rounded py-2 px-4 focus:shadow-outline block w-full"
               type="submit"
               disabled={!!(nativePasswordError || nativeEmailError)}
             >

@@ -101,7 +101,7 @@ export function ProductCard({
             </Text>
           </div>
           <div className="grid gap px-2">
-            <h3 className="w-full overflow-hidden whitespace-nowrap text-ellipsis font-bold text-[0.72rem] font-sans">
+            <h3 className="w-full overflow-hidden whitespace-nowrap text-ellipsis font-bold text-[80%] font-sans">
               {product.title}
             </h3>
             <div className="flex gap-4 ">
