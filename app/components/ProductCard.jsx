@@ -70,7 +70,7 @@ export function ProductCard({
             )}
             {backImage && (
               <Image
-                className="object-contain hover:opacity-100 transition duration-100 z-2 absolute top-0 left-0"
+                className="object-contain hover:opacity-100 transition duration-100 z-30 absolute top-0 left-0 opacity-0"
                 sizes="(min-width: 64em) 25vw, (min-width: 48em) 30vw, 45vw"
                 aspectRatio="4/5"
                 data={backImage}
@@ -80,7 +80,7 @@ export function ProductCard({
             )}
             {backVideo && (
               <Video
-                className="object-cover w-full h-full transition duration-100 z-0 aspect-[4/5] absolute top-0 left-0 border-2 border-white"
+                className="object-cover w-full h-full transition duration-100 z-30 aspect-[4/5] absolute top-0 left-0 border-2 border-white hover:opacity-100 opacity-0"
                 data={backVideo}
                 alt={image.altText || `Picture of ${product.title}`}
                 loading={loading}
