@@ -13,11 +13,11 @@ export function Text({
   ...props
 }) {
   const colors = {
-    default: 'text-white',
+    default: 'text-black',
     primary: 'text-black',
     subtle: 'text-primary/50',
     notice: 'text-notice',
-    contrast: 'text-white',
+    contrast: 'text-black',
   };
 
   const sizes = {
