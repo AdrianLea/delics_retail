@@ -275,7 +275,7 @@ function CartLineQuantityAdjust({line}) {
           <button
             name="decrease-quantity"
             aria-label="Decrease quantity"
-            className="w-10 h-10 transition text-primary/50 hover:text-primary disabled:text-primary/10"
+            className="w-10 h-10 transition text-black/50 hover:text-black disabled:text-black/10"
             value={prevQuantity}
             disabled={quantity <= 1}
           >
@@ -289,7 +289,7 @@ function CartLineQuantityAdjust({line}) {
 
         <UpdateCartButton lines={[{id: lineId, quantity: nextQuantity}]}>
           <button
-            className="w-10 h-10 transition text-primary/50 hover:text-primary"
+            className="w-10 h-10 transition text-black/50 hover:text-black"
             name="increase-quantity"
             value={nextQuantity}
             aria-label="Increase quantity"
