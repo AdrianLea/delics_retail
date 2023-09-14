@@ -110,7 +110,7 @@ function Account({customer, heading, featuredData}) {
     <>
       <PageHeader heading={heading}>
         <Form method="post" action={usePrefixPathWithLocale('/account/logout')}>
-          <button type="submit" className="text-primary/50">
+          <button type="submit" className="text-black">
             Sign out
           </button>
         </Form>

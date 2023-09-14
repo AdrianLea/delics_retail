@@ -96,7 +96,7 @@ export default function Login() {
         >
           {actionData?.formError && (
             <div className="flex items-center justify-center mb-6 bg-zinc-500">
-              <p className="m-4 text-s text-contrast">{actionData.formError}</p>
+              <p className="m-4 text-s text-white">{actionData.formError}</p>
             </div>
           )}
           <div>
@@ -162,7 +162,7 @@ export default function Login() {
           </div>
           <div className="flex items-center justify-between">
             <button
-              className="bg-primary text-contrast rounded py-2 px-4 focus:shadow-outline block w-full"
+              className="bg-black text-white rounded py-2 px-4 focus:shadow-outline block w-full"
               type="submit"
               disabled={!!(nativePasswordError || nativeEmailError)}
             >
@@ -177,7 +177,7 @@ export default function Login() {
               </Link>
             </p>
             <Link
-              className="mt-6 inline-block align-baseline text-sm text-primary/50"
+              className="mt-6 inline-block align-baseline text-sm text-white/50"
               to="/account/recover"
             >
               Forgot password
