@@ -17,7 +17,7 @@ export async function loader({context, params}) {
   }
 
   // TODO: Query for this?
-  return json({shopName: 'Delics'});
+  return json({shopName: 'Hydrogen'});
 }
 
 const badRequest = (data) => json(data, {status: 400});
@@ -171,7 +171,7 @@ export default function Login() {
           </div>
           <div className="flex justify-between items-center mt-8 border-t border-gray-300">
             <p className="align-baseline text-sm mt-6">
-              New to {shopName}? &nbsp;
+              New to Delics? &nbsp;
               <Link className="inline underline" to="/account/register">
                 Create an account
               </Link>

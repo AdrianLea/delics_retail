@@ -126,7 +126,7 @@ export function MenuDrawer({isOpen, onClose, menu}) {
 
 function MenuMobileNav({menu, onClose}) {
   return (
-    <nav className="grid gap-4 p-6 sm:gap-6 sm:px-12 sm:py-8">
+    <nav className="grid gap-4 p-6 sm:gap-6 sm:px-12 sm:py-8 bg-white">
       {/* Top level menu items */}
       {(menu?.items || []).map((item) => (
         <span key={item.id} className="block">
@@ -322,13 +322,13 @@ function CartCount({isHome, openCart}) {
   const [root] = useMatches();
 
   return (
-    <Suspense fallback={<Badge count={0} dark={isHome} openCart={openCart} />}>
+    <Suspense fallback={<Badge count={0} openCart={openCart} />}>
       <Await resolve={root.data?.cart}>
         {(cart) => (
           <Badge
-            dark={isHome}
             openCart={openCart}
             count={cart?.totalQuantity || 0}
+            dark={isHome}
           />
         )}
       </Await>
@@ -338,23 +338,21 @@ function CartCount({isHome, openCart}) {
 
 function Badge({openCart, dark, count}) {
   const isHydrated = useIsHydrated();
-
+  const {y} = useWindowScroll();
   const BadgeCounter = useMemo(
     () => (
       <>
         <IconBag />
         <div
           className={`${
-            dark
-              ? 'text-primary bg-contrast dark:text-contrast dark:bg-primary'
-              : 'text-contrast bg-primary'
-          } absolute bottom-1 right-1 text-[0.625rem] font-medium subpixel-antialiased h-3 min-w-[0.75rem] flex items-center justify-center leading-none text-center rounded-full w-auto px-[0.125rem] pb-px`}
+            dark && y < 10 ? 'text-black bg-white' : 'text-white bg-black'
+          } transition duration-300 absolute bottom-1 right-1 text-[0.625rem] font-medium subpixel-antialiased h-3 min-w-[0.75rem] flex items-center justify-center leading-none text-center rounded-full w-auto px-[0.125rem] pb-px`}
         >
           <span>{count || 0}</span>
         </div>
       </>
     ),
-    [count, dark],
+    [count, y, dark],
   );
 
   return isHydrated ? (
