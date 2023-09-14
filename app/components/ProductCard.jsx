@@ -80,7 +80,7 @@ export function ProductCard({
             )}
             {backVideo && (
               <Video
-                className="object-cover transition duration-100 z-0 aspect-[4/5] absolute top-0 left-0 border-2 border-white"
+                className="object-cover w-full h-full transition duration-100 z-0 aspect-[4/5] absolute top-0 left-0 border-2 border-white"
                 data={backVideo}
                 alt={image.altText || `Picture of ${product.title}`}
                 loading={loading}
