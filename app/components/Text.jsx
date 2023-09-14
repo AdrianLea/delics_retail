@@ -13,7 +13,7 @@ export function Text({
   ...props
 }) {
   const colors = {
-    default: 'text-black',
+    default: 'text-white',
     primary: 'text-black',
     subtle: 'text-primary/50',
     notice: 'text-notice',

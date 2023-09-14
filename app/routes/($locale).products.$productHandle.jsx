@@ -254,7 +254,7 @@ export function ProductForm({variants}) {
                             <Listbox.Button
                               ref={closeRef}
                               className={clsx(
-                                'flex items-center justify-between w-full py-3 px-4 border border-primary',
+                                'flex items-center justify-between w-full py-3 px-4 border border-black',
                                 open
                                   ? 'rounded-b md:rounded-t md:rounded-b-none'
                                   : 'rounded',
@@ -265,7 +265,7 @@ export function ProductForm({variants}) {
                             </Listbox.Button>
                             <Listbox.Options
                               className={clsx(
-                                'border-primary bg-contrast absolute bottom-12 z-30 grid h-48 w-full overflow-y-scroll rounded-t border px-2 py-2 transition-[max-height] duration-150 sm:bottom-auto md:rounded-b md:rounded-t-none md:border-t-0 md:border-b',
+                                'border-black bg-gray-50 absolute bottom-12 z-30 grid h-48 w-full overflow-y-scroll rounded-t border px-2 py-2 transition-[max-height] duration-150 sm:bottom-auto md:rounded-b md:rounded-t-none md:border-t-0 md:border-b',
                                 open ? 'max-h-48' : 'max-h-0',
                               )}
                             >
@@ -280,8 +280,8 @@ export function ProductForm({variants}) {
                                       <Link
                                         to={to}
                                         className={clsx(
-                                          'text-primary w-full p-2 transition rounded flex justify-start items-center text-left cursor-pointer',
-                                          active && 'bg-primary/10',
+                                          'text-black w-full p-2 transition rounded flex justify-start items-center text-left cursor-pointer',
+                                          active && 'bg-white/10',
                                         )}
                                         onClick={() => {
                                           if (!closeRef?.current) return;
@@ -313,7 +313,7 @@ export function ProductForm({variants}) {
                         replace
                         className={clsx(
                           'leading-none py-1 border-b-[1.5px] cursor-pointer transition-all duration-200',
-                          isActive ? 'border-primary/50' : 'border-primary/0',
+                          isActive ? 'border-black/50' : 'border-black/0',
                           isAvailable ? 'opacity-100' : 'opacity-50',
                         )}
                       >
@@ -411,7 +411,7 @@ function ProductDetail({title, content, learnMore, defaultOpen}) {
             {learnMore && (
               <div className="">
                 <Link
-                  className="pb-px border-b border-primary/30 text-primary/50"
+                  className="pb-px border-b border-black/30 text-white/50"
                   to={learnMore}
                 >
                   Learn more

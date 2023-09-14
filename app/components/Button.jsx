@@ -22,7 +22,7 @@ export const Button = forwardRef(
 
     const variants = {
       primary: `${baseButtonClasses} bg-black text-white`,
-      secondary: `${baseButtonClasses} border border-primary/10 bg-contrast text-primary`,
+      secondary: `${baseButtonClasses} border border-black/10 bg-white text-black`,
       inline: 'border-b border-primary/10 leading-none pb-1',
     };
 
