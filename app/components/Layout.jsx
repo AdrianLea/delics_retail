@@ -247,6 +247,7 @@ function DesktopHeader({isHome, menu, openCart, layout}) {
             {layout.shop?.brand?.logo && (
               <Image
                 className=" object-cover h-12"
+                height={48}
                 src={layout.shop.brand.logo.image.url}
                 alt="Delics"
                 aspectRatio="2/1"
