@@ -240,7 +240,7 @@ function DesktopHeader({isHome, menu, openCart, layout}) {
         <div className="flex items-center justify-between w-full">
           <div className="flex w-[200px] h-[80px] grow items-center basis-0"></div>
           <Link
-            className="font-bold flex justify-center items-center h-10 "
+            className="font-bold flex justify-center items-center h-12 "
             to="/"
             prefetch="intent"
           >

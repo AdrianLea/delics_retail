@@ -181,18 +181,7 @@ export default function Collection() {
 }
 
 const COLLECTION_QUERY = `#graphql
-  query CollectionDetails(
-    $handle: String!
-    $country: CountryCode
-    $language: LanguageCode
-    $filters: [ProductFilter!]
-    $sortKey: ProductCollectionSortKeys!
-    $reverse: Boolean
-    $first: Int
-    $last: Int
-    $startCursor: String
-    $endCursor: String
-  ) @inContext(country: $country, language: $language) {
+  query CollectionDetails($handle: String!, $country: CountryCode, $language: LanguageCode, $filters: [ProductFilter!], $sortKey: ProductCollectionSortKeys!, $reverse: Boolean, $first: Int, $last: Int, $startCursor: String, $endCursor: String) @inContext(country: $country, language: $language) {
     collection(handle: $handle) {
       id
       handle
@@ -210,12 +199,12 @@ const COLLECTION_QUERY = `#graphql
         altText
       }
       products(
-        first: $first,
-        last: $last,
-        before: $startCursor,
-        after: $endCursor,
-        filters: $filters,
-        sortKey: $sortKey,
+        first: $first
+        last: $last
+        before: $startCursor
+        after: $endCursor
+        filters: $filters
+        sortKey: $sortKey
         reverse: $reverse
       ) {
         filters {
@@ -237,6 +226,16 @@ const COLLECTION_QUERY = `#graphql
           hasNextPage
           hasNextPage
           endCursor
+        }
+      }
+      metafields(identifiers: {key: "collectionspageimage", namespace: "custom"}) {
+        reference {
+          ... on MediaImage {
+            id
+            image {
+              url
+            }
+          }
         }
       }
     }
