@@ -204,10 +204,10 @@ function MobileHeader({layout, isHome, openCart, openMenu}) {
         to="/"
       >
         <Image
-          className=" w-auto h-[90px] object-contain"
+          className=" w-auto h-[30px] object-contain"
           src={layout.shop.brand.logo.image.url}
           alt="Delics"
-          aspectRatio="1"
+          aspectRatio="3/1"
         ></Image>
       </Link>
 
@@ -240,17 +240,16 @@ function DesktopHeader({isHome, menu, openCart, layout}) {
         <div className="flex items-center justify-between w-full">
           <div className="flex w-[200px] h-[80px] grow items-center basis-0"></div>
           <Link
-            className="font-bold flex justify-center items-center h-12 "
+            className="font-bold flex justify-center items-center h-10"
             to="/"
             prefetch="intent"
           >
             {layout.shop?.brand?.logo && (
               <Image
-                className=" object-cover h-12"
-                height={48}
+                className=" h-10 object-contain"
                 src={layout.shop.brand.logo.image.url}
                 alt="Delics"
-                aspectRatio="2/1"
+                aspectRatio="3/1"
               ></Image>
             )}
           </Link>
