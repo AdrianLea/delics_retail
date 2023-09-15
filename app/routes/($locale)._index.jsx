@@ -81,11 +81,11 @@ export default function Homepage() {
       )}
       <div className="w-full h-screen bg-gray-100"></div>
       <section
-        className={`flex flex-row w-full flex-wrap items-center justify-center p-5 bg-gray-100 border-b border-gray-300`}
+        className={`flex flex-row w-full flex-wrap items-center justify-center p-2 bg-gray-100 border-b border-gray-300`}
       >
-        <div className="max-w-[600px] items-center py-5">
-          <h2 className="text-center font-marker text-4xl">About Us</h2>
-          <p className="py-7 px-1 font-mono text-center">
+        <div className="max-w-[600px] items-center py-2">
+          <h2 className="text-center font-bold text-2xl">About Us</h2>
+          <p className="py-7 px-1 font-sans text-center">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
             quam ligula, porta fringilla orci at, condimentum euismod dui.
             Quisque eleifend non libero sit amet consectetur. Donec placerat

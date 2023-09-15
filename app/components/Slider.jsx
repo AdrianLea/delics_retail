@@ -22,7 +22,7 @@ function Slider({images, className, links}) {
   const onTouchStart = (e) => {
     touchEnd.current = null;
     touchStart.current = e.targetTouches[0].clientX;
-  }
+  };
 
   const onTouchMove = (e) => (touchEnd.current = e.targetTouches[0].clientX);
 
@@ -44,7 +44,6 @@ function Slider({images, className, links}) {
         currentIndex.current + 1 < urls.length ? currentIndex.current + 1 : 0,
       );
     }
-    // add your conditional logic here
   };
 
   var urls = [];
@@ -84,8 +83,12 @@ function Slider({images, className, links}) {
           reversed: i === 0 ? false : true,
           defaults: {duration: 1, delay: 0.7},
         });
-        tl.to(
+        tl.fromTo(
           slide,
+          {
+            opacity: 0,
+            display: 'block',
+          },
           {
             opacity: 1,
             display: 'block',
@@ -125,10 +128,12 @@ function Slider({images, className, links}) {
 
   const clickFunction = (index) => {
     if (index != currentIndex.current) {
-      anims.current[index].delay(0.8);
+      anims.current[currentIndex.current].progress(1);
+      anims.current[index].progress(0);
+      anims.current[index].delay(0.7);
       anims.current[currentIndex.current].delay(0);
-      anims.current[currentIndex.current].reversed(true);
-      anims.current[index].reversed(false);
+      anims.current[currentIndex.current].reversed(1);
+      anims.current[index].play(0);
       currentIndex.current = index;
       changeButton(index);
     }
@@ -175,12 +180,14 @@ function Slider({images, className, links}) {
               loading="lazy"
             ></Image>
             <div
-              className={`information-holder absolute top-[80%] left-[10%] font-mono text-lg`}
+              className={`information-holder absolute top-[80%] left-[10%] font-mono`}
               key={index}
             >
-              <h2 className={`header hidden bg-white opacity-0 py-1 px-2 w-fit`}></h2>
+              <div
+                className={`header hidden bg-white opacity-0 py-1 px-2 w-fit font-sans`}
+              ></div>
               <Link
-                className={`link hidden bg-white opacity-0 w-fit h-auto py-2 px-5 text-center font-anton font-bold text-2xl justify-center hover:bg-transparent hover:text-white hover:border text-black`}
+                className={`link hidden bg-white opacity-0 w-fit h-auto py-2 px-5 text-center font-sans font-bold text-2xl justify-center hover:bg-transparent hover:text-white hover:border text-black`}
                 key={element[4]?.id}
                 to={element[4]?.to}
                 target={element[4]?.target}
