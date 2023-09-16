@@ -30,7 +30,7 @@ export async function loader({params, context}) {
 
   const {shop} = await context.storefront.query(HOMEPAGE_SEO_QUERY);
 
-  const seo = seoPayload.home();
+  const seo = seoPayload.root();
 
   return defer({
     shop,
