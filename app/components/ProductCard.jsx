@@ -30,14 +30,21 @@ export function ProductCard({
 
   if (!firstVariant) return null;
   const {image, price, compareAtPrice} = firstVariant;
+  let soldOut = true;
+  for (let i = 0; i < cardProduct.variants.nodes.length; i++) {
+    if(cardProduct.variants.nodes[i].availableForSale){
+      soldOut = false;
+    }
+  }
 
   if (label) {
     cardLabel = label;
-  } else if (isDiscounted(price, compareAtPrice)) {
-    cardLabel = 'Sale';
-  } else if (isNewArrival(product.publishedAt)) {
+  } else if (soldOut == true) {
     cardLabel = 'SOLD OUT';
-  }
+  } else if (isDiscounted(price, compareAtPrice)) {
+    cardLabel = 'SALE';
+  };
+
 
   const productAnalytics = {
     productGid: product.id,

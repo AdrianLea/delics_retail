@@ -166,11 +166,11 @@ function collectionJsonLd({url, collection}) {
 
 function collection({collection, url}) {
   return {
-    title: collection?.seo?.title,
+    title: collection?.title,
     description: truncate(
       collection?.seo?.description ?? collection?.description ?? '',
     ),
-    titleTemplate: '%s | Collection',
+    titleTemplate: `%s | Delics Retail`,
     media: {
       type: 'image',
       url: collection?.image?.url,
@@ -208,7 +208,7 @@ function listCollections({collections, url}) {
   return {
     title: 'Collections',
     titleTemplate: '%s | Collections',
-    description: 'All hydrogen collections',
+    description: 'All Delics collections',
     url,
     jsonLd: collectionsJsonLd({collections, url}),
   };

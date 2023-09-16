@@ -40,13 +40,7 @@ export async function loader({params, context}) {
       HOMEPAGE_FEATURED_PRODUCTS_QUERY,
       {
         variables: {
-          /**
-           * Country and language properties are automatically injected
-           * into all queries. Passing them is unnecessary unless you
-           * want to override them from the following default:
-           */
-          country,
-          language,
+          first: 1,
         },
       },
     ),
@@ -105,12 +99,13 @@ export default function Homepage() {
       {featuredProducts && (
         <Suspense>
           <Await resolve={featuredProducts}>
-            {({products}) => {
-              if (!products?.nodes) return <></>;
+            {({collections}) => {
+              console.log(featuredProducts);
+              if (!collections.nodes[0].products.nodes) return <></>;
               return (
                 <ProductSwimlane
-                  products={products}
-                  title="Featured Products"
+                  products={collections.nodes[0].products}
+                  title="Shop Our Latest"
                   count={4}
                 />
               );
@@ -156,11 +151,16 @@ const HOMEPAGE_SEO_QUERY = `#graphql
 `;
 
 export const HOMEPAGE_FEATURED_PRODUCTS_QUERY = `#graphql
-  query homepageFeaturedProducts($country: CountryCode, $language: LanguageCode)
+  query homepageFeaturedProducts($country: CountryCode, $language: LanguageCode, $first: Int)
   @inContext(country: $country, language: $language) {
-    products(first: 8) {
+    collections(first: $first, sortKey: ID, reverse: true) {
       nodes {
-        ...ProductCard
+        products(first: 10) {
+          nodes {
+            id
+            ...ProductCard
+          }
+        }
       }
     }
   }
