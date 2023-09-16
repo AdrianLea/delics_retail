@@ -30,15 +30,14 @@ export function ProductCard({
 
   if (!firstVariant) return null;
   const {image, price, compareAtPrice} = firstVariant;
-  /*
-    if (label) {
-      cardLabel = label;
-    } else if (isDiscounted(price, compareAtPrice)) {
-      cardLabel = 'Sale';
-    } else if (isNewArrival(product.publishedAt)) {
-      cardLabel = 'New';
-    }
-  */
+
+  if (label) {
+    cardLabel = label;
+  } else if (isDiscounted(price, compareAtPrice)) {
+    cardLabel = 'Sale';
+  } else if (isNewArrival(product.publishedAt)) {
+    cardLabel = 'SOLD OUT';
+  }
 
   const productAnalytics = {
     productGid: product.id,
@@ -51,7 +50,7 @@ export function ProductCard({
   };
 
   return (
-    <div className="grid gap-2">
+    <div className="grid gap-2 relative">
       <Link
         onClick={onClick}
         to={`/products/${product.handle}`}
@@ -92,13 +91,9 @@ export function ProductCard({
                 playsInline={true}
               />
             )}
-            <Text
-              as="label"
-              size="fine"
-              className="absolute top-0 right-0 p-4 text-right text-notice"
-            >
-              {cardLabel}
-            </Text>
+          </div>
+          <div className="bg-black text-white font-bold font-eight rounded-sm absolute top-0 left-0 m-2 px-1 z-40">
+            <span>{cardLabel}</span>
           </div>
           <div className="grid gap px-2">
             <h3 className="w-full overflow-hidden whitespace-nowrap text-ellipsis font-bold text-[80%] font-sans">

@@ -98,15 +98,6 @@ export async function loader({params, request, context}) {
       },
     },
   );
-  console.log(
-    paginationVariables,
-    collectionHandle,
-    filters,
-    sortKey,
-    reverse,
-    context.storefront.i18n.country,
-    context.storefront.i18n.language,
-  );
 
   if (!collection) {
     throw new Response('collection', {status: 404});
