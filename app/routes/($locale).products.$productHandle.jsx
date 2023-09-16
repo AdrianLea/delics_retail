@@ -222,7 +222,7 @@ export function ProductForm({variants}) {
    */
   const selectedVariant = product.selectedVariant;
   const isOutOfStock = !selectedVariant?.availableForSale;
-
+  console.log(selectedVariant);
   const productAnalytics = {
     ...analytics.products[0],
     quantity: 1,
@@ -357,20 +357,9 @@ export function ProductForm({variants}) {
               </AddToCartButton>
             )}
             {!isOutOfStock && (
-              <BuyNow
-                lines={[
-                  {
-                    merchandiseId: selectedVariant.id,
-                    quantity: 1,
-                  },
-                ]}
-                variant="primary"
-                data-test="add-to-cart"
-                analytics={{
-                  products: [productAnalytics],
-                  totalValue: parseFloat(productAnalytics.price),
-                }}
-              />
+              <Link to={`/cart/${selectedVariant.id.replace(/[^\d]/g, '')}:1`}>
+                Buy Now
+              </Link>
             )}
           </div>
         )}

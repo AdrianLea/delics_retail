@@ -59,7 +59,7 @@ export async function action({request, context}) {
 
   const redirectTo = formData.get('redirectTo') ?? null;
   let carturl = await cart.get();
-  if (redirectTo === "true") {
+  if (redirectTo === 'true') {
     status = 303;
     headers.set('Location', carturl.checkoutUrl);
   }
