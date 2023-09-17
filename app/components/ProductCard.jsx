@@ -31,9 +31,13 @@ export function ProductCard({
   if (!firstVariant) return null;
   const {image, price, compareAtPrice} = firstVariant;
   let soldOut = true;
+  let preorder = false;
   for (let i = 0; i < cardProduct.variants.nodes.length; i++) {
     if(cardProduct.variants.nodes[i].availableForSale){
       soldOut = false;
+      if(cardProduct.variants.nodes[i].currentlyNotInStock){
+        preorder= true;
+      }
     }
   }
 
@@ -43,7 +47,9 @@ export function ProductCard({
     cardLabel = 'SOLD OUT';
   } else if (isDiscounted(price, compareAtPrice)) {
     cardLabel = 'SALE';
-  };
+  } else if (preorder == true) {
+    cardLabel ='PREODER NOW'
+  }
 
 
   const productAnalytics = {

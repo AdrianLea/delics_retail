@@ -70,6 +70,7 @@ export const PRODUCT_CARD_FRAGMENT = `#graphql
           handle
           title
         }
+        currentlyNotInStock
       }
     }
     metafields(identifiers: [{namespace: "custom", key: "backmedia"}]) {

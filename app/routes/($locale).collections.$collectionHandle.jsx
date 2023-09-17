@@ -26,7 +26,7 @@ export const headers = routeHeaders;
 
 export async function loader({params, request, context}) {
   const paginationVariables = getPaginationVariables(request, {
-    pageBy: 250,
+    pageBy: 20,
   });
   const {collectionHandle} = params;
 

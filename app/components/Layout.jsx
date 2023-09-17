@@ -3,6 +3,7 @@ import {useWindowScroll} from 'react-use';
 import {Disclosure} from '@headlessui/react';
 import {Suspense, useEffect, useMemo} from 'react';
 import {Image, CartForm} from '@shopify/hydrogen';
+import {Loading} from '~/components/Loading';
 import {
   Drawer,
   useDrawer,
@@ -135,7 +136,9 @@ function MenuMobileNav({menu, onClose}) {
             target={item.target}
             onClick={onClose}
             className={({isActive}) =>
-              isActive ? 'pb-1 border-b -mb-px' : 'pb-1'
+              isActive
+                ? 'pb-1 border-b -mb-px font-intrepid'
+                : 'pb-1 font-intrepid'
             }
           >
             <Text as="span" size="copy">
@@ -291,7 +294,7 @@ function DesktopHeader({isHome, menu, openCart, layout}) {
                   to={item.to}
                   target={item.target}
                   prefetch="intent"
-                  className=" font-eight text-[1rem] font-bold "
+                  className=" font-intrepid text-[1rem] font-bold "
                 >
                   {item.title}
                 </Link>

@@ -49,6 +49,7 @@ export default {
         makro: ['Makro'],
         eight: ['EightOne'],
         inclusiveSans: ['InclusiveSans'],
+        intrepid: ['intrepid'],
       },
       fontSize: {
         display: ['var(--font-size-display)', '1.1'],

@@ -15,6 +15,18 @@
   src: url('./fonts/InclusiveSans-Regular.ttf') format('truetype');
 }
 @font-face {
+  font-family: 'intrepid';
+  font-display: swap;
+  font-style: normal;
+  src: url('./fonts/intrepid.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'InclusiveSans';
+  font-display: swap;
+  font-style: normal;
+  src: url('./fonts/InclusiveSans-Regular.ttf') format('truetype');
+}
+@font-face {
   font-family: 'IBMPlexSerif';
   font-display: swap;
   font-weight: 400;
