@@ -230,7 +230,7 @@ const COLLECTION_QUERY = `#graphql
         }
       }
     }
-    collections(first: 100) {
+    collections(first: 15) {
       edges {
         node {
           title
