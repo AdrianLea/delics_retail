@@ -44,7 +44,7 @@ export const PRODUCT_CARD_FRAGMENT = `#graphql
     publishedAt
     handle
     vendor
-    variants(first: 150) {
+    variants(first: 20) {
       nodes {
         id
         availableForSale
