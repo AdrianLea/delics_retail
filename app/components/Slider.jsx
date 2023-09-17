@@ -87,7 +87,7 @@ function Slider({images, className, links}) {
           slide,
           {
             opacity: 0,
-            display: 'block',
+            display: 'none',
           },
           {
             opacity: 1,
@@ -184,7 +184,7 @@ function Slider({images, className, links}) {
               key={index}
             >
               <div
-                className={`header hidden bg-white opacity-0 py-1 px-2 w-fit font-sans`}
+                className={`header hidden font-bold opacity-0 py-1 px-2 w-fit font-inclusiveSans bg-white`}
               ></div>
               <Link
                 className={`link hidden bg-white opacity-0 w-fit h-auto py-2 px-5 text-center font-sans font-bold text-2xl justify-center hover:bg-transparent hover:text-white hover:border text-black`}

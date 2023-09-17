@@ -48,6 +48,7 @@ export default {
         tangerine: ['Tangerine'],
         makro: ['Makro'],
         eight: ['EightOne'],
+        inclusiveSans: ['InclusiveSans'],
       },
       fontSize: {
         display: ['var(--font-size-display)', '1.1'],

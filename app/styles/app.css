@@ -52,6 +52,12 @@
   font-style: normal;
   src: url('./fonts/Eight-One.ttf') format('truetype');
 }
+@font-face {
+  font-family: 'InclusiveSans';
+  font-display: swap;
+  font-style: normal;
+  src: url('./fonts/InclusiveSans-Regular.ttf') format('truetype');
+}
 body {
   background-color: white;
 }
