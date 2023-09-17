@@ -118,7 +118,7 @@ export default function Homepage() {
 
 const HOMEPAGE_SLIDER_QUERY = `query heroimagesquery {
   collections(
-    first: 20
+    first: 15
   ) {
     nodes {
       metafields(

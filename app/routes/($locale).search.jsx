@@ -137,30 +137,6 @@ function NoResults({noResults, recommendations}) {
           </Text>
         </Section>
       )}
-      <Suspense>
-        <Await
-          errorElement="There was a problem loading related products"
-          resolve={recommendations}
-        >
-          {(result) => {
-            if (!result) return null;
-            const {featuredCollections, featuredProducts} = result;
-
-            return (
-              <>
-                <FeaturedCollections
-                  title="Trending Collections"
-                  collections={featuredCollections}
-                />
-                <ProductSwimlane
-                  title="Trending Products"
-                  products={featuredProducts}
-                />
-              </>
-            );
-          }}
-        </Await>
-      </Suspense>
     </>
   );
 }
