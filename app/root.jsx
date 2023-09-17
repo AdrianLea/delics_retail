@@ -83,7 +83,6 @@ export default function App() {
   const data = useLoaderData();
   const locale = data.selectedLocale ?? DEFAULT_LOCALE;
   const hasUserConsent = true;
-  console.log(locale.country, locale.language);
   useAnalytics(hasUserConsent);
   return (
     <html lang={locale.language}>

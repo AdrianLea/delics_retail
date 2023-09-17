@@ -100,7 +100,6 @@ export default function Homepage() {
         <Suspense>
           <Await resolve={featuredProducts}>
             {({collections}) => {
-              console.log(featuredProducts);
               if (!collections.nodes[0].products.nodes) return <></>;
               return (
                 <ProductSwimlane

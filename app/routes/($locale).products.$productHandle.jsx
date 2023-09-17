@@ -222,7 +222,6 @@ export function ProductForm({variants}) {
    */
   const selectedVariant = product.selectedVariant;
   const isOutOfStock = !selectedVariant?.availableForSale;
-  console.log(selectedVariant);
   const productAnalytics = {
     ...analytics.products[0],
     quantity: 1,
