@@ -2,50 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
-@font-face {
-  font-family: 'Sacco';
-  font-display: swap;
-  font-weight: bold;
-  font-style: italic;
-  src: url('./fonts/Sacco-SemBdCondObliq.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'PermanentMarker';
-  font-display: swap;
-  font-weight: bold;
-  font-style: normal;
-  src: url('./fonts/PermanentMarker-Regular.ttf') format('truetype');
-}
-@font-face {
-  font-family: 'Anton';
-  font-display: swap;
-  font-weight: bold;
-  font-style: normal;
-  src: url('./fonts/Anton-Regular.ttf') format('truetype');
-}
-@font-face {
-  font-family: 'Caveat';
-  font-display: swap;
-  font-weight: bold;
-  font-style: normal;
-  src: url('./fonts/Caveat-VariableFont_wght.ttf') format('truetype');
-}
-@font-face {
-  font-family: 'Tangerine';
-  font-display: swap;
-  font-weight: bold;
-  font-style: normal;
-  src: url('./fonts/Tangerine-Regular.ttf') format('truetype');
-}
-@font-face {
-  font-family: 'Makro';
-  font-display: swap;
-  font-weight: bold;
-  font-style: normal;
-  src: url('./fonts/MakroXM-ExtraBold.ttf') format('truetype');
-}
 @font-face {
   font-family: 'EightOne';
   font-display: swap;
