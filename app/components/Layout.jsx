@@ -138,7 +138,7 @@ function MenuMobileNav({menu, onClose}) {
             className={({isActive}) =>
               isActive
                 ? 'pb-1 border-b -mb-px font-intrepid'
-                : 'pb-1 font-intrepid'
+                : 'pb-1 font-nimbus'
             }
           >
             <Text as="span" size="copy">
@@ -294,7 +294,7 @@ function DesktopHeader({isHome, menu, openCart, layout}) {
                   to={item.to}
                   target={item.target}
                   prefetch="intent"
-                  className=" font-intrepid text-[1rem] font-bold "
+                  className=" font-nimubs text-[1rem] font-bold "
                 >
                   {item.title}
                 </Link>

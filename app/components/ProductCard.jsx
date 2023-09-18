@@ -105,7 +105,7 @@ export function ProductCard({
               />
             )}
           </div>
-          <div className="bg-black text-white font-bold font-eight rounded-sm absolute top-0 left-0 m-2 px-1 z-40">
+          <div className="bg-black text-white font-bold font-nimubs rounded-sm absolute top-0 left-0 m-2 px-1 z-[35]">
             <span>{cardLabel}</span>
           </div>
           <div className="grid gap px-2">

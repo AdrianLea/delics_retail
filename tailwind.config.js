@@ -50,6 +50,7 @@ export default {
         eight: ['EightOne'],
         inclusiveSans: ['InclusiveSans'],
         intrepid: ['intrepid'],
+        nimubs: ['nimbus']
       },
       fontSize: {
         display: ['var(--font-size-display)', '1.1'],

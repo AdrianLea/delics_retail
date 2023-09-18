@@ -39,6 +39,13 @@
   font-style: italic;
   src: url('./fonts/IBMPlexSerif-TextItalic.woff2') format('woff2');
 }
+@font-face {
+  font-family: 'nimbus';
+  font-display: swap;
+  font-weight: 400;
+  font-style: normal;
+  src: url('./fonts/NimbusSansDOT-UltrLigh.otf') format('opentype');
+}
 body {
   background-color: white;
 }
