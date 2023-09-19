@@ -83,16 +83,12 @@ export default function Homepage() {
         <div className="max-w-[600px] items-center py-2">
           <h2 className="text-center font-bold text-2xl">About Us</h2>
           <p className="py-7 px-1 font-sans text-center">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-            quam ligula, porta fringilla orci at, condimentum euismod dui.
-            Quisque eleifend non libero sit amet consectetur. Donec placerat
-            erat eu nulla cursus aliquet. Integer in volutpat mauris. Vivamus
-            gravida tincidunt sapien, et viverra est ultrices et. In hac
-            habitasse platea dictumst. Vestibulum posuere ac quam quis
-            imperdiet. Nam condimentum sodales porttitor. Quisque lectus lorem,
-            pulvinar quis enim eu, blandit tempus ante. Aenean nec ullamcorper
-            enim. Vivamus iaculis nibh in sapien vulputate mollis. Nam risus
-            ante, lobortis eu tellus vel, ultrices ultrices urna.
+            DEL’CS WORLD is a female-owned Malaysian brand launched in February
+            2023. We started as a low-key curated thrift store at our little
+            retail space DEL’CS RETAIL in Taman Paramount in 2020. Since then,
+            the community around DEL’CS has grown tremendously, which cultivated
+            our love to serve you guys the most fashionable pieces with the
+            utmost quality.
           </p>
         </div>
       </section>
