@@ -48,7 +48,7 @@ export function ProductCard({
   } else if (isDiscounted(price, compareAtPrice)) {
     cardLabel = 'SALE';
   } else if (preorder == true) {
-    cardLabel ='PREODER NOW'
+    cardLabel ='PREORDER NOW'
   }
 
 
