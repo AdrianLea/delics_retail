@@ -73,7 +73,7 @@ export function ProductCard({
           <div className="aspect-[4/5] bg-primary/5 min-h-full relative border border-gray-100 border-b-0">
             {image && (
               <Image
-                className="object-cover opacity-100 hover:opacity-0 transition duration-100 z-20 absolute top-0 left-0"
+                className="object-cover opacity-100 hover:opacity-0 transition duration-100 z-20 absolute top-0 left-0 w-full h-full"
                 sizes="(min-width: 64em) 25vw, (min-width: 48em) 30vw, 45vw"
                 aspectRatio="4/5"
                 data={image}
@@ -83,7 +83,7 @@ export function ProductCard({
             )}
             {backImage && (
               <Image
-                className="object-contain hover:opacity-100 transition duration-100 z-30 absolute top-0 left-0 opacity-0"
+                className="object-contain hover:opacity-100 transition duration-100 z-30 absolute top-0 left-0 opacity-0 w-full h-full"
                 sizes="(min-width: 64em) 25vw, (min-width: 48em) 30vw, 45vw"
                 aspectRatio="4/5"
                 data={backImage}
