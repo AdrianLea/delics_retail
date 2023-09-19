@@ -165,17 +165,6 @@ shop-pay-button {
     li {
       @apply mb-4 text-lg;
     }
-    img {
-      @apply md:-mx-8 lg:-mx-16;
-
-      @media (min-width: 48em) {
-        width: calc(100% + 4rem);
-        max-width: 100vw;
-      }
-      @media (min-width: 64em) {
-        width: calc(100% + 8rem);
-      }
-    }
   }
 
   .swimlane {
@@ -213,17 +202,6 @@ shop-pay-button {
       transform: translateY(-50%);
       background: rgb(var(--color-primary));
       box-shadow: 0.5px 0.5px 0px 0.5px rgb(var(--color-contrast));
-    }
-  }
-
-  .card-image {
-    @apply relative flex items-center justify-center overflow-clip;
-    &::before {
-      content: ' ';
-      @apply absolute top-0 left-0 z-10 block h-full w-full rounded shadow-border;
-    }
-    img {
-      @apply aspect-[inherit] w-full object-cover;
     }
   }
 }
