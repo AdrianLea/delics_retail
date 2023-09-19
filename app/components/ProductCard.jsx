@@ -70,7 +70,7 @@ export function ProductCard({
         prefetch="intent"
       >
         <div className={clsx('grid gap-4', className)}>
-          <div className="aspect-[4/5] bg-primary/5 h-auto w-full relative border border-gray-100 border-b-0">
+          <div className="aspect-[4/5] bg-primary/5 h-auto w-full relative border border-gray-100">
             {image && (
               <Image
                 className="object-cover opacity-100 hover:opacity-0 transition-opacity duration-100 z-20 absolute top-0 left-0 w-full"
