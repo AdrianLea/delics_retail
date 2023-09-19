@@ -74,7 +74,6 @@ export function ProductCard({
             {image && (
               <Image
                 className="object-cover opacity-100 hover:opacity-0 transition duration-100 z-20 absolute top-0 left-0 w-full h-full"
-                sizes="(min-width: 64em) 25vw, (min-width: 48em) 30vw, 45vw"
                 aspectRatio="4/5"
                 data={image}
                 alt={image.altText || `Picture of ${product.title}`}
@@ -83,8 +82,7 @@ export function ProductCard({
             )}
             {backImage && (
               <Image
-                className="object-contain hover:opacity-100 transition duration-100 z-30 absolute top-0 left-0 opacity-0 w-full h-full"
-                sizes="(min-width: 64em) 25vw, (min-width: 48em) 30vw, 45vw"
+                className="object-cover hover:opacity-100 transition duration-100 z-30 absolute top-0 left-0 opacity-0 w-full h-full"
                 aspectRatio="4/5"
                 data={backImage}
                 alt={image.altText || `Picture of ${product.title}`}
