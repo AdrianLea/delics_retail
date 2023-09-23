@@ -23,7 +23,7 @@ export function SortFilter({
         <button
           onClick={() => setIsOpen(!isOpen)}
           className={
-            'relative flex items-center justify-center w-8 h-8 focus:ring-primary/5'
+            'relative flex items-center justify-center w-8 h-8 focus:ring-white/5'
           }
         >
           <IconFilters />
@@ -56,7 +56,7 @@ export function FiltersDrawer({filters = [], appliedFilters = []}) {
 
   const filterMarkup = (filter, option) => {
     switch (filter.type) {
-      case 'PRICE_RANGE':
+      case 'gitCE_RANGE':
         const min =
           params.has('minPrice') && !isNaN(Number(params.get('minPrice')))
             ? Number(params.get('minPrice'))
@@ -318,7 +318,7 @@ export default function SortMenu() {
 
       <Menu.Items
         as="nav"
-        className="absolute right-0 flex flex-col p-4 text-right rounded-sm bg-contrast"
+        className="absolute right-0 flex flex-col p-4 text-right rounded-sm bg-white"
       >
         {items.map((item) => (
           <Menu.Item key={item.label}>
