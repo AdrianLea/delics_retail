@@ -56,7 +56,7 @@ export function FiltersDrawer({filters = [], appliedFilters = []}) {
 
   const filterMarkup = (filter, option) => {
     switch (filter.type) {
-      case 'gitCE_RANGE':
+      case 'PRICE_RANGE':
         const min =
           params.has('minPrice') && !isNaN(Number(params.get('minPrice')))
             ? Number(params.get('minPrice'))
@@ -318,7 +318,7 @@ export default function SortMenu() {
 
       <Menu.Items
         as="nav"
-        className="absolute right-0 flex flex-col p-4 text-right rounded-sm bg-white"
+        className="absolute right-0 flex flex-col p-4 text-right rounded-sm bg-gray-400"
       >
         {items.map((item) => (
           <Menu.Item key={item.label}>
