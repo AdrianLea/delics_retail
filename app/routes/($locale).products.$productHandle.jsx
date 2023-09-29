@@ -356,7 +356,12 @@ export function ProductForm({variants}) {
               </AddToCartButton>
             )}
             {!isOutOfStock && (
-              <Link to={`/cart/${selectedVariant.id.replace(/[^\d]/g, '')}:1`} className={'w-full inline-block rounded font-medium text-center py-3 px-6 bg-black text-white'}>
+              <Link
+                to={`/cart/${selectedVariant.id.replace(/[^\d]/g, '')}:1`}
+                className={
+                  'w-full inline-block rounded font-medium text-center py-3 px-6 bg-black text-white'
+                }
+              >
                 Buy Now
               </Link>
             )}

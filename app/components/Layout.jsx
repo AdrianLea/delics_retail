@@ -41,6 +41,7 @@ export function Layout({children, layout}) {
             Skip to content
           </a>
         </div>
+        <Loading />
         {headerMenu && (
           <Header title={layout.shop.name} menu={headerMenu} layout={layout} />
         )}
