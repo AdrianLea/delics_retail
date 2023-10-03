@@ -3,9 +3,7 @@ import {Image} from '@shopify/hydrogen';
 import {gsap} from 'gsap';
 import {TextPlugin} from 'gsap/TextPlugin';
 
-
-
-import {Text, Link} from '~/components';
+import {Link} from '~/components';
 
 function Slider({images, className, links}) {
   const currentIndex = useRef(0);
@@ -55,7 +53,7 @@ function Slider({images, className, links}) {
       let node = images.collections.nodes[i];
       let heldindex = null;
       for (let x = 0; x < links.length; x++) {
-        if (links[x].title.trim() === node.title.trim()) {
+        if (links[x].title === node.title) {
           heldindex = x;
           break;
         }
@@ -113,7 +111,7 @@ function Slider({images, className, links}) {
           button[i],
           {
             opacity: 1,
-            y: -20,
+            y: -30,
             display: 'block',
             duration: 0.6,
           },
@@ -180,14 +178,14 @@ function Slider({images, className, links}) {
               loading="lazy"
             ></Image>
             <div
-              className={`information-holder absolute top-[80%] left-[10%] font-mono`}
+              className={`information-holder absolute -translate-y-[50%] top-[50%] md:translate-y-0 md:top-[80%] md:left-[10%] font-mono left-[50%] -translate-x-[50%] md:translate-x-0 w-full`}
               key={index}
             >
               <div
-                className={`header hidden font-bold opacity-0 py-1 px-2 w-fit font-inclusiveSans bg-white`}
+                className={`header hidden font-bold opacity-0 px-2 w-fit font-inclusiveSans md:text-xl text-white bg-none m-auto md:m-0 text-[1.7rem] text-center md:normal-case uppercase`}
               ></div>
               <Link
-                className={`link hidden bg-white opacity-0 w-fit h-auto py-2 px-5 text-center font-sans font-bold text-2xl justify-center hover:bg-transparent hover:text-white hover:border text-black`}
+                className={`link hidden bg-transparent text-white md:font-bold md:text-black md:border border-b-2 border-white md:bg-pink-200 opacity-0 w-fit h-auto py-1 md:px-5 px-0 text-center font-sans md:text-2xl justify-center md:hover:bg-transparent md:hover:text-pink-200 md:hover:border md:border-pink-200 m-auto md:m-0`}
                 key={element[4]?.id}
                 to={element[4]?.to}
                 target={element[4]?.target}
@@ -201,10 +199,13 @@ function Slider({images, className, links}) {
       ))}
       <div className="flex gap-4 items-center justify-center -translate-y-[25px] w-full top-full absolute overflow-hidden ">
         {urls.map((element, index) => (
-          <button key={index} onClick={() => {
+          <button
+            key={index}
+            onClick={() => {
               clicked.current = true;
               clickFunction(index);
-            }}>
+            }}
+          >
             <svg height="12" width="12">
               <circle
                 cx="6"
