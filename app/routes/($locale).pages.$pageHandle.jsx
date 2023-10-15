@@ -32,9 +32,6 @@ export default function Page() {
 
   return (
     <>
-      <h1 className="text-xl font-sand font-bold text-center w-full py-10">
-        {page.title}
-      </h1>
       <div
         dangerouslySetInnerHTML={{__html: page.body}}
         className="prose m-auto py-5 px-3"
