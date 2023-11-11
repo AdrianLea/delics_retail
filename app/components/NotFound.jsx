@@ -3,8 +3,8 @@ import {FeaturedSection} from './FeaturedSection';
 import {PageHeader, Text} from './Text';
 
 export function NotFound({type = 'page'}) {
-  const heading = `We’ve lost this ${type}`;
-  const description = `We couldn’t find the ${type} you’re looking for. Try checking the URL or heading back to the home page.`;
+  const heading = `This ${type} is coming soon!`;
+  const description = `We couldn’t find the ${type} you’re looking for. The ${type} either does not exist or will be coming soon.`;
 
   return (
     <>
