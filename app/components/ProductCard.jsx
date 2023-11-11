@@ -76,7 +76,7 @@ export function ProductCard({
                 className="object-cover opacity-100 hover:opacity-0 transition-opacity duration-100 z-20 absolute top-0 left-0 w-full"
                 aspectRatio="4/5"
                 data={image}
-                alt={image.altText || `Picture of ${product.title}`}
+                alt={image?.altText || `Picture of ${product.title}`}
                 loading={loading}
               />
             )}
@@ -85,7 +85,7 @@ export function ProductCard({
                 className="object-cover hover:opacity-100 transition-opacity duration-100 z-30 absolute top-0 left-0 opacity-0 w-full"
                 aspectRatio="4/5"
                 data={backImage}
-                alt={image.altText || `Picture of ${product.title}`}
+                alt={image?.altText || `Picture of ${product.title}`}
                 loading={loading}
               />
             )}
@@ -93,7 +93,7 @@ export function ProductCard({
               <Video
                 className="object-cover w-full transition-opacity duration-100 z-30 aspect-[4/5] absolute top-0 left-0 border-2 border-white hover:opacity-100 opacity-0"
                 data={backVideo}
-                alt={image.altText || `Picture of ${product.title}`}
+                alt={image?.altText || `Picture of ${product.title}`}
                 loading={loading}
                 autoPlay={true}
                 muted={true}
