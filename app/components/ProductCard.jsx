@@ -1,5 +1,11 @@
 import clsx from 'clsx';
-import {flattenConnection, Image, Money, useMoney, Video} from '@shopify/hydrogen';
+import {
+  flattenConnection,
+  Image,
+  Money,
+  useMoney,
+  Video,
+} from '@shopify/hydrogen';
 
 import {Text, Link, AddToCartButton, Button} from '~/components';
 import {isDiscounted, isNewArrival} from '~/lib/utils';
@@ -48,9 +54,8 @@ export function ProductCard({
   } else if (isDiscounted(price, compareAtPrice)) {
     cardLabel = 'SALE';
   } else if (preorder == true) {
-    cardLabel ='PREORDER NOW'
+    cardLabel = 'PREORDER NOW';
   }
-
 
   const productAnalytics = {
     productGid: product.id,

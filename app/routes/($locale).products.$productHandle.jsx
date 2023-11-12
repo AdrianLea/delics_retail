@@ -35,10 +35,11 @@ export const headers = routeHeaders;
 
 export async function loader({params, request, context}) {
   const {productHandle} = params;
-  invariant(productHandle, 'Missing productHandle param, check route filename');
 
   const selectedOptions = getSelectedProductOptions(request);
-
+  if (selectedOptions.slice(-1)[0].name == 'fbclid') {
+    selectedOptions.pop();
+  }
   const {shop, product} = await context.storefront.query(PRODUCT_QUERY, {
     variables: {
       handle: productHandle,
