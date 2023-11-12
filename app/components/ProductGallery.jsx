@@ -1,18 +1,29 @@
 import {Image} from '@shopify/hydrogen';
+import { selector } from 'gsap';
 
 /**
  * A client component that defines a media gallery for hosting images, 3D models, and videos of products
  */
-export function ProductGallery({selectedVariant, media, className}) {
+export function ProductGallery({media, className, selectedVariant}) {
   if (!media.length) {
     return null;
   }
-  console.log(selectedVariant);
+
   return (
     <div
       className={`swimlane md:grid-flow-row hiddenScroll md:p-0 md:overflow-x-auto md:grid-cols-2 ${className}`}
     >
+      <div className="aspect-square snap-center card-image bg-white w-mobileGallery md:w-full md:col-span-2">
+        <Image
+          loading={'eager'}
+          data={selectedVariant.image}
+          aspectRatio={undefined}
+          sizes={'(min-width: 48em) 60vw, 90vw'}
+          className="object-cover w-full h-full aspect-square fadeIn"
+        ></Image>
+      </div>
       {media.map((med, i) => {
+        i = i+1;
         const isFirst = i === 0;
         const isFourth = i === 3;
         const isFullWidth = i % 3 === 0;
