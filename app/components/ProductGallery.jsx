@@ -3,11 +3,11 @@ import {Image} from '@shopify/hydrogen';
 /**
  * A client component that defines a media gallery for hosting images, 3D models, and videos of products
  */
-export function ProductGallery({media, className}) {
+export function ProductGallery({selectedVariant, media, className}) {
   if (!media.length) {
     return null;
   }
-
+  console.log(selectedVariant);
   return (
     <div
       className={`swimlane md:grid-flow-row hiddenScroll md:p-0 md:overflow-x-auto md:grid-cols-2 ${className}`}

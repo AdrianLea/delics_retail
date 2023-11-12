@@ -37,7 +37,7 @@ export async function loader({params, request, context}) {
   const {productHandle} = params;
 
   const selectedOptions = getSelectedProductOptions(request);
-  if (selectedOptions.slice(-1)[0].name == 'fbclid') {
+  if (selectedOptions.slice(-1)[0]?.name == 'fbclid') {
     selectedOptions.pop();
   }
   const {shop, product} = await context.storefront.query(PRODUCT_QUERY, {
@@ -133,6 +133,7 @@ export default function Product() {
       <Section className="px-0 md:px-8 lg:px-12">
         <div className="grid items-start md:gap-6 lg:gap-20 md:grid-cols-2 lg:grid-cols-3">
           <ProductGallery
+            selectedVariant={selectedVariant}
             media={media.nodes}
             className="w-full lg:col-span-2"
           />

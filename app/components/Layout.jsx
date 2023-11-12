@@ -606,7 +606,6 @@ function FooterMenu({menu}) {
   const tnclist = ["Terms & Conditions","Priavcy Policy","Refund Policy"]
   const helplist = ["Contact Us","Sustainability & Ethicality"]
   const aboutlist = ["About Us","Our Community"]
-  console.log(menu.items)
   const styles = {
     section: 'grid gap-4',
     nav: 'grid gap-2 pb-6',
