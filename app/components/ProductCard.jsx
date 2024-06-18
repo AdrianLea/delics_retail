@@ -36,6 +36,7 @@ export function ProductCard({
 
   if (!firstVariant) return null;
   const {image, price, compareAtPrice} = firstVariant;
+  console.log(firstVariant);
   let soldOut = true;
   let preorder = false;
   for (let i = 0; i < cardProduct.variants.nodes.length; i++) {
