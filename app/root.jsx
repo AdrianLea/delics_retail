@@ -94,6 +94,11 @@ export default function App() {
         <Links />
       </head>
       <body>
+        <script
+          async
+          type="text/javascript"
+          src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=Rw7fmd"
+        ></script>
         <Layout
           key={`${locale.language}-${locale.country}`}
           layout={data.layout}
