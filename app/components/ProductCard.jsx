@@ -8,7 +8,7 @@ import {
 } from '@shopify/hydrogen';
 
 import {Text, Link, AddToCartButton, Button} from '~/components';
-import {isDiscounted, isNewArrival} from '~/lib/utils';
+import {isDiscounted} from '~/lib/utils';
 import {getProductPlaceholder} from '~/lib/placeholders';
 
 export function ProductCard({
@@ -36,14 +36,13 @@ export function ProductCard({
 
   if (!firstVariant) return null;
   const {image, price, compareAtPrice} = firstVariant;
-  console.log(firstVariant);
   let soldOut = true;
   let preorder = false;
   for (let i = 0; i < cardProduct.variants.nodes.length; i++) {
-    if(cardProduct.variants.nodes[i].availableForSale){
+    if (cardProduct.variants.nodes[i].availableForSale) {
       soldOut = false;
-      if(cardProduct.variants.nodes[i].currentlyNotInStock){
-        preorder= true;
+      if (cardProduct.variants.nodes[i].currentlyNotInStock) {
+        preorder = true;
       }
     }
   }

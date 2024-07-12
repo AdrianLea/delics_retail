@@ -40,7 +40,7 @@ export function Loading() {
   useEffect(() => {
     startLoad.current.pause(0);
     if (fetcher.state == 'idle' && loadEnded.current == true) {
-      startLoad.current.pause(0)
+      startLoad.current.pause(0);
       loadEnded.current = false;
       finishLoad.current.play(0);
     } else if (fetcher.state == 'loading') {
@@ -51,7 +51,10 @@ export function Loading() {
 
   return (
     <div className="w-full h-[10px] fixed top-0 left-0 z-[100]">
-      <div ref={loaderBar} className={`text-center h-full bg-pink-300 w-0`}></div>
+      <div
+        ref={loaderBar}
+        className={`text-center h-full bg-pink-300 w-0`}
+      ></div>
     </div>
   );
 }

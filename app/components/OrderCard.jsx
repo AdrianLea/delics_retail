@@ -1,4 +1,5 @@
 import {flattenConnection, Image} from '@shopify/hydrogen';
+
 import {Heading, Text, Link} from '~/components';
 import {statusMessage} from '~/lib/utils';
 

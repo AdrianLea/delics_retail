@@ -1,5 +1,4 @@
 import {defer} from '@shopify/remix-oxygen';
-import {ShopifyProvider} from '@shopify/hydrogen-react';
 import {
   isRouteErrorResponse,
   Links,
@@ -14,7 +13,6 @@ import {
 } from '@remix-run/react';
 import {ShopifySalesChannel, Seo} from '@shopify/hydrogen';
 import invariant from 'tiny-invariant';
-import {useEffect} from 'react';
 
 import favicon from '../public/favicon.png';
 
