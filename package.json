@@ -57,5 +57,8 @@
   },
   "engines": {
     "node": ">=16.13"
+  },
+  "overrides": {
+    "@shopify/cli-kit": "^3.54.4"
   }
 }
