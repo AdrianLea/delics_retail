@@ -179,7 +179,7 @@ function MobileHeader({layout, isHome, openCart, openMenu}) {
   return (
     <header
       role="banner"
-      className="flex lg:hidden sticky top-0 flex-col z-50 h-nav"
+      className="flex lg:hidden sticky top-0 flex-col z-50 h-auto"
     >
       <div
         className={`${
