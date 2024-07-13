@@ -1,7 +1,11 @@
 import {json} from '@shopify/remix-oxygen';
 import {useLoaderData} from '@remix-run/react';
 import invariant from 'tiny-invariant';
-import {Pagination, getPaginationVariables} from '@shopify/hydrogen';
+import {
+  Pagination,
+  getPaginationVariables,
+  getSeoMeta,
+} from '@shopify/hydrogen';
 
 import {PageHeader, Section, ProductCard, Grid} from '~/components';
 import {PRODUCT_CARD_FRAGMENT} from '~/data/fragments';
@@ -50,6 +54,18 @@ export async function loader({request, context: {storefront}}) {
   });
 }
 
+export const meta = ({data, location}) => {
+  return getSeoMeta(data.seo).map((meta) => {
+    if (meta.rel === 'canonical') {
+      return {
+        ...meta,
+        href: meta.href + location.search,
+      };
+    }
+
+    return meta;
+  });
+};
 export default function AllProducts() {
   const {products} = useLoaderData();
 
@@ -105,8 +121,10 @@ const ALL_PRODUCTS_QUERY = `#graphql
       pageInfo {
         hasPreviousPage
         hasNextPage
+        hasNextPage
         startCursor
         endCursor
+
       }
     }
   }

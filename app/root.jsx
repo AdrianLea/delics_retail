@@ -11,7 +11,7 @@ import {
   useMatches,
   useRouteError,
 } from '@remix-run/react';
-import {ShopifySalesChannel, Seo} from '@shopify/hydrogen';
+import {ShopifySalesChannel, getSeoMeta} from '@shopify/hydrogen';
 import invariant from 'tiny-invariant';
 
 import favicon from '../public/favicon.png';
@@ -77,6 +77,19 @@ export async function loader({request, context}) {
   });
 }
 
+export const meta = ({data, location}) => {
+  return getSeoMeta(data.seo).map((meta) => {
+    if (meta.rel === 'canonical') {
+      return {
+        ...meta,
+        href: meta.href + location.search,
+      };
+    }
+
+    return meta;
+  });
+};
+
 export default function App() {
   const data = useLoaderData();
   const locale = data.selectedLocale ?? DEFAULT_LOCALE;
@@ -87,7 +100,6 @@ export default function App() {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <Seo />
         <Meta />
         <Links />
       </head>

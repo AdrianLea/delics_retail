@@ -22,6 +22,14 @@ import {useIsHomePath} from '~/lib/utils';
 import {useIsHydrated} from '~/hooks/useIsHydrated';
 import {useCartFetchers} from '~/hooks/useCartFetchers';
 
+export async function loader({params, context}) {
+  const {shop} = await context.storefront.query(ANNOUNCEMENT_QUERY);
+
+  return defer({
+    shop,
+  });
+}
+
 export function Layout({children, layout}) {
   const {headerMenu, footerMenu} = layout;
   useEffect(() => {
@@ -96,6 +104,21 @@ function Header({title, menu, layout}) {
   );
 }
 
+function AnnouncementBar({isHome}) {
+  const {y} = useWindowScroll();
+  return (
+    <div
+      className={`announcement-bar w-full h-fit p-1 text-center font-bold text-sm transition duration-300 ${
+        y < 10 && isHome
+          ? ' bg-none text-white'
+          : 'opacity-100 text-white bg-black'
+      }`}
+    >
+      FREE SHIPPING ABOVE MYR 300
+    </div>
+  );
+}
+
 function CartDrawer({isOpen, onClose}) {
   const [root] = useMatches();
 
@@ -156,65 +179,70 @@ function MobileHeader({layout, isHome, openCart, openMenu}) {
   return (
     <header
       role="banner"
-      className={`${
-        isHome
-          ? 'bg-white hover:bg-opacity-100 hover:text-black -mb-nav'
-          : 'bg-white text-black shadow-darkHeader'
-      } ${
-        isHome && y < 10
-          ? 'bg-opacity-0 text-white border-b border-b-white border-opacity-50'
-          : 'bg-opacity-100 text-black shadow-darkHeader'
-      }
-      flex lg:hidden items-center h-nav sticky z-50 top-0 justify-between w-full leading-none gap-4 px-4 md:px-8 transition duration-300`}
+      className="flex lg:hidden sticky top-0 flex-col z-50 h-nav"
     >
-      <div className="flex items-center justify-start w-full gap-4">
-        <button
-          onClick={openMenu}
-          className="relative flex items-center justify-center w-8 h-8"
-        >
-          <IconMenu />
-        </button>
-        <Form
-          method="get"
-          action={params.locale ? `/${params.locale}/search` : '/search'}
-          className="items-center gap-2 sm:flex"
-        >
+      <div
+        className={`${
+          isHome
+            ? 'bg-white hover:bg-opacity-100 hover:text-blacks'
+            : 'bg-white text-black shadow-darkHeader'
+        } ${
+          isHome && y < 10
+            ? 'bg-opacity-0 text-white border-b border-b-white border-opacity-50'
+            : 'bg-opacity-100 text-black shadow-darkHeader'
+        }
+      flex items-center justify-between w-full leading-none gap-4 px-4 md:px-8 transition duration-300 p-4`}
+      >
+        <div className="flex items-center justify-start w-full gap-4">
           <button
-            type="submit"
+            onClick={openMenu}
             className="relative flex items-center justify-center w-8 h-8"
           >
-            <IconSearch />
+            <IconMenu />
           </button>
-          <Input
-            className={
-              isHome
-                ? 'focus:border-contrast/20 dark:focus:border-primary/20'
-                : 'focus:border-primary/20'
-            }
-            type="search"
-            variant="minisearch"
-            placeholder="Search"
-            name="q"
-          />
-        </Form>
-      </div>
+          <Form
+            method="get"
+            action={params.locale ? `/${params.locale}/search` : '/search'}
+            className="items-center gap-2 sm:flex"
+          >
+            <button
+              type="submit"
+              className="relative flex items-center justify-center w-8 h-8"
+            >
+              <IconSearch />
+            </button>
+            <Input
+              className={
+                isHome
+                  ? 'focus:border-contrast/20 dark:focus:border-primary/20'
+                  : 'focus:border-primary/20'
+              }
+              type="search"
+              variant="minisearch"
+              placeholder="Search"
+              name="q"
+            />
+          </Form>
+        </div>
 
-      <Link
-        className="flex items-center self-stretch leading-[3rem] md:leading-[4rem] justify-center flex-grow w-full h-full"
-        to="/"
-      >
-        <Image
-          className=" w-auto h-[30px] object-contain"
-          src={layout.shop.brand.logo.image.url}
-          alt="Delics"
-          aspectRatio="3/1"
-        ></Image>
-      </Link>
+        <Link
+          className="flex items-center self-stretch leading-[3rem] md:leading-[4rem] justify-center flex-grow w-full h-full"
+          to="/"
+        >
+          <Image
+            className=" w-auto h-[30px] object-contain"
+            src={layout.shop.brand.logo.image.url}
+            alt="Delics"
+            aspectRatio="3/1"
+          ></Image>
+        </Link>
 
-      <div className="flex items-center justify-end w-full gap-4">
-        <AccountLink className="relative flex items-center justify-center w-8 h-8" />
-        <CartCount isHome={isHome} openCart={openCart} />
+        <div className="flex items-center justify-end w-full gap-4">
+          <AccountLink className="relative flex items-center justify-center w-8 h-8" />
+          <CartCount isHome={isHome} openCart={openCart} />
+        </div>
       </div>
+      <AnnouncementBar isHome={isHome} />
     </header>
   );
 }
@@ -224,82 +252,85 @@ function DesktopHeader({isHome, menu, openCart, layout}) {
   const {y} = useWindowScroll();
 
   return (
-    <header
-      role="banner"
-      className={`${
-        isHome
-          ? 'bg-white hover:bg-opacity-100 hover:text-black -mb-nav'
-          : 'bg-white text-black'
-      } ${
-        isHome && y < 10
-          ? 'bg-opacity-0 text-white border-b border-b-white border-opacity-50 hover:text-black'
-          : 'bg-opacity-100 text-black'
-      } hidden h-fit lg:flex items-center sticky transition duration-300 z-50 top-0 justify-center w-full leading-none  px-12`}
-    >
-      <div className="flex-col items-center w-full">
-        <div className="flex items-center justify-between w-full">
-          <div className="flex w-[200px] h-[80px] grow items-center basis-0"></div>
-          <Link
-            className="font-bold flex justify-center items-center h-10"
-            to="/"
-            prefetch="intent"
-          >
-            {layout.shop?.brand?.logo && (
-              <Image
-                className=" h-10 object-contain"
-                src={layout.shop.brand.logo.image.url}
-                alt="Delics"
-                aspectRatio="3/1"
-              ></Image>
-            )}
-          </Link>
-          <div className="flex items-center grow justify-end basis-0">
-            <Form
-              method="get"
-              action={params.locale ? `/${params.locale}/search` : '/search'}
-              className="flex items-center gap-2"
+    <header className="hidden lg:flex flex-col sticky z-50 top-0">
+      <div
+        role="banner"
+        className={`${
+          isHome
+            ? 'bg-white hover:bg-opacity-100 hover:text-black'
+            : 'bg-white text-black'
+        } ${
+          isHome && y < 10
+            ? 'bg-opacity-0 text-white border-b border-b-white border-opacity-50 hover:text-black'
+            : 'bg-opacity-100 text-black'
+        } items-center transition duration-300  justify-center w-full leading-none  px-12`}
+      >
+        <div className="flex-col items-center w-full">
+          <div className="flex items-center justify-between w-full">
+            <div className="flex w-[200px] h-[80px] grow items-center basis-0"></div>
+            <Link
+              className="font-bold flex justify-center items-center h-10"
+              to="/"
+              prefetch="intent"
             >
-              <Input
-                className={
-                  isHome
-                    ? 'focus:border-contrast/20 dark:focus:border-primary/20'
-                    : 'focus:border-primary/20'
-                }
-                type="search"
-                variant="minisearch"
-                placeholder="Search"
-                name="q"
-              />
-              <button
-                type="submit"
-                className="relative flex items-center justify-center w-8 h-8 focus:ring-primary/5"
+              {layout.shop?.brand?.logo && (
+                <Image
+                  className=" h-10 object-contain"
+                  src={layout.shop.brand.logo.image.url}
+                  alt="Delics"
+                  aspectRatio="3/1"
+                ></Image>
+              )}
+            </Link>
+            <div className="flex items-center grow justify-end basis-0">
+              <Form
+                method="get"
+                action={params.locale ? `/${params.locale}/search` : '/search'}
+                className="flex items-center gap-2"
               >
-                <IconSearch />
-              </button>
-            </Form>
-            <AccountLink className="relative flex items-center justify-center w-8 h-8 focus:ring-primary/5" />
-            <CartCount isHome={isHome} openCart={openCart} />
+                <Input
+                  className={
+                    isHome
+                      ? 'focus:border-contrast/20 dark:focus:border-primary/20'
+                      : 'focus:border-primary/20'
+                  }
+                  type="search"
+                  variant="minisearch"
+                  placeholder="Search"
+                  name="q"
+                />
+                <button
+                  type="submit"
+                  className="relative flex items-center justify-center w-8 h-8 focus:ring-primary/5"
+                >
+                  <IconSearch />
+                </button>
+              </Form>
+              <AccountLink className="relative flex items-center justify-center w-8 h-8 focus:ring-primary/5" />
+              <CartCount isHome={isHome} openCart={openCart} />
+            </div>
+          </div>
+          <div className="py-2">
+            <nav className="flex gap-12 items-center justify-center pt-2">
+              {/* Top level menu items */}
+              {(menu?.items || []).map((item, index) => {
+                return (
+                  <Link
+                    key={item.id}
+                    to={item.to}
+                    target={item.target}
+                    prefetch="intent"
+                    className=" font-nimubs text-[1rem] font-bold "
+                  >
+                    {item.title}
+                  </Link>
+                );
+              })}
+            </nav>
           </div>
         </div>
-        <div className="py-2">
-          <nav className="flex gap-12 items-center justify-center pt-2">
-            {/* Top level menu items */}
-            {(menu?.items || []).map((item, index) => {
-              return (
-                <Link
-                  key={item.id}
-                  to={item.to}
-                  target={item.target}
-                  prefetch="intent"
-                  className=" font-nimubs text-[1rem] font-bold "
-                >
-                  {item.title}
-                </Link>
-              );
-            })}
-          </nav>
-        </div>
       </div>
+      <AnnouncementBar isHome={isHome} />
     </header>
   );
 }

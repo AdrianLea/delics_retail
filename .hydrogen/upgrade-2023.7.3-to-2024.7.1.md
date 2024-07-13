@@ -957,7 +957,7 @@ export function loader(context) {
 query CollectionDetails {
    collection(handle: $handle) {
      ...
-     pageInfo {
+     F {
        hasPreviousPage
        hasNextPage
        hasNextPage

@@ -3,6 +3,8 @@ import {Await, Form, useLoaderData} from '@remix-run/react';
 import {Suspense} from 'react';
 import {Pagination, getPaginationVariables} from '@shopify/hydrogen';
 
+import {getFeaturedData} from './($locale).featured-products';
+
 import {
   FeaturedCollections,
   Grid,
@@ -17,8 +19,6 @@ import {
 import {PRODUCT_CARD_FRAGMENT} from '~/data/fragments';
 import {getImageLoadingPriority, PAGINATION_SIZE} from '~/lib/const';
 import {seoPayload} from '~/lib/seo.server';
-
-import {getFeaturedData} from './($locale).featured-products';
 
 export async function loader({request, context: {storefront}}) {
   const searchParams = new URL(request.url).searchParams;
@@ -167,10 +167,11 @@ const SEARCH_QUERY = `#graphql
         ...ProductCard
       }
       pageInfo {
+        hasPreviousPage
+        hasNextPage
+        hasNextPage
         startCursor
         endCursor
-        hasNextPage
-        hasPreviousPage
       }
     }
   }

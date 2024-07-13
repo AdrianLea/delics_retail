@@ -7,12 +7,13 @@ import {
   Money,
   VariantSelector,
   getSelectedProductOptions,
+  useOptimisticVariant,
 } from '@shopify/hydrogen';
-import {BuyNow} from '~/components'
 import invariant from 'tiny-invariant';
 import clsx from 'clsx';
 
 import {
+  BuyNow,
   Heading,
   IconCaret,
   IconCheck,
@@ -122,7 +123,10 @@ export default function Product() {
   const {product, shop, recommended, variants} = useLoaderData();
   const {media, title, vendor, descriptionHtml} = product;
   const {shippingPolicy, refundPolicy} = shop;
-  const selectedVariant = product.selectedVariant;
+  const selectedVariant = useOptimisticVariant(
+    product.selectedVariant,
+    variants,
+  );
   const isOnSale =
     selectedVariant?.price?.amount &&
     selectedVariant?.compareAtPrice?.amount &&
@@ -353,7 +357,6 @@ export function ProductForm({variants}) {
                   className="flex items-center justify-center gap-2 text-white"
                 >
                   <span>Add to Cart</span>
-
                 </Text>
               </AddToCartButton>
             )}
