@@ -10,6 +10,7 @@ export default async function handleRequest(
   remixContext,
   context,
 ) {
+  //consent
   const {nonce, header, NonceProvider} = createContentSecurityPolicy({
     shop: {
       checkoutDomain: context.env.PUBLIC_CHECKOUT_DOMAIN,
