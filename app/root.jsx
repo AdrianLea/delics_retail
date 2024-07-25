@@ -17,6 +17,8 @@ import {
   useLoadScript,
   getShopAnalytics,
   Analytics,
+  useNonce,
+  Script,
 } from '@shopify/hydrogen';
 import invariant from 'tiny-invariant';
 
@@ -66,22 +68,25 @@ export const links = () => {
 };
 
 export async function loader({request, context}) {
-  const {session, storefront, cart} = context;
+  const {session, storefront, cart, env} = context;
   const [customerAccessToken, layout] = await Promise.all([
     session.get('customerAccessToken'),
     getLayoutData(context),
   ]);
 
   const seo = seoPayload.root({shop: layout.shop, url: request.url});
-
   return defer({
     isLoggedIn: Boolean(customerAccessToken),
     layout,
     selectedLocale: storefront.i18n,
     cart: cart.get(),
-    analytics: {
-      shopifySalesChannel: ShopifySalesChannel.hydrogen,
-      shopId: layout.shop.id,
+    shop: getShopAnalytics({
+      storefront,
+      publicStorefrontId: env.PUBLIC_STOREFRONT_ID,
+    }),
+    consent: {
+      checkoutDomain: env.PUBLIC_CHECKOUT_DOMAIN,
+      storefrontAccessToken: env.PUBLIC_STOREFRONT_API_TOKEN,
     },
     seo,
   });
@@ -104,8 +109,7 @@ export default function App() {
   const data = useLoaderData();
   const locale = data.selectedLocale ?? DEFAULT_LOCALE;
   const hasUserConsent = true;
-  useLoadScript('//static.klaviyo.com/onsite/js/klaviyo.js?company_id=Rw7fmd');
-
+  const nonce = useNonce();
   useAnalytics(hasUserConsent);
   return (
     <html lang={locale.language}>
@@ -122,9 +126,10 @@ export default function App() {
         >
           <Outlet />
         </Layout>
-        <ScrollRestoration />
-        <Scripts />
-        <LiveReload />
+        <ScrollRestoration nonce={nonce} />
+        <Script src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=Rw7fmd" />
+        <Scripts nonce={nonce} />
+        <LiveReload nonce={nonce} />
       </body>
     </html>
   );
@@ -132,6 +137,7 @@ export default function App() {
 
 export function ErrorBoundary({error}) {
   const [root] = useMatches();
+  const nonce = useNonce();
   const locale = root?.data?.selectedLocale ?? DEFAULT_LOCALE;
   const routeError = useRouteError();
   const isRouteError = isRouteErrorResponse(routeError);
@@ -172,8 +178,9 @@ export function ErrorBoundary({error}) {
             <GenericError error={error instanceof Error ? error : undefined} />
           )}
         </Layout>
-        <Scripts />
-        <LiveReload />
+        <Script src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=Rw7fmd" />
+        <Scripts nonce={nonce} />
+        <LiveReload nonce={nonce} />
       </body>
     </html>
   );
