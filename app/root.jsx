@@ -15,6 +15,8 @@ import {
   ShopifySalesChannel,
   getSeoMeta,
   useLoadScript,
+  getShopAnalytics,
+  Analytics,
 } from '@shopify/hydrogen';
 import invariant from 'tiny-invariant';
 

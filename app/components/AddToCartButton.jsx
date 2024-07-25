@@ -6,6 +6,8 @@ import {
 } from '@shopify/hydrogen';
 import {useEffect} from 'react';
 
+import {trackAddToCart} from '../klaviyo/KlaviyoOnsite.client';
+
 import {Button} from '~/components';
 import {usePageAnalytics} from '~/hooks/usePageAnalytics';
 

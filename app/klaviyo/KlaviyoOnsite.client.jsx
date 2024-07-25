@@ -1,33 +1,35 @@
 import {useEffect} from 'react';
-import {ClientAnalytics, loadScript} from '@shopify/hydrogen';
+import {ClientAnalytics, useLoadScript} from '@shopify/hydrogen';
 
 const PUBLIC_KEY = 'API_KEY';
 const URL = `//static.klaviyo.com/onsite/js/klaviyo.js?company_id=${PUBLIC_KEY}`;
 let init = false;
 
-function trackViewedProduct(payload) {
-  var _learnq = window._learnq || [];
-  var product = {
-    Name: payload.title,
-    ProductID: payload.product.id.substring(payload.product.id.lastIndexOf('/') + 1),
+function trackViewedProduct(product) {
+  const klaviyo_product = {
+    Name: product.title,
+    ProductID: product.id,
     Categories:
-      payload.product.collections == undefined
+      product.collections == undefined
         ? null
-        : payload.product.collections.edges.map((a) => a.node.title),
-    ImageURL: payload.selectedVariant.image.url,
-    URL: payload.url,
-    Brand: payload.vendor,
-    Price: payload.selectedVariant.priceV2.amount,
-    CompareAtPrice: payload.selectedVariant.compareAtPriceV2.amount,
+        : product.collections.nodes.map((node) => node.title),
+    ImageURL: product.selectedVariant.image.url,
+    URL: product.url,
+    Brand: product.vendor,
+    Price: product.selectedVariant.price.amount,
+    CompareAtPrice: product.selectedVariant.compareAtPrice?.amount,
   };
-  _learnq.push(['track', 'Viewed Product', product]);
+  window._learnq = window._learnq || [];
+  window._learnq.push(['track', 'Viewed Product', klaviyo_product]);
 }
 
 function trackViewedItem(payload) {
   var _learnq = window._learnq || [];
   var item = {
     Title: payload.title,
-    ItemId: payload.product.id.substring(payload.product.id.lastIndexOf('/') + 1),
+    ItemId: payload.product.id.substring(
+      payload.product.id.lastIndexOf('/') + 1,
+    ),
     Categories:
       payload.collections == undefined
         ? null
@@ -59,7 +61,7 @@ export default function KlaviyoOnsite() {
   useEffect(() => {
     if (!init) {
       init = true;
-      loadScript(URL).catch(() => {});
+      useLoadScript(URL);
       ClientAnalytics.subscribe(
         ClientAnalytics.eventNames.ADD_TO_CART,
         (payload) => {
