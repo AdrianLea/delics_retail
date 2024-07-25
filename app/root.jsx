@@ -11,7 +11,11 @@ import {
   useMatches,
   useRouteError,
 } from '@remix-run/react';
-import {ShopifySalesChannel, getSeoMeta} from '@shopify/hydrogen';
+import {
+  ShopifySalesChannel,
+  getSeoMeta,
+  useLoadScript,
+} from '@shopify/hydrogen';
 import invariant from 'tiny-invariant';
 
 import favicon from '../public/favicon.png';
@@ -52,6 +56,10 @@ export const links = () => {
       href: 'https://shop.app',
     },
     {rel: 'icon', type: 'image/svg+xml', href: favicon},
+    {
+      rel: 'stylesheet',
+      href: require('./intl-tel-input-master/build/css/intlTelInput.css'),
+    },
   ];
 };
 
@@ -94,6 +102,8 @@ export default function App() {
   const data = useLoaderData();
   const locale = data.selectedLocale ?? DEFAULT_LOCALE;
   const hasUserConsent = true;
+  useLoadScript('//static.klaviyo.com/onsite/js/klaviyo.js?company_id=Rw7fmd');
+
   useAnalytics(hasUserConsent);
   return (
     <html lang={locale.language}>
@@ -104,11 +114,6 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <script
-          async
-          type="text/javascript"
-          src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=Rw7fmd"
-        ></script>
         <Layout
           key={`${locale.language}-${locale.country}`}
           layout={data.layout}

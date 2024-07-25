@@ -1,4 +1,4 @@
-import {useRef, Suspense} from 'react';
+import {useRef, Suspense, useEffect} from 'react';
 import {Disclosure, Listbox} from '@headlessui/react';
 import {defer, redirect} from '@shopify/remix-oxygen';
 import {useLoaderData, Await} from '@remix-run/react';
@@ -57,6 +57,14 @@ export async function loader({params, request, context}) {
   if (!product.selectedVariant) {
     return redirectToFirstVariant({product, request});
   }
+  var vars = {
+    variables: {
+      handle: productHandle,
+      selectedOptions,
+      country: context.storefront.i18n.country,
+      language: context.storefront.i18n.language,
+    },
+  };
 
   // In order to show which variants are available in the UI, we need to query
   // all of them. But there might be a *lot*, so instead separate the variants
@@ -131,6 +139,24 @@ export default function Product() {
     selectedVariant?.price?.amount &&
     selectedVariant?.compareAtPrice?.amount &&
     selectedVariant?.price?.amount < selectedVariant?.compareAtPrice?.amount;
+
+  useEffect(() => {
+    const klaviyo_product = {
+      Name: product.title,
+      ProductID: product.id,
+      Categories:
+        product.collections == undefined
+          ? null
+          : product.collections.nodes.map((node) => node.title),
+      ImageURL: product.selectedVariant.image.url,
+      URL: product.url,
+      Brand: product.vendor,
+      Price: product.selectedVariant.price.amount,
+      CompareAtPrice: product.selectedVariant.compareAtPrice?.amount,
+    };
+    window._learnq = window._learnq || [];
+    window._learnq.push(['track', 'Viewed Product', klaviyo_product]);
+  }, [product]);
 
   return (
     <>
@@ -473,6 +499,11 @@ const PRODUCT_QUERY = `#graphql
       handle
       descriptionHtml
       description
+      collections(first: 1) {
+        nodes {
+          title
+        }
+      }
       options {
         name
         values

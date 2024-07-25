@@ -12,6 +12,8 @@ import {
   storefrontRedirect,
 } from '@shopify/hydrogen';
 
+import {createKlaviyoClient} from './app/lib/createKlaviyoClient.server';
+
 import {HydrogenSession} from '~/lib/session.server';
 import {getLocaleFromRequest} from '~/lib/utils';
 
@@ -48,6 +50,8 @@ export default {
         storefrontHeaders: getStorefrontHeaders(request),
       });
 
+      const klaviyo = createKlaviyoClient(env.KLAVIYO_API_KEY);
+
       const cart = createCartHandler({
         storefront,
         getCartId: cartGetIdDefault(request.headers),
@@ -67,6 +71,7 @@ export default {
           storefront,
           cart,
           env,
+          klaviyo,
         }),
       });
 

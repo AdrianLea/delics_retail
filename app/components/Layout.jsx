@@ -310,7 +310,7 @@ function DesktopHeader({isHome, menu, openCart, layout}) {
               <CartCount isHome={isHome} openCart={openCart} />
             </div>
           </div>
-          <div className="py-2">
+          <div className="py-1">
             <nav className="flex gap-12 items-center justify-center pt-2">
               {/* Top level menu items */}
               {(menu?.items || []).map((item, index) => {
@@ -405,7 +405,9 @@ function Badge({openCart, dark, count}) {
 
 function Footer({menu}) {
   return (
-    <footer className={`h-fit w-full py-4 px-8 overflow-hidden bg-black`}>
+    <footer
+      className={`h-fit w-full py-4 px-8 overflow-hidden bg-black border-t-[1px] border-t-gray-800`}
+    >
       <FooterMenu menu={menu} />
       <div className={`opacity-50 text-white text-center py-4`}>
         &copy; {new Date().getFullYear()} / Delics Retail
