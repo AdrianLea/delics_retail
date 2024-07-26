@@ -62,7 +62,6 @@ export function KlaviyoOnsite() {
     });
 
     subscribe('product_viewed', (payload) => {
-      console.log('product_viewed', JSON.stringify(payload));
       trackViewedProduct(payload);
       trackViewedItem(payload);
     });
