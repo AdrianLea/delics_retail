@@ -28,7 +28,7 @@ import {GenericError} from './components/GenericError';
 import {NotFound} from './components/NotFound';
 import styles from './styles/app.css';
 import {DEFAULT_LOCALE, parseMenu} from './lib/utils';
-import {useAnalytics} from './hooks/useAnalytics';
+import {KlaviyoOnsite} from './klaviyo/KlaviyoOnsite';
 
 import {Layout} from '~/components';
 import {seoPayload} from '~/lib/seo.server';
@@ -108,9 +108,7 @@ export const meta = ({data, location}) => {
 export default function App() {
   const data = useLoaderData();
   const locale = data.selectedLocale ?? DEFAULT_LOCALE;
-  const hasUserConsent = true;
   const nonce = useNonce();
-  useAnalytics(hasUserConsent);
   return (
     <html lang={locale.language}>
       <head>
@@ -132,6 +130,7 @@ export default function App() {
           >
             <Outlet />
           </Layout>
+          <KlaviyoOnsite />
         </Analytics.Provider>
         <ScrollRestoration nonce={nonce} />
         <Script src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=Rw7fmd" />

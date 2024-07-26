@@ -165,7 +165,7 @@ function Slider({images, className, links}) {
           <div
             id={index}
             className={`slide h-full w-full absolute opacity-0 hidden`}
-            key={index}
+            key={element[4].id}
           >
             <Image
               className={`opacity-70 w-full h-full overflow-hidden object-cover relative hidden lg:block`}
@@ -179,7 +179,7 @@ function Slider({images, className, links}) {
             ></Image>
             <div
               className={`information-holder absolute -translate-y-[50%] top-[50%] md:translate-y-0 md:top-[80%] md:left-[10%] font-mono left-[50%] -translate-x-[50%] md:translate-x-0 w-full`}
-              key={index}
+              key={element[4].id}
             >
               <div
                 className={`header hidden font-bold opacity-0 px-2 w-fit font-inclusiveSans md:text-xl text-white bg-none m-auto md:m-0 text-[1.7rem] text-center md:normal-case uppercase`}
@@ -200,7 +200,7 @@ function Slider({images, className, links}) {
       <div className="flex gap-4 items-center justify-center -translate-y-[25px] w-full top-full absolute overflow-hidden ">
         {urls.map((element, index) => (
           <button
-            key={index}
+            key={`${element[0]}`}
             onClick={() => {
               clicked.current = true;
               clickFunction(index);

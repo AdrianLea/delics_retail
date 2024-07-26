@@ -31,7 +31,7 @@ export function AddToCartButton({
     >
       {(fetcher) => {
         return (
-          <AddToCartAnalytics fetcher={fetcher}>
+          <>
             <input
               type="hidden"
               name="analytics"
@@ -48,46 +48,9 @@ export function AddToCartButton({
             >
               {children}
             </Button>
-          </AddToCartAnalytics>
+          </>
         );
       }}
     </CartForm>
   );
-}
-
-function AddToCartAnalytics({fetcher, children}) {
-  const fetcherData = fetcher.data;
-  const formData = fetcher.formData;
-  const pageAnalytics = usePageAnalytics({hasUserConsent: true});
-
-  useEffect(() => {
-    if (formData) {
-      const cartData = {};
-      const cartInputs = CartForm.getFormInput(formData);
-
-      try {
-        if (cartInputs.inputs.analytics) {
-          const dataInForm = JSON.parse(String(cartInputs.inputs.analytics));
-          Object.assign(cartData, dataInForm);
-        }
-      } catch {
-        // do nothing
-      }
-
-      if (Object.keys(cartData).length && fetcherData) {
-        const addToCartPayload = {
-          ...getClientBrowserParameters(),
-          ...pageAnalytics,
-          ...cartData,
-          cartId: fetcherData.cart.id,
-        };
-
-        sendShopifyAnalytics({
-          eventName: AnalyticsEventName.ADD_TO_CART,
-          payload: addToCartPayload,
-        });
-      }
-    }
-  }, [fetcherData, formData, pageAnalytics]);
-  return <>{children}</>;
 }
