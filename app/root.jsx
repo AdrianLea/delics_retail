@@ -81,7 +81,8 @@ export async function loader({request, context}) {
     selectedLocale: storefront.i18n,
     cart: cart.get(),
     shop: getShopAnalytics({
-      context,
+      storefront,
+      publicStorefrontId: env.PUBLIC_STOREFRONT_ID,
     }),
     consent: {
       checkoutDomain: env.PUBLIC_CHECKOUT_DOMAIN,
@@ -131,11 +132,11 @@ export default function App() {
           >
             <Outlet />
           </Layout>
-          <ScrollRestoration nonce={nonce} />
-          <Script src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=Rw7fmd" />
-          <Scripts nonce={nonce} />
-          <LiveReload nonce={nonce} />
         </Analytics.Provider>
+        <ScrollRestoration nonce={nonce} />
+        <Script src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=Rw7fmd" />
+        <Scripts nonce={nonce} />
+        <LiveReload nonce={nonce} />
       </body>
     </html>
   );
