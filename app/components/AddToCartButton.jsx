@@ -1,15 +1,6 @@
-import {
-  AnalyticsEventName,
-  CartForm,
-  getClientBrowserParameters,
-  sendShopifyAnalytics,
-} from '@shopify/hydrogen';
-import {useEffect} from 'react';
-
-import {trackAddToCart} from '../klaviyo/KlaviyoOnsite.client';
+import {CartForm} from '@shopify/hydrogen';
 
 import {Button} from '~/components';
-import {usePageAnalytics} from '~/hooks/usePageAnalytics';
 
 export function AddToCartButton({
   children,
