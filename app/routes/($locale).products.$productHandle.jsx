@@ -8,6 +8,8 @@ import {
   VariantSelector,
   getSelectedProductOptions,
   useOptimisticVariant,
+  Analytics,
+  useAnalytics,
 } from '@shopify/hydrogen';
 import invariant from 'tiny-invariant';
 import clsx from 'clsx';
@@ -238,6 +240,21 @@ export default function Product() {
           )}
         </Await>
       </Suspense>
+      <Analytics.ProductView
+        data={{
+          products: [
+            {
+              id: product.id,
+              title: product.title,
+              price: selectedVariant?.price.amount || '0',
+              vendor: product.vendor,
+              variantId: selectedVariant?.id || '',
+              variantTitle: selectedVariant?.title || '',
+              quantity: 1,
+            },
+          ],
+        }}
+      />
     </>
   );
 }
@@ -258,6 +275,7 @@ export function ProductForm({variants}) {
     ...analytics.products[0],
     quantity: 1,
   };
+  const {publish, shop, cart, prevCart} = useAnalytics();
 
   return (
     <div className="grid gap-10">
@@ -376,6 +394,14 @@ export function ProductForm({variants}) {
                 analytics={{
                   products: [productAnalytics],
                   totalValue: parseFloat(productAnalytics.price),
+                }}
+                onClick={() => {
+                  publish('cart_viewed', {
+                    cart,
+                    prevCart,
+                    shop,
+                    url: window.location.href || '',
+                  });
                 }}
               >
                 <Text

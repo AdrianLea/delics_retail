@@ -69,7 +69,7 @@ function Slider({images, className, links}) {
   }
   urls.reverse();
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     ctx.current = gsap.context((self) => {
       gsap.registerPlugin(TextPlugin);
       const slide = gsap.utils.toArray('.slide');

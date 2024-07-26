@@ -5,6 +5,7 @@ import {
   AnalyticsPageType,
   Pagination,
   getPaginationVariables,
+  Analytics,
 } from '@shopify/hydrogen';
 import invariant from 'tiny-invariant';
 
@@ -167,6 +168,14 @@ export default function Collection() {
           </Pagination>
         </SortFilter>
       </Section>
+      <Analytics.CollectionView
+        data={{
+          collection: {
+            id: collection.id,
+            handle: collection.handle,
+          },
+        }}
+      />
     </>
   );
 }

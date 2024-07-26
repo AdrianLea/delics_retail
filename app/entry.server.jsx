@@ -10,16 +10,21 @@ export default async function handleRequest(
   context,
 ) {
   // Create the Content Security Policy
-  const {nonce, header, NonceProvider} = createContentSecurityPolicy({
+
+  const {header, NonceProvider, nonce} = createContentSecurityPolicy({
     shop: {
       checkoutDomain: context.env.PUBLIC_CHECKOUT_DOMAIN,
       storeDomain: context.env.PUBLIC_STORE_DOMAIN,
     },
+    styleSrc: ["'self'", 'https://cdn.shopify.com'],
+
+    defaultSrc: ["'self'", 'https://cdn.shopify.com', '*.klaviyo.com'],
+    connectSrc: ['*.klaviyo.com'],
   });
 
   const body = await renderToReadableStream(
     // Wrap the entire app in the nonce provider
-    <NonceProvider>
+    <NonceProvider nonce={nonce}>
       <RemixServer context={remixContext} url={request.url} />
     </NonceProvider>,
     {

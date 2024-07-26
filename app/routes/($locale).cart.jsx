@@ -1,7 +1,7 @@
 import {Await, useMatches} from '@remix-run/react';
 import invariant from 'tiny-invariant';
 import {json} from '@shopify/remix-oxygen';
-import {CartForm} from '@shopify/hydrogen';
+import {CartForm, Analytics} from '@shopify/hydrogen';
 
 import {isLocalPath} from '~/lib/utils';
 import {Cart} from '~/components';
@@ -90,6 +90,7 @@ export default function CartRoute() {
       <Await resolve={root.data?.cart}>
         {(cart) => <Cart layout="page" cart={cart} />}
       </Await>
+      <Analytics.CartView />
     </div>
   );
 }
