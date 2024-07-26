@@ -18,7 +18,12 @@ export default async function handleRequest(
     },
     styleSrc: ["'self'", 'https://cdn.shopify.com'],
 
-    defaultSrc: ["'self'", 'https://cdn.shopify.com', '*.klaviyo.com'],
+    defaultSrc: [
+      "'self'",
+      'https://cdn.shopify.com',
+      '*.klaviyo.com',
+      'cdn.jsdelivr.net',
+    ],
     connectSrc: ['*.klaviyo.com'],
   });
 
