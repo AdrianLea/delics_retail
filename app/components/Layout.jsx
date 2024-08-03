@@ -666,6 +666,7 @@ function FooterMenu({menu}) {
             .map((item) => (
               <FooterLink item={item} key={item.id} />
             ))}
+          <FooterLink item={{to: '/faq', title: 'FAQ'}} />
         </div>
         <div className="flex flex-col gap-1">
           <h2 className="text-lg font-bold text-white">Rewards</h2>
