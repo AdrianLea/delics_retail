@@ -247,8 +247,10 @@ const exchangePolicy = {
         <p>&bull; Once we receive your returned item, we will inspect it to ensure it meets our exchange criteria.</p>
         <p>&bull; If the item is eligible for an exchange, we will process the exchange and send you the new item.</p>
         <p>&bull; You will receive a confirmation email once the exchange is processed.</p>
+        <br></br>
         <p><strong style="font-size: 1.2em;">Damaged or Defective Items:</strong></p>
         <p>&bull; If you receive a damaged or defective item, please contact us immediately at <a style="color: blue;" href="mailto:contact@delicsworld.com">contact@delicsworld.com</a>. We will arrange for a replacement item to be sent to you at no additional cost, or if preferred, issue a full refund for the damaged or defective item.</p>
+        <br></br>
         <p><strong style="font-size: 1.2em;">International Exchanges:</strong></p>
         <p>&bull; For international exchanges, customers are responsible for all shipping costs, customs duties, and taxes associated with the exchange process.</p>
         <p>&bull; We recommend contacting our customer service team for specific instructions on international exchanges.</p>
