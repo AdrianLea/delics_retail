@@ -8,7 +8,7 @@ export default function Faq() {
         {' '}
         Popular FAQs
       </h1>
-      <h2 className="text-2xl font-bold py-2 px-[5%] md:px-[10%]">
+      <h2 className="text-2xl font-bold py-5 px-[5%] md:px-[10%]">
         1. Shipping
       </h2>
       {shippingQNA.data.map((item, index) => (
@@ -18,7 +18,7 @@ export default function Faq() {
           answer={item.answer}
         />
       ))}
-      <h2 className="text-2xl font-bold py-2 px-[5%] md:px-[10%]">
+      <h2 className="text-2xl font-bold py-5 px-[5%] md:px-[10%]">
         2. Online Orders & Payments
       </h2>
       {onlineOrderandPayments.data.map((item, index) => (
@@ -28,7 +28,7 @@ export default function Faq() {
           answer={item.answer}
         />
       ))}
-      <h2 className="text-2xl font-bold py-2 px-[5%] md:px-[10%]">
+      <h2 className="text-2xl font-bold py-5 px-[5%] md:px-[10%]">
         3. Exchange and Return Policy
       </h2>
       {exchangePolicy.data.map((item, index) => (
@@ -239,6 +239,7 @@ const exchangePolicy = {
         <p><strong style="font-size: 1.2em;">Initiating an Exchange:</strong></p>
         <p>&bull; To initiate an exchange, contact our customer service team at <a style="color: blue;" href="mailto:contact@delicsworld.com">contact@delicsworld.com</a> with your order number, the item(s) you wish to exchange, and the reason for the exchange.</p>
         <p>&bull; Our customer service team will provide you with instructions on how to proceed with your exchange.</p>
+        <br></br>
         <p><strong style="font-size: 1.2em;">Returning the Item for Exchange:</strong></p>
         <p>&bull; You will be responsible for the shipping costs associated with returning the item for exchange.</p>
         <p>&bull; We recommend using a trackable shipping method to ensure your item is returned safely. We are not responsible for lost or damaged returns.</p>
