@@ -667,6 +667,7 @@ function FooterMenu({menu}) {
               <FooterLink item={item} key={item.id} />
             ))}
           <FooterLink item={{to: '/faq', title: 'FAQ'}} />
+          <FooterLink item={{to: '/shipping', title: 'Shipping'}} />
         </div>
         <div className="flex flex-col gap-1">
           <h2 className="text-lg font-bold text-white">Rewards</h2>
