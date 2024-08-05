@@ -124,18 +124,18 @@ const shippingQNA = {
     {
       question: 'How do I track my package?',
       answer:
-        '<p>&bull; Once your order is shipped, you will receive a tracking number via email. You can use this number to track your order on our website or the carrier’s website.</p><p>&bull; Contact the Delics World Team contact@delicsworld.com if you have yet to receive a tracking number within 7 business days after your purchase.</p>',
+        '<p>&bull; Once your order is shipped, you will receive a tracking number via email. You can use this number to track your order on our website or the carrier’s website.</p><p>&bull; Contact the Delics World Team <a style="color: blue;" href="mailto:contact@delicsworld.com">contact@delicsworld.com</a> if you have yet to receive a tracking number within 7 business days after your purchase.</p>',
     },
     {
       question: 'What if I have not yet received my tracking number?',
       answer:
-        '<p>&bull; If you receive the wrong product, please contact our customer service team immediately at contact@delicsworld.com. Provide your order number and a description of the issue. We will assist you in returning the incorrect item and ensure that the correct product is shipped to you as quickly as possible.</p>',
+        '<p>&bull; If you receive the wrong product, please contact our customer service team immediately at <a style="color: blue;" href="mailto:contact@delicsworld.com">contact@delicsworld.com</a>. Provide your order number and a description of the issue. We will assist you in returning the incorrect item and ensure that the correct product is shipped to you as quickly as possible.</p>',
     },
     {
       question:
         'What should I do if I have been charged incorrectly for my order?',
       answer:
-        '<p>&bull; If you believe you have been charged incorrectly for your order, please contact our customer service team at contact@delicsworld.com as soon as possible.</p><p>&bull; Provide your order number and details of the incorrect charge. We will investigate the issue and work to resolve it promptly, including issuing any necessary refunds.</p>',
+        '<p>&bull; If you believe you have been charged incorrectly for your order, please contact our customer service team at <a style="color: blue;" href="mailto:contact@delicsworld.com">contact@delicsworld.com</a> as soon as possible.</p><p>&bull; Provide your order number and details of the incorrect charge. We will investigate the issue and work to resolve it promptly, including issuing any necessary refunds.</p>',
     },
     {
       question: 'Can I pick up my order in Store?',
@@ -156,7 +156,7 @@ const shippingQNA = {
     {
       question: 'How do I contact Delics World customer service?',
       answer:
-        '<p>&bull; You can reach our customer service team via email at <u>contact@delicsworld.com.</u> We strive to respond to all inquiries within 24 hours.</p>',
+        '<p>&bull; You can reach our customer service team via email at <a style="color: blue;" href="mailto:contact@delicsworld.com">contact@delicsworld.com</a> We strive to respond to all inquiries within 24 hours.</p>',
     },
   ],
 };
@@ -171,12 +171,12 @@ const onlineOrderandPayments = {
     {
       question: 'How do I determine my size?',
       answer:
-        '<p>&bull; We have a size guide available on our website. Please refer to it to find the best fit for you. If you need further assistance, feel free to browse our Instagram <u>@delicsworld</u> or contact our customer service team at <u>contact@delicsworld.com</u>.</p>',
+        '<p>&bull; We have a size guide available on our website. Please refer to it to find the best fit for you. If you need further assistance, feel free to browse our Instagram <a style="color: blue;" href="https://www.instagram.com/delicsworld" target="_blank">@delicsworld</a> or contact our customer service team at <a style="color: blue;" href="mailto:contact@delicsworld.com">contact@delicsworld.com</a>.</p>',
     },
     {
       question: 'What if my order is damaged or defective?',
       answer:
-        '<p>&bull; If you receive a damaged or defective item, please contact us immediately at <u>contact@delicsworld.com</u>. We will arrange for a replacement item to be sent to you at no additional cost.</p>',
+        '<p>&bull; If you receive a damaged or defective item, please contact us immediately at <a style="color: blue;" href="mailto:contact@delicsworld.com">contact@delicsworld.com</a>. We will arrange for a replacement item to be sent to you at no additional cost.</p>',
     },
     {
       question: 'What payment methods do you accept?',
@@ -192,57 +192,69 @@ const exchangePolicy = {
       question: 'What is your return policy?',
       answer: `
         <p>At Delics World, we want you to be completely satisfied with your purchase. If you are not satisfied for any reason, we offer a straightforward return policy to make your shopping experience enjoyable and hassle-free.</p>
+        <br></br>
         <p><strong style="font-size: 1.2em;">Eligibility for Returns:</strong></p>
         <p>&bull; Items must be unworn, unwashed, and in their original condition with tags attached.</p>
         <p>&bull; Returns must be initiated within 30 days of the original purchase date.</p>
         <p>&bull; Final sale items, including clearance and promotional items, are not eligible for returns.</p>
+        <br></br>
         <p><strong style="font-size: 1.2em;">Initiating a Return:</strong></p>
-        <p>&bull; To initiate a return, contact our customer service team at <u>contact@delicsworld.com</u> with your order number, the item(s) you wish to return, and the reason for the return.</p>
+        <p>&bull; To initiate a return, contact our customer service team at <a style="color: blue;" href="mailto:contact@delicsworld.com">contact@delicsworld.com</a> with your order number, the item(s) you wish to return, and the reason for the return.</p>
         <p>&bull; Our customer service team will provide you with instructions on how to proceed with your return.</p>
+        <br></br>
         <p><strong style="font-size: 1.2em;">Returning the Item:</strong></p>
         <p>&bull; You will be responsible for the shipping costs associated with returning the item.</p>
         <p>&bull; We recommend using a trackable shipping method to ensure your item is returned safely. We are not responsible for lost or damaged returns.</p>
+        <br></br>
         <p><strong style="font-size: 1.2em;">Processing the Refund:</strong></p>
         <p>&bull; Once we receive your returned item, we will inspect it to ensure it meets our return criteria.</p>
         <p>&bull; If the item is eligible for a return, we will process a refund for the purchase price (excluding any shipping costs) using the original payment method.</p>
         <p>&bull; You will receive a confirmation email once the refund is processed.</p>
         <p>&bull; Please allow up to 5-7 business days for the refund to reflect on your account, depending on your financial institution.</p>
+        <br></br>
         <p><strong style="font-size: 1.2em;">Exchanges:</strong></p>
         <p>&bull; If you wish to exchange an item, please refer to our Exchange Policy for further instructions.</p>
+        <br></br>
         <p><strong style="font-size: 1.2em;">Damaged or Defective Items:</strong></p>
-        <p>&bull; If you receive a damaged or defective item, please contact us immediately at <u>contact@delicsworld.com</u>. We will arrange for a replacement item to be sent to you at no additional cost, or if preferred, issue a full refund for the damaged or defective item.</p>
+        <p>&bull; If you receive a damaged or defective item, please contact us immediately at <a style="color: blue;" href="mailto:contact@delicsworld.com">contact@delicsworld.com</a>. We will arrange for a replacement item to be sent to you at no additional cost, or if preferred, issue a full refund for the damaged or defective item.</p>
+        <br></br>
         <p><strong style="font-size: 1.2em;">International Returns:</strong></p>
         <p>&bull; For international returns, customers are responsible for all shipping costs, customs duties, and taxes associated with the return process.</p>
         <p>&bull; We recommend contacting our customer service team for specific instructions on international returns.</p>
+        <br></br>
         <p><strong style="font-size: 1.2em;">Contact Us:</strong></p>
-        <p>&bull; For any questions or concerns regarding our return policy, please contact our customer service team at <u>contact@delicsworld.com</u>. We are here to assist you and ensure your shopping experience with us is enjoyable.</p>
+        <p>&bull; For any questions or concerns regarding our return policy, please contact our customer service team at <a style="color: blue;" href="mailto:contact@delicsworld.com">contact@delicsworld.com</a>. We are here to assist you and ensure your shopping experience with us is enjoyable.</p>
       `,
     },
     {
       question: 'What is your exchange policy?',
       answer: `
         <p>At Delics World, we want you to be completely satisfied with your purchase. If you are not satisfied for any reason, we offer a straightforward exchange policy to make your shopping experience enjoyable and hassle-free.</p>
+        <br></br>
         <p><strong style="font-size: 1.2em;">Eligibility for Exchanges:</strong></p>
         <p>&bull; Items must be unworn, unwashed, and in their original condition with tags attached.</p>
         <p>&bull; Exchanges must be initiated within 30 days of the original purchase date.</p>
         <p>&bull; Final sale items, including clearance and promotional items, are not eligible for exchanges.</p>
+        <br></br>
         <p><strong style="font-size: 1.2em;">Initiating an Exchange:</strong></p>
-        <p>&bull; To initiate an exchange, contact our customer service team at <u>contact@delicsworld.com</u> with your order number, the item(s) you wish to exchange, and the reason for the exchange.</p>
+        <p>&bull; To initiate an exchange, contact our customer service team at <a style="color: blue;" href="mailto:contact@delicsworld.com">contact@delicsworld.com</a> with your order number, the item(s) you wish to exchange, and the reason for the exchange.</p>
         <p>&bull; Our customer service team will provide you with instructions on how to proceed with your exchange.</p>
         <p><strong style="font-size: 1.2em;">Returning the Item for Exchange:</strong></p>
         <p>&bull; You will be responsible for the shipping costs associated with returning the item for exchange.</p>
         <p>&bull; We recommend using a trackable shipping method to ensure your item is returned safely. We are not responsible for lost or damaged returns.</p>
+        <br></br>
         <p><strong style="font-size: 1.2em;">Processing the Exchange:</strong></p>
         <p>&bull; Once we receive your returned item, we will inspect it to ensure it meets our exchange criteria.</p>
         <p>&bull; If the item is eligible for an exchange, we will process the exchange and send you the new item.</p>
         <p>&bull; You will receive a confirmation email once the exchange is processed.</p>
         <p><strong style="font-size: 1.2em;">Damaged or Defective Items:</strong></p>
-        <p>&bull; If you receive a damaged or defective item, please contact us immediately at <u>contact@delicsworld.com</u>. We will arrange for a replacement item to be sent to you at no additional cost, or if preferred, issue a full refund for the damaged or defective item.</p>
+        <p>&bull; If you receive a damaged or defective item, please contact us immediately at <a style="color: blue;" href="mailto:contact@delicsworld.com">contact@delicsworld.com</a>. We will arrange for a replacement item to be sent to you at no additional cost, or if preferred, issue a full refund for the damaged or defective item.</p>
         <p><strong style="font-size: 1.2em;">International Exchanges:</strong></p>
         <p>&bull; For international exchanges, customers are responsible for all shipping costs, customs duties, and taxes associated with the exchange process.</p>
         <p>&bull; We recommend contacting our customer service team for specific instructions on international exchanges.</p>
+        <br></br>
         <p><strong style="font-size: 1.2em;">Contact Us:</strong></p>
-        <p>&bull; For any questions or concerns regarding our exchange policy, please contact our customer service team at <u>contact@delicsworld.com</u>. We are here to assist you and ensure your shopping experience with us is enjoyable.</p>
+        <p>&bull; For any questions or concerns regarding our exchange policy, please contact our customer service team at <a style="color: blue;" href="mailto:contact@delicsworld.com">contact@delicsworld.com</a>. We are here to assist you and ensure your shopping experience with us is enjoyable.</p>
       `,
     },
   ],
