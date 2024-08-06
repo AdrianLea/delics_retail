@@ -675,7 +675,6 @@ function FooterMenu({menu}) {
             item={{
               title: 'Unlock 10% off',
               to: '/redeem',
-              target: '_blank',
             }}
           />
         </div>
