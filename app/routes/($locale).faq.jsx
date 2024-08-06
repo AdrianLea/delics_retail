@@ -45,12 +45,12 @@ export default function Faq() {
 
 function QuestionBar({onDropdownClick, isOpen, question}) {
   return (
-    <div className="w-full min-h-10 h-auto py-2 md:min-h-12 bg-black border border-black flex flex-row shadow-lg">
-      <div className="flex flex-grow h-auto text-white font-bold my-auto px-4">
+    <div className="w-full min-h-10 h-auto py-2 md:min-h-12 bg-white flex flex-row shadow-lg">
+      <div className="flex flex-grow h-auto text-black font-bold my-auto px-4">
         {question}
       </div>
       <button
-        className="w-auto h-auto bg-black my-auto px-3"
+        className="w-auto h-auto bg-inherit my-auto px-3"
         onClick={() => onDropdownClick()}
       >
         <svg
@@ -63,8 +63,8 @@ function QuestionBar({onDropdownClick, isOpen, question}) {
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <rect x="10" y="4" width="4" height="16" fill="white" />
-          <rect x="4" y="10" width="16" height="4" fill="white" />
+          <rect x="10" y="4" width="4" height="16" fill="black" />
+          <rect x="4" y="10" width="16" height="4" fill="black" />
         </svg>
       </button>
     </div>
