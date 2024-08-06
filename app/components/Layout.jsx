@@ -642,7 +642,7 @@ function FooterMenu({menu}) {
 
   return (
     <>
-      <section className="flex flex-row gap-10 lg:gap-20 justify-start flex-wrap py-6 border-b border-gray-800">
+      <section className="flex md:flex-row flex-col gap-10 lg:gap-20 justify-start flex-wrap py-6 border-b border-gray-800">
         <div className="flex flex-col gap-1">
           <h2 className="text-lg font-bold w-auto text-white">T&C</h2>
           {menu.items
