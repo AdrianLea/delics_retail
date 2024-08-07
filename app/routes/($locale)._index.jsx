@@ -1,11 +1,6 @@
 import {defer} from '@shopify/remix-oxygen';
 import {Suspense} from 'react';
-import {
-  Await,
-  useLoaderData,
-  useMatches,
-  useRouteLoaderData,
-} from '@remix-run/react';
+import {Await, useLoaderData} from '@remix-run/react';
 import {AnalyticsPageType} from '@shopify/hydrogen';
 
 import {ProductSwimlane} from '~/components';
@@ -54,8 +49,6 @@ export async function loader({params, context}) {
 export default function Homepage() {
   const {featuredProducts} = useLoaderData();
   const {slider_images} = useLoaderData();
-  const matches = useMatches();
-  const {layout} = useRouteLoaderData(matches[0].id);
   return (
     <>
       {slider_images && (

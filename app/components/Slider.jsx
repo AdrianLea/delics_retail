@@ -184,7 +184,7 @@ function Slider({images, className}) {
               <Link
                 className={`link hidden bg-transparent text-white md:font-bold md:text-black md:border border-b-2 border-white md:bg-pink-200 opacity-0 w-fit h-auto py-1 md:px-5 px-0 text-center font-sans md:text-2xl justify-center md:hover:bg-transparent md:hover:text-pink-200 md:hover:border md:border-pink-200 m-auto md:m-0`}
                 key={element[5]}
-                to={element[4]}
+                to={new URL(element[4]).pathname}
                 prefetch="intent"
               >
                 {element[3]}
