@@ -1,11 +1,11 @@
-import {React, useState, useEffect, useRef, useLayoutEffect} from 'react';
+import {React, useState, useEffect, useRef} from 'react';
 import {Image} from '@shopify/hydrogen';
 import {gsap} from 'gsap';
 import {TextPlugin} from 'gsap/TextPlugin';
 
 import {Link} from '~/components';
 
-function Slider({images, className, links}) {
+function Slider({images, className}) {
   const currentIndex = useRef(0);
   const slidesRef = useRef(null);
   const clicked = useRef(0);
@@ -51,19 +51,14 @@ function Slider({images, className, links}) {
       images.collections.nodes[i].metafields[0] !== null
     ) {
       let node = images.collections.nodes[i];
-      let heldindex = null;
-      for (let x = 0; x < links.length; x++) {
-        if (links[x].title === node.title) {
-          heldindex = x;
-          break;
-        }
-      }
+
       urls.push([
         node.metafields[0].reference.image.url,
         node.metafields[1].reference.image.url,
         node.metafields[2].value,
         node.metafields[3].value,
-        heldindex != null ? links[heldindex] : null,
+        node.onlineStoreUrl,
+        node.id,
       ]);
     }
   }
@@ -152,6 +147,8 @@ function Slider({images, className, links}) {
     return () => clearInterval(interval);
   }, [urls.length]);
 
+  console.log(JSON.stringify(urls));
+
   return (
     <section
       className={`slides ${className}`}
@@ -165,7 +162,7 @@ function Slider({images, className, links}) {
           <div
             id={index}
             className={`slide h-full w-full absolute opacity-0 hidden`}
-            key={element[4]?.id}
+            key={element[5]}
           >
             <Image
               className={`opacity-70 w-full h-full overflow-hidden object-cover relative hidden lg:block`}
@@ -179,16 +176,15 @@ function Slider({images, className, links}) {
             ></Image>
             <div
               className={`information-holder absolute -translate-y-[50%] top-[50%] md:translate-y-0 md:top-[80%] md:left-[10%] font-mono left-[50%] -translate-x-[50%] md:translate-x-0 w-full`}
-              key={element[4]?.id}
+              key={element[5]}
             >
               <div
                 className={`header hidden font-bold opacity-0 px-2 w-fit font-inclusiveSans md:text-xl text-white bg-none m-auto md:m-0 text-[1.7rem] text-center md:normal-case uppercase`}
               ></div>
               <Link
                 className={`link hidden bg-transparent text-white md:font-bold md:text-black md:border border-b-2 border-white md:bg-pink-200 opacity-0 w-fit h-auto py-1 md:px-5 px-0 text-center font-sans md:text-2xl justify-center md:hover:bg-transparent md:hover:text-pink-200 md:hover:border md:border-pink-200 m-auto md:m-0`}
-                key={element[4]?.id}
-                to={element[4]?.to}
-                target={element[4]?.target}
+                key={element[5]}
+                to={element[4]}
                 prefetch="intent"
               >
                 {element[3]}

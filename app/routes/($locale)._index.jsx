@@ -66,7 +66,6 @@ export default function Homepage() {
               return (
                 <Slider
                   images={images}
-                  links={layout?.headerMenu.items}
                   className={
                     'overflow-hidden w-[100%] h-screen bg-gray-600 absolute top-0 left-0'
                   }
@@ -131,6 +130,8 @@ const HOMEPAGE_SLIDER_QUERY = `query heroimagesquery {
       }
       handle
       title
+      onlineStoreUrl
+      id
     }
   }
 }`;
