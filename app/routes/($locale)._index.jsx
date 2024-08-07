@@ -54,8 +54,8 @@ export async function loader({params, context}) {
 export default function Homepage() {
   const {featuredProducts} = useLoaderData();
   const {slider_images} = useLoaderData();
-  const matches = useMatches()
-  const {layout} = useRouteLoaderData(matches[0].id)
+  const matches = useMatches();
+  const {layout} = useRouteLoaderData(matches[0].id);
   return (
     <>
       {slider_images && (
@@ -76,7 +76,7 @@ export default function Homepage() {
           </Await>
         </Suspense>
       )}
-      <div className="w-full h-screen bg-gray-100"></div>
+      <div className="w-full h-screen -mt-[92px] md:-mt-[140px] bg-gray-100"></div>
       <section
         className={`flex flex-row w-full flex-wrap items-center justify-center p-2 bg-gray-100 border-b border-gray-300`}
       >
