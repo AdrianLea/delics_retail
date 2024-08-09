@@ -85,7 +85,15 @@ export async function loader({params, request, context}) {
 
   // TODO: firstVariant is never used because we will always have a selectedVariant due to redirect
   // Investigate if we can avoid the redirect for product pages with no search params for first variant
-  const firstVariant = product.variants.nodes[0];
+  let firstVariant = product.variants.nodes[0];
+  for (let index = 0; index < product.variants.nodes.length; index++) {
+    const variant = product.variants.nodes[index];
+    if (variant.availableForSale) {
+      firstVariant = variant;
+      break;
+    }
+  }
+
   const selectedVariant = product.selectedVariant ?? firstVariant;
 
   const productAnalytics = {
@@ -121,7 +129,15 @@ export async function loader({params, request, context}) {
 
 function redirectToFirstVariant({product, request}) {
   const searchParams = new URLSearchParams(new URL(request.url).search);
-  const firstVariant = product.variants.nodes[0];
+  let firstVariant = product.variants.nodes[0];
+  for (let index = 0; index < product.variants.nodes.length; index++) {
+    const variant = product.variants.nodes[index];
+
+    if (variant.availableForSale) {
+      firstVariant = variant;
+      break;
+    }
+  }
   for (const option of firstVariant.selectedOptions) {
     searchParams.set(option.name, option.value);
   }
@@ -141,24 +157,6 @@ export default function Product() {
     selectedVariant?.price?.amount &&
     selectedVariant?.compareAtPrice?.amount &&
     selectedVariant?.price?.amount < selectedVariant?.compareAtPrice?.amount;
-
-  useEffect(() => {
-    const klaviyo_product = {
-      Name: product.title,
-      ProductID: product.id,
-      Categories:
-        product.collections == undefined
-          ? null
-          : product.collections.nodes.map((node) => node.title),
-      ImageURL: product.selectedVariant.image.url,
-      URL: product.url,
-      Brand: product.vendor,
-      Price: product.selectedVariant.price.amount,
-      CompareAtPrice: product.selectedVariant.compareAtPrice?.amount,
-    };
-    window._learnq = window._learnq || [];
-    window._learnq.push(['track', 'Viewed Product', klaviyo_product]);
-  }, [product]);
 
   return (
     <>
@@ -547,7 +545,7 @@ const PRODUCT_QUERY = `#graphql
           ...Media
         }
       }
-      variants(first: 1) {
+      variants(first: 30) {
         nodes {
           ...ProductVariantFragment
         }
