@@ -88,7 +88,6 @@ export default function Homepage() {
         <Suspense>
           <Await resolve={featuredProducts}>
             {({collections}) => {
-              console.log(JSON.stringify(collections));
               if (!collections.nodes[0].products.nodes) return <></>;
               return (
                 <ProductSwimlane
