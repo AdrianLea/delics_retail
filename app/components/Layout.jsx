@@ -61,6 +61,11 @@ export function Layout({children, layout}) {
 function Header({title, menu, layout}) {
   const isHome = useIsHomePath();
 
+  const navContents = {
+    newArrivals: {title: 'New Arrivals', to: '/new-arrivals'},\
+    shopByCollection: [{title: 'Collections', items: [menu.items]}]
+  }
+
   const {
     isOpen: isCartOpen,
     openDrawer: openCart,

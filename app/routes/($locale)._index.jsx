@@ -88,6 +88,7 @@ export default function Homepage() {
         <Suspense>
           <Await resolve={featuredProducts}>
             {({collections}) => {
+              console.log(JSON.stringify(collections));
               if (!collections.nodes[0].products.nodes) return <></>;
               return (
                 <ProductSwimlane
@@ -140,11 +141,11 @@ const HOMEPAGE_SEO_QUERY = `#graphql
 `;
 
 export const HOMEPAGE_FEATURED_PRODUCTS_QUERY = `#graphql
-  query homepageFeaturedProducts($country: CountryCode, $language: LanguageCode, $first: Int)
+  query homepageFeaturedProducts($country: CountryCode, $language: LanguageCode)
   @inContext(country: $country, language: $language) {
-    collections(first: $first, sortKey: ID, reverse: true) {
+    collections(first: 1, query:"title:New Arrivals", reverse: false) {
       nodes {
-        products(first: 10) {
+        products(first: 10, sortKey: BEST_SELLING) {
           nodes {
             id
             ...ProductCard
