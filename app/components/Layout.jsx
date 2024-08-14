@@ -1,8 +1,9 @@
 import {useParams, Form, Await, useMatches} from '@remix-run/react';
 import {useWindowScroll} from 'react-use';
-import {Suspense, useEffect, useMemo} from 'react';
+import {Suspense, useEffect, useMemo, useState} from 'react';
 import {Image, CartForm} from '@shopify/hydrogen';
 
+import {Dropdown} from '~/components/Dropdown';
 import {Loading} from '~/components/Loading';
 import {
   Drawer,
@@ -61,9 +62,16 @@ export function Layout({children, layout}) {
 function Header({title, menu, layout}) {
   const isHome = useIsHomePath();
 
-  const navContents = {
-    newArrivals: {title: 'New Arrivals', to: '/new-arrivals'},
-    shopByCollection: [{title: 'Collections', items: [menu.items]}],
+  const navContent = {
+    newArrivals: {title: 'New Arrivals', to: 'collections/new-arrivals'},
+    shopByCollection: {
+      title: 'Collections',
+      items: menu.items,
+    },
+    Dresses: {title: 'Dresses', to: 'collections/Dresses'},
+    Tops: {title: 'Tops', to: 'collections/Tops'},
+    Bottoms: {title: 'Bottoms', to: 'collections/Bottoms'},
+    Accessories: {title: 'Accessories', to: 'collections/Accessories'},
   };
 
   const {
@@ -90,7 +98,12 @@ function Header({title, menu, layout}) {
     <>
       <CartDrawer isOpen={isCartOpen} onClose={closeCart} />
       {menu && (
-        <MenuDrawer isOpen={isMenuOpen} onClose={closeMenu} menu={menu} />
+        <MenuDrawer
+          isOpen={isMenuOpen}
+          onClose={closeMenu}
+          menu={menu}
+          content={navContent}
+        />
       )}
       <DesktopHeader
         isHome={isHome}
@@ -98,6 +111,7 @@ function Header({title, menu, layout}) {
         menu={menu}
         layout={layout}
         openCart={openCart}
+        content={navContent}
       />
       <MobileHeader
         isHome={isHome}
@@ -140,43 +154,65 @@ function CartDrawer({isOpen, onClose}) {
   );
 }
 
-export function MenuDrawer({isOpen, onClose, menu}) {
+export function MenuDrawer({isOpen, onClose, menu, content}) {
   return (
     <Drawer open={isOpen} onClose={onClose} openFrom="left" heading="Menu">
       <div className="grid">
-        <MenuMobileNav menu={menu} onClose={onClose} />
+        <MenuMobileNav menu={menu} onClose={onClose} content={content} />
       </div>
     </Drawer>
   );
 }
 
-function MenuMobileNav({menu, onClose}) {
+function MenuMobileNav({menu, onClose, content}) {
   return (
     <nav className="grid gap-4 p-6 sm:gap-6 sm:px-12 sm:py-8">
       {/* Top level menu items */}
-      {(menu?.items || []).map((item) => (
-        <span key={item.id} className="block">
-          <Link
-            to={item.to}
-            target={item.target}
-            onClick={onClose}
-            className={({isActive}) =>
-              isActive
-                ? 'pb-1 border-b -mb-px font-intrepid'
-                : 'pb-1 font-nimbus'
-            }
-          >
-            <Text as="span" size="copy">
-              {item.title}
-            </Text>
-          </Link>
-        </span>
-      ))}
+      {Object.keys(content).map((key) => {
+        const section = content[key];
+
+        return section.items ? (
+          <Dropdown title={section.title}>
+            <div className="flex flex-col gap-3">
+              {Object.keys(section.items).map((subkey) => {
+                const item = section.items[subkey];
+
+                return (
+                  <Link
+                    className="w-full text-black"
+                    key={item.id}
+                    to={item.to}
+                    onClick={onClose}
+                  >
+                    {item.title}
+                  </Link>
+                );
+              })}
+            </div>
+          </Dropdown>
+        ) : (
+          <span key={key} className="block">
+            <Link
+              to={section.to}
+              onClick={onClose}
+              className={({isActive}) =>
+                isActive
+                  ? 'pb-1 border-b -mb-px font-intrepid'
+                  : 'pb-1 font-nimbus'
+              }
+            >
+              <Text as="span" size="copy">
+                {section.title}
+              </Text>
+            </Link>
+          </span>
+        );
+      })}
     </nav>
   );
 }
 
-function MobileHeader({layout, isHome, openCart, openMenu}) {
+function MobileHeader({layout, isHome, openCart, openMenu, content}) {
   // useHeaderStyleFix(containerStyle, setContainerStyle, isHome);
 
   const params = useParams();
@@ -252,10 +288,17 @@ function MobileHeader({layout, isHome, openCart, openMenu}) {
   );
 }
 
-function DesktopHeader({isHome, menu, openCart, layout}) {
+function DesktopHeader({isHome, menu, openCart, layout, content}) {
   const params = useParams();
   const {y} = useWindowScroll();
+  const [currentSection, setCurrentSection] = useState(null);
+  const handleMouseEnter = (section) => {
+    setCurrentSection(section);
+  };
 
+  const handleMouseLeave = () => {
+    setCurrentSection(null);
+  };
   return (
     <header className="hidden lg:flex flex-col sticky z-50 top-0">
       <div
@@ -315,26 +358,49 @@ function DesktopHeader({isHome, menu, openCart, layout}) {
               <CartCount isHome={isHome} openCart={openCart} />
             </div>
           </div>
-          <div className="py-1">
+          <div className="pt-1">
             <nav className="flex gap-12 items-center justify-center pt-2">
               {/* Top level menu items */}
-              {(menu?.items || []).map((item, index) => {
-                return (
+              {Object.keys(content).map((key) => {
+                const section = content[key];
+                return section.to ? (
                   <Link
-                    key={item.id}
-                    to={item.to}
-                    target={item.target}
+                    key={section.title}
+                    to={section.to}
                     prefetch="intent"
-                    className=" font-nimubs text-[1rem] font-bold "
+                    className=" pb-1 font-nimubs text-[1rem] font-bold "
                   >
-                    {item.title}
+                    {section.title}
                   </Link>
+                ) : (
+                  <button
+                    className=" pb-1 font-nimubs text-[1rem] font-bold "
+                    onMouseEnter={() => handleMouseEnter(key)}
+                    onMouseLeave={handleMouseLeave}
+                  >
+                    {section.title}
+                  </button>
                 );
               })}
             </nav>
           </div>
         </div>
       </div>
+      {currentSection && (
+        <div
+          className="subsection-dropdown flex flex-row border-t justify-center gap-12 font-nimubs font-bold bg-white"
+          onMouseEnter={() => handleMouseEnter(currentSection)}
+          onMouseLeave={handleMouseLeave}
+        >
+          {content[currentSection].items.map((item) => {
+            return (
+              <Link key={item.id} to={item.to} className="py-1">
+                {item.title}
+              </Link>
+            );
+          })}
+        </div>
+      )}
       <AnnouncementBar isHome={isHome} />
     </header>
   );
