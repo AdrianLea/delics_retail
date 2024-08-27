@@ -13,6 +13,7 @@ export class HydrogenSession {
     this.session = session;
     this.session = session;
     this.sessionStorage = sessionStorage;
+    this.isPending = false;
   }
 
   static async init(request, secrets) {
@@ -48,14 +49,17 @@ export class HydrogenSession {
   }
 
   unset(key) {
+    this.isPending = true;
     this.session.unset(key);
   }
 
   set(key, value) {
+    this.isPending = true;
     this.session.set(key, value);
   }
 
   commit() {
+    this.isPending = false;
     return this.sessionStorage.commitSession(this.session);
   }
 }

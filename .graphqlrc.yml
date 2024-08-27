@@ -1,1 +1,4 @@
-schema: node_modules/@shopify/hydrogen-react/storefront.schema.json
+schema: 
+  - node_modules/@shopify/hydrogen-react/storefront.schema.json
+  - node_modules/@shopify/hydrogen-react/customer-account.schema.json
+  

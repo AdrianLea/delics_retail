@@ -9,6 +9,10 @@ import {
 import {Suspense} from 'react';
 import {json, defer, redirect} from '@shopify/remix-oxygen';
 import {flattenConnection} from '@shopify/hydrogen';
+
+import {getFeaturedData} from './($locale).featured-products';
+import {doLogout} from './($locale).account.logout';
+
 import {
   Button,
   OrderCard,
@@ -24,28 +28,12 @@ import {usePrefixPathWithLocale} from '~/lib/utils';
 import {CACHE_NONE, routeHeaders} from '~/data/cache';
 import {ORDER_CARD_FRAGMENT} from '~/components/OrderCard';
 
-import {getFeaturedData} from './($locale).featured-products';
-import {doLogout} from './($locale).account.logout';
-
 export const headers = routeHeaders;
 
 export async function loader({request, context, params}) {
-  const {pathname} = new URL(request.url);
-  const locale = params.locale;
-  const customerAccessToken = await context.session.get('customerAccessToken');
-  const isAuthenticated = Boolean(customerAccessToken);
-  const loginPath = locale ? `/${locale}/account/login` : '/account/login';
-  const isAccountPage = /^\/account\/?$/.test(pathname);
+  const customer = await getCustomer(context);
 
-  if (!isAuthenticated) {
-    if (isAccountPage) {
-      return redirect(loginPath);
-    }
-    // pass through to public routes
-    return json({isAuthenticated: false});
-  }
-
-  const customer = await getCustomer(context, customerAccessToken);
+  console.log(JSON.stringify(customer));
 
   const heading = customer
     ? customer.firstName
@@ -55,14 +43,14 @@ export async function loader({request, context, params}) {
 
   return defer(
     {
-      isAuthenticated,
       customer,
       heading,
       featuredData: getFeaturedData(context.storefront),
     },
     {
       headers: {
-        'Cache-Control': CACHE_NONE,
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Set-Cookie': await context.session.commit(),
       },
     },
   );
@@ -79,9 +67,6 @@ export default function Authenticated() {
   });
 
   // Public routes
-  if (!data.isAuthenticated) {
-    return <Outlet />;
-  }
 
   // Authenticated routes
   if (outlet) {
@@ -103,8 +88,8 @@ export default function Authenticated() {
 }
 
 function Account({customer, heading, featuredData}) {
-  const orders = flattenConnection(customer.orders);
-  const addresses = flattenConnection(customer.addresses);
+  const orders = null;
+  const addresses = null;
 
   return (
     <>
@@ -163,76 +148,49 @@ function Orders({orders}) {
 }
 
 const CUSTOMER_QUERY = `#graphql
-  query CustomerDetails(
-    $customerAccessToken: String!
-    $country: CountryCode
-    $language: LanguageCode
-  ) @inContext(country: $country, language: $language) {
-    customer(customerAccessToken: $customerAccessToken) {
-      ...CustomerDetails
-    }
-  }
-
-  fragment AddressPartial on MailingAddress {
-    id
-    formatted
-    firstName
-    lastName
-    company
-    address1
-    address2
-    country
-    province
-    city
-    zip
-    phone
-  }
-
-  fragment CustomerDetails on Customer {
-    firstName
-    lastName
-    phone
-    email
-    defaultAddress {
-      ...AddressPartial
-    }
-    addresses(first: 6) {
-      edges {
-        node {
-          ...AddressPartial
-        }
+  query CustomerDetails {
+    customer {
+      firstName
+      lastName
+      emailAddress {
+        emailAddress
       }
-    }
-    orders(first: 250, sortKey: PROCESSED_AT, reverse: true) {
-      edges {
-        node {
-          ...OrderCard
-        }
+      defaultAddress {
+        address1
+        address2
+        city
+        company
+        country
+        firstName
+        formatted
+        formattedArea
+        id
+        lastName
+        name
+        phoneNumber
+        province
+        territoryCode
+        zip
+        zoneCode
       }
     }
   }
 
-  ${ORDER_CARD_FRAGMENT}
 `;
 
-export async function getCustomer(context, customerAccessToken) {
+export async function getCustomer(context) {
   const {storefront} = context;
 
-  const data = await storefront.query(CUSTOMER_QUERY, {
-    variables: {
-      customerAccessToken,
-      country: context.storefront.i18n.country,
-      language: context.storefront.i18n.language,
-    },
+  const data = await context.customerAccount.query(CUSTOMER_QUERY, {
     cache: storefront.CacheNone(),
   });
 
   /**
    * If the customer failed to load, we assume their access token is invalid.
    */
-  if (!data || !data.customer) {
-    throw await doLogout(context);
+  if (!data || !data.data.customer) {
+    console.log('No customer');
   }
 
-  return data.customer;
+  return data.data.customer;
 }

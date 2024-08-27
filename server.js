@@ -10,6 +10,7 @@ import {
   createCartHandler,
   createStorefrontClient,
   storefrontRedirect,
+  createCustomerAccountClient,
 } from '@shopify/hydrogen';
 
 import {createKlaviyoClient} from './app/lib/createKlaviyoClient.server';
@@ -52,7 +53,16 @@ export default {
 
       const klaviyo = createKlaviyoClient(env.KLAVIYO_API_KEY);
 
+      const customerAccount = createCustomerAccountClient({
+        waitUntil,
+        request,
+        session,
+        customerAccountId: env.PUBLIC_CUSTOMER_ACCOUNT_API_CLIENT_ID,
+        customerAccountUrl: env.PUBLIC_CUSTOMER_ACCOUNT_API_URL,
+      });
+
       const cart = createCartHandler({
+        customerAccount,
         storefront,
         getCartId: cartGetIdDefault(request.headers),
         setCartId: cartSetIdDefault(),
@@ -66,6 +76,7 @@ export default {
         build: remixBuild,
         mode: process.env.NODE_ENV,
         getLoadContext: () => ({
+          customerAccount,
           session,
           waitUntil,
           storefront,
@@ -76,6 +87,9 @@ export default {
       });
 
       const response = await handleRequest(request);
+      if (session.isPending) {
+        response.headers.set('Set-Cookie', await session.commit());
+      }
 
       if (response.status === 404) {
         /**

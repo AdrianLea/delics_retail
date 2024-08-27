@@ -24,7 +24,7 @@ export default async function handleRequest(
       '*.klaviyo.com',
       'cdn.jsdelivr.net',
     ],
-    connectSrc: ['*.klaviyo.com'],
+    connectSrc: ['*.klaviyo.com', 'wss://flying-secondly-eft.ngrok-free.app:*'],
   });
 
   const body = await renderToReadableStream(

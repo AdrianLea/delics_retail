@@ -388,7 +388,7 @@ function DesktopHeader({isHome, menu, openCart, layout, content}) {
       </div>
       {currentSection && (
         <div
-          className="subsection-dropdown flex flex-row border-t justify-center gap-12 font-nimubs font-bold bg-white"
+          className="absolute top-[112.8px] w-full subsection-dropdown flex flex-row border-t justify-center gap-12 font-nimubs font-bold bg-white"
           onMouseEnter={() => handleMouseEnter(currentSection)}
           onMouseLeave={handleMouseLeave}
         >
@@ -408,7 +408,7 @@ function DesktopHeader({isHome, menu, openCart, layout, content}) {
 
 function AccountLink({className}) {
   const [root] = useMatches();
-  const isLoggedIn = root.data?.isLoggedIn;
+  const isLoggedIn = false;
   return isLoggedIn ? (
     <Link to="/account" className={className}>
       <IconAccount />
