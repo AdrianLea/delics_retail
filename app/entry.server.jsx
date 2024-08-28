@@ -16,13 +16,16 @@ export default async function handleRequest(
       checkoutDomain: context.env.PUBLIC_CHECKOUT_DOMAIN,
       storeDomain: context.env.PUBLIC_STORE_DOMAIN,
     },
-    styleSrc: ["'self'", 'https://cdn.shopify.com'],
+    styleSrc: ["'self'", 'https://cdn.shopify.com', '*.klaviyo.com'],
 
     defaultSrc: [
       "'self'",
       'https://cdn.shopify.com',
       '*.klaviyo.com',
       'cdn.jsdelivr.net',
+      '*.cloudfront.com',
+      '*.cloudfront.net',
+      'https://cdnjs.cloudflare.com',
     ],
     connectSrc: ['*.klaviyo.com', 'wss://flying-secondly-eft.ngrok-free.app:*'],
   });

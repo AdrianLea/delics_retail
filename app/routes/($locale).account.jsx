@@ -10,6 +10,8 @@ import {Suspense} from 'react';
 import {json, defer, redirect} from '@shopify/remix-oxygen';
 import {flattenConnection} from '@shopify/hydrogen';
 
+import {CUSTOMER_DETAILS_QUERY} from '../graphql/customer-account/CustomerDetailsQuery';
+
 import {getFeaturedData} from './($locale).featured-products';
 import {doLogout} from './($locale).account.logout';
 
@@ -32,8 +34,6 @@ export const headers = routeHeaders;
 
 export async function loader({request, context, params}) {
   const customer = await getCustomer(context);
-
-  console.log(JSON.stringify(customer));
 
   const heading = customer
     ? customer.firstName
@@ -88,8 +88,8 @@ export default function Authenticated() {
 }
 
 function Account({customer, heading, featuredData}) {
-  const orders = null;
-  const addresses = null;
+  const orders = customer.orders.edges;
+  const addresses = customer.addresses.edges;
 
   return (
     <>
@@ -140,48 +140,17 @@ function EmptyOrders() {
 function Orders({orders}) {
   return (
     <ul className="grid grid-flow-row grid-cols-1 gap-2 gap-y-6 md:gap-4 lg:gap-6 false sm:grid-cols-3">
-      {orders.map((order) => (
-        <OrderCard order={order} key={order.id} />
+      {orders.map(({node}) => (
+        <OrderCard order={node} key={node.id} />
       ))}
     </ul>
   );
 }
 
-const CUSTOMER_QUERY = `#graphql
-  query CustomerDetails {
-    customer {
-      firstName
-      lastName
-      emailAddress {
-        emailAddress
-      }
-      defaultAddress {
-        address1
-        address2
-        city
-        company
-        country
-        firstName
-        formatted
-        formattedArea
-        id
-        lastName
-        name
-        phoneNumber
-        province
-        territoryCode
-        zip
-        zoneCode
-      }
-    }
-  }
-
-`;
-
 export async function getCustomer(context) {
   const {storefront} = context;
 
-  const data = await context.customerAccount.query(CUSTOMER_QUERY, {
+  const data = await context.customerAccount.query(CUSTOMER_DETAILS_QUERY, {
     cache: storefront.CacheNone(),
   });
 

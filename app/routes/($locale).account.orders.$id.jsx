@@ -4,6 +4,8 @@ import {json, redirect} from '@shopify/remix-oxygen';
 import {useLoaderData} from '@remix-run/react';
 import {Money, Image, flattenConnection} from '@shopify/hydrogen';
 
+import {CUSTOMER_ORDER_QUERY} from '../graphql/customer-account/CustomerOrderQuery';
+
 import {statusMessage} from '~/lib/utils';
 import {Link, Heading, PageHeader, Text} from '~/components';
 
@@ -16,26 +18,14 @@ export async function loader({request, context, params}) {
     return redirect(params?.locale ? `${params.locale}/account` : '/account');
   }
 
-  const queryParams = new URL(request.url).searchParams;
-  const orderToken = queryParams.get('key');
+  const orderId = `gid://shopify/Order/${params.id}`;
 
-  invariant(orderToken, 'Order token is required');
-
-  const customerAccessToken = await context.session.get('customerAccessToken');
-
-  if (!customerAccessToken) {
-    return redirect(
-      params.locale ? `${params.locale}/account/login` : '/account/login',
-    );
-  }
-
-  const orderId = `gid://shopify/Order/${params.id}?key=${orderToken}`;
-
-  const {node: order} = await context.storefront.query(CUSTOMER_ORDER_QUERY, {
+  const res = await context.customerAccount.query(CUSTOMER_ORDER_QUERY, {
     variables: {orderId},
   });
+  const order = res?.data?.order;
 
-  if (!order || !('lineItems' in order)) {
+  if (!order) {
     throw new Response('Order not found', {status: 404});
   }
 
@@ -302,119 +292,3 @@ export default function OrderRoute() {
     </div>
   );
 }
-
-const CUSTOMER_ORDER_QUERY = `#graphql
-  fragment Money on MoneyV2 {
-    amount
-    currencyCode
-  }
-  fragment AddressFull on MailingAddress {
-    address1
-    address2
-    city
-    company
-    country
-    countryCodeV2
-    firstName
-    formatted
-    id
-    lastName
-    name
-    phone
-    province
-    provinceCode
-    zip
-  }
-  fragment DiscountApplication on DiscountApplication {
-    value {
-      __typename
-      ... on MoneyV2 {
-        amount
-        currencyCode
-      }
-      ... on PricingPercentageValue {
-        percentage
-      }
-    }
-  }
-  fragment Image on Image {
-    altText
-    height
-    src: url(transform: {crop: CENTER, maxHeight: 96, maxWidth: 96, scale: 2})
-    id
-    width
-  }
-  fragment ProductVariant on ProductVariant {
-    id
-    image {
-      ...Image
-    }
-    price {
-      ...Money
-    }
-    product {
-      handle
-    }
-    sku
-    title
-  }
-  fragment LineItemFull on OrderLineItem {
-    title
-    quantity
-    discountAllocations {
-      allocatedAmount {
-        ...Money
-      }
-      discountApplication {
-        ...DiscountApplication
-      }
-    }
-    originalTotalPrice {
-      ...Money
-    }
-    discountedTotalPrice {
-      ...Money
-    }
-    variant {
-      ...ProductVariant
-    }
-  }
-
-  query CustomerOrder(
-    $country: CountryCode
-    $language: LanguageCode
-    $orderId: ID!
-  ) @inContext(country: $country, language: $language) {
-    node(id: $orderId) {
-      ... on Order {
-        id
-        name
-        orderNumber
-        processedAt
-        fulfillmentStatus
-        totalTaxV2 {
-          ...Money
-        }
-        totalPriceV2 {
-          ...Money
-        }
-        subtotalPriceV2 {
-          ...Money
-        }
-        shippingAddress {
-          ...AddressFull
-        }
-        discountApplications(first: 100) {
-          nodes {
-            ...DiscountApplication
-          }
-        }
-        lineItems(first: 100) {
-          nodes {
-            ...LineItemFull
-          }
-        }
-      }
-    }
-  }
-`;

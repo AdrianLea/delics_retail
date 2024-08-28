@@ -188,7 +188,7 @@ export const getInputStyleClasses = (isError) => {
 export function statusMessage(status) {
   const translations = {
     ATTEMPTED_DELIVERY: 'Attempted delivery',
-    CANCELED: 'Canceled',
+    CANCELLED: 'Cancelled',
     CONFIRMED: 'Confirmed',
     DELIVERED: 'Delivered',
     FAILURE: 'Failure',
@@ -204,13 +204,15 @@ export function statusMessage(status) {
     OPEN: 'Open',
     OUT_FOR_DELIVERY: 'Out for delivery',
     PARTIALLY_FULFILLED: 'Partially Fulfilled',
-    PENDING_FULFILLMENT: 'Pending',
+    PENDING: 'Pending',
     PICKED_UP: 'Displayed as Picked up',
     READY_FOR_PICKUP: 'Ready for pickup',
     RESTOCKED: 'Restocked',
     SCHEDULED: 'Scheduled',
     SUBMITTED: 'Submitted',
     UNFULFILLED: 'Unfulfilled',
+    ERROR: 'Error',
+    SUCCESS: 'Success',
   };
   try {
     return translations?.[status];

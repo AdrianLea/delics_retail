@@ -1,7 +1,6 @@
 import {Link} from '~/components';
 
 export function AccountDetails({customer}) {
-  console.log(JSON.stringify(customer));
   const {firstName, lastName, email, phone} = customer;
 
   return (
