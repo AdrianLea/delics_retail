@@ -61,8 +61,7 @@ export async function loader({request, context, params}) {
   //! redirect to checkout
   if (cartResult.checkoutUrl) {
     return redirect(
-      `${cart.checkoutUrl}${isLoggedIn ? '?logged_in=true' : ''}`,
-      {headers},
+      `${cartResult.checkoutUrl}${isLoggedIn ? '?logged_in=true' : ''}`,
     );
   } else {
     throw new Error('No checkout URL found');
