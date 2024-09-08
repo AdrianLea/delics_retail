@@ -284,6 +284,10 @@ function filterInputToParams(type, rawInput, params) {
 
 export default function SortMenu() {
   const items = [
+    {
+      label: 'Newest',
+      key: 'newest',
+    },
     {label: 'Featured', key: 'featured'},
     {
       label: 'Price: Low - High',
@@ -296,10 +300,6 @@ export default function SortMenu() {
     {
       label: 'Best Selling',
       key: 'best-selling',
-    },
-    {
-      label: 'Newest',
-      key: 'newest',
     },
   ];
   const [params] = useSearchParams();

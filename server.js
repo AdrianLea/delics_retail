@@ -87,9 +87,6 @@ export default {
       });
 
       const response = await handleRequest(request);
-      if (session.isPending) {
-        response.headers.set('Set-Cookie', await session.commit());
-      }
 
       if (response.status === 404) {
         /**
@@ -98,6 +95,10 @@ export default {
          * will pass through the 404 response.
          */
         return storefrontRedirect({request, response, storefront});
+      }
+
+      if (session.isPending) {
+        response.headers.set('Set-Cookie', await session.commit());
       }
 
       return response;

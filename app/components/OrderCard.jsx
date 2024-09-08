@@ -11,10 +11,10 @@ export function OrderCard({order}) {
 
   return (
     <li className="grid text-center border rounded">
-      <Link
+      <div
         className="grid items-center gap-4 p-4 md:gap-6 md:p-6 md:grid-cols-2"
-        to={`/account/orders/${orderId}`}
-        prefetch="intent"
+        // to={`/account/orders/${orderId}`}
+        // prefetch="intent"
       >
         {lineItems[0].node?.image && (
           <div className="card-image aspect-square bg-primary/5">
@@ -67,8 +67,8 @@ export function OrderCard({order}) {
             </dd>
           </dl>
         </div>
-      </Link>
-      <div className="self-end border-t">
+      </div>
+      {/* <div className="self-end border-t">
         <Link
           className="block w-full p-2 text-center"
           to={`/account/orders/${orderId}`}
@@ -78,7 +78,7 @@ export function OrderCard({order}) {
             View Details
           </Text>
         </Link>
-      </div>
+      </div> */}
     </li>
   );
 }

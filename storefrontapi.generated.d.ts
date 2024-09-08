@@ -277,81 +277,6 @@ export type HomepageFeaturedProductsQuery = {
   };
 };
 
-export type CustomerAddressUpdateMutationVariables = StorefrontAPI.Exact<{
-  address: StorefrontAPI.MailingAddressInput;
-  customerAccessToken: StorefrontAPI.Scalars['String']['input'];
-  id: StorefrontAPI.Scalars['ID']['input'];
-}>;
-
-export type CustomerAddressUpdateMutation = {
-  customerAddressUpdate?: StorefrontAPI.Maybe<{
-    customerUserErrors: Array<
-      Pick<StorefrontAPI.CustomerUserError, 'code' | 'field' | 'message'>
-    >;
-  }>;
-};
-
-export type CustomerAddressDeleteMutationVariables = StorefrontAPI.Exact<{
-  customerAccessToken: StorefrontAPI.Scalars['String']['input'];
-  id: StorefrontAPI.Scalars['ID']['input'];
-}>;
-
-export type CustomerAddressDeleteMutation = {
-  customerAddressDelete?: StorefrontAPI.Maybe<
-    Pick<
-      StorefrontAPI.CustomerAddressDeletePayload,
-      'deletedCustomerAddressId'
-    > & {
-      customerUserErrors: Array<
-        Pick<StorefrontAPI.CustomerUserError, 'code' | 'field' | 'message'>
-      >;
-    }
-  >;
-};
-
-export type CustomerDefaultAddressUpdateMutationVariables =
-  StorefrontAPI.Exact<{
-    addressId: StorefrontAPI.Scalars['ID']['input'];
-    customerAccessToken: StorefrontAPI.Scalars['String']['input'];
-  }>;
-
-export type CustomerDefaultAddressUpdateMutation = {
-  customerDefaultAddressUpdate?: StorefrontAPI.Maybe<{
-    customerUserErrors: Array<
-      Pick<StorefrontAPI.CustomerUserError, 'code' | 'field' | 'message'>
-    >;
-  }>;
-};
-
-export type CustomerAddressCreateMutationVariables = StorefrontAPI.Exact<{
-  address: StorefrontAPI.MailingAddressInput;
-  customerAccessToken: StorefrontAPI.Scalars['String']['input'];
-}>;
-
-export type CustomerAddressCreateMutation = {
-  customerAddressCreate?: StorefrontAPI.Maybe<{
-    customerAddress?: StorefrontAPI.Maybe<
-      Pick<StorefrontAPI.MailingAddress, 'id'>
-    >;
-    customerUserErrors: Array<
-      Pick<StorefrontAPI.CustomerUserError, 'code' | 'field' | 'message'>
-    >;
-  }>;
-};
-
-export type CustomerUpdateMutationVariables = StorefrontAPI.Exact<{
-  customerAccessToken: StorefrontAPI.Scalars['String']['input'];
-  customer: StorefrontAPI.CustomerUpdateInput;
-}>;
-
-export type CustomerUpdateMutation = {
-  customerUpdate?: StorefrontAPI.Maybe<{
-    customerUserErrors: Array<
-      Pick<StorefrontAPI.CustomerUserError, 'code' | 'field' | 'message'>
-    >;
-  }>;
-};
-
 export type CustomerRecoverMutationVariables = StorefrontAPI.Exact<{
   email: StorefrontAPI.Scalars['String']['input'];
 }>;
@@ -1206,26 +1131,6 @@ interface GeneratedQueryTypes {
 }
 
 interface GeneratedMutationTypes {
-  '#graphql\n  mutation customerAddressUpdate(\n    $address: MailingAddressInput!\n    $customerAccessToken: String!\n    $id: ID!\n  ) {\n    customerAddressUpdate(\n      address: $address\n      customerAccessToken: $customerAccessToken\n      id: $id\n    ) {\n      customerUserErrors {\n        code\n        field\n        message\n      }\n    }\n  }\n': {
-    return: CustomerAddressUpdateMutation;
-    variables: CustomerAddressUpdateMutationVariables;
-  };
-  '#graphql\n  mutation customerAddressDelete($customerAccessToken: String!, $id: ID!) {\n    customerAddressDelete(customerAccessToken: $customerAccessToken, id: $id) {\n      customerUserErrors {\n        code\n        field\n        message\n      }\n      deletedCustomerAddressId\n    }\n  }\n': {
-    return: CustomerAddressDeleteMutation;
-    variables: CustomerAddressDeleteMutationVariables;
-  };
-  '#graphql\n  mutation customerDefaultAddressUpdate(\n    $addressId: ID!\n    $customerAccessToken: String!\n  ) {\n    customerDefaultAddressUpdate(\n      addressId: $addressId\n      customerAccessToken: $customerAccessToken\n    ) {\n      customerUserErrors {\n        code\n        field\n        message\n      }\n    }\n  }\n': {
-    return: CustomerDefaultAddressUpdateMutation;
-    variables: CustomerDefaultAddressUpdateMutationVariables;
-  };
-  '#graphql\n  mutation customerAddressCreate(\n    $address: MailingAddressInput!\n    $customerAccessToken: String!\n  ) {\n    customerAddressCreate(\n      address: $address\n      customerAccessToken: $customerAccessToken\n    ) {\n      customerAddress {\n        id\n      }\n      customerUserErrors {\n        code\n        field\n        message\n      }\n    }\n  }\n': {
-    return: CustomerAddressCreateMutation;
-    variables: CustomerAddressCreateMutationVariables;
-  };
-  '#graphql\n  mutation customerUpdate($customerAccessToken: String!, $customer: CustomerUpdateInput!) {\n    customerUpdate(customerAccessToken: $customerAccessToken, customer: $customer) {\n      customerUserErrors {\n        code\n        field\n        message\n      }\n    }\n  }\n  ': {
-    return: CustomerUpdateMutation;
-    variables: CustomerUpdateMutationVariables;
-  };
   '#graphql\n  mutation customerRecover($email: String!) {\n    customerRecover(email: $email) {\n      customerUserErrors {\n        code\n        field\n        message\n      }\n    }\n  }\n': {
     return: CustomerRecoverMutation;
     variables: CustomerRecoverMutationVariables;

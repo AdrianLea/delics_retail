@@ -48,14 +48,14 @@ export class HydrogenSession {
     this.session.flash(key, value);
   }
 
-  unset(key) {
+  get set() {
     this.isPending = true;
-    this.session.unset(key);
+    return this.session.set;
   }
 
-  set(key, value) {
+  get unset() {
     this.isPending = true;
-    this.session.set(key, value);
+    return this.session.unset;
   }
 
   commit() {

@@ -172,7 +172,7 @@ function MenuMobileNav({menu, onClose, content}) {
         const section = content[key];
 
         return section.items ? (
-          <Dropdown title={section.title}>
+          <Dropdown title={section.title} key={section.title}>
             <div className="flex flex-col gap-3">
               {Object.keys(section.items).map((subkey) => {
                 const item = section.items[subkey];
@@ -374,6 +374,7 @@ function DesktopHeader({isHome, menu, openCart, layout, content}) {
                   </Link>
                 ) : (
                   <button
+                    key={section.title}
                     className=" pb-1 font-nimubs text-[1rem] font-bold "
                     onMouseEnter={() => handleMouseEnter(key)}
                     onMouseLeave={handleMouseLeave}
@@ -407,15 +408,9 @@ function DesktopHeader({isHome, menu, openCart, layout, content}) {
 }
 
 function AccountLink({className}) {
-  const [root] = useMatches();
-  const isLoggedIn = false;
-  return isLoggedIn ? (
+  return (
     <Link to="/account" className={className}>
       <IconAccount />
-    </Link>
-  ) : (
-    <Link to="/account/login" className={className}>
-      <IconLogin />
     </Link>
   );
 }

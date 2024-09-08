@@ -22,6 +22,8 @@ import {redirect} from '@shopify/remix-oxygen';
 export async function loader({request, context, params}) {
   const {cart} = context;
   const {lines} = params;
+
+  const isLoggedIn = await context.customerAccount.isLoggedIn();
   const linesMap = lines?.split(',').map((line) => {
     const lineDetails = line.split(':');
     const variantId = lineDetails[0];
@@ -58,7 +60,10 @@ export async function loader({request, context, params}) {
 
   //! redirect to checkout
   if (cartResult.checkoutUrl) {
-    return redirect(cartResult.checkoutUrl, {headers});
+    return redirect(
+      `${cart.checkoutUrl}${isLoggedIn ? '?logged_in=true' : ''}`,
+      {headers},
+    );
   } else {
     throw new Error('No checkout URL found');
   }

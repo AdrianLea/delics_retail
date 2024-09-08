@@ -11,10 +11,7 @@ function QuestionBar({onDropdownClick, isOpen, question}) {
       <div className="flex flex-grow h-auto text-black my-auto bg-transparent">
         {question}
       </div>
-      <button
-        className="w-auto h-auto bg-inherit my-auto px-3"
-        onClick={() => onDropdownClick()}
-      >
+      <div className="w-auto h-auto bg-inherit my-auto px-3">
         <svg
           className={`transition-transform duration-300 ${
             isOpen ? 'rotate-45' : ''
@@ -28,7 +25,7 @@ function QuestionBar({onDropdownClick, isOpen, question}) {
           <rect x="10" y="4" width="4" height="16" fill="black" />
           <rect x="4" y="10" width="16" height="4" fill="black" />
         </svg>
-      </button>
+      </div>
     </button>
   );
 }

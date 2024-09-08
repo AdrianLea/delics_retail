@@ -225,7 +225,7 @@ export function statusMessage(status) {
  * Errors can exist in an errors object, or nested in a data field.
  */
 export function assertApiErrors(data) {
-  const errorMessage = data?.customerUserErrors?.[0]?.message;
+  const errorMessage = data?.userErrors?.[0]?.message;
   if (errorMessage) {
     throw new Error(errorMessage);
   }

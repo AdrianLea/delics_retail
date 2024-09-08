@@ -281,8 +281,8 @@ function getSortValuesFromParam(sortParam) {
       };
     default:
       return {
-        sortKey: 'RELEVANCE',
-        reverse: false,
+        sortKey: 'CREATED',
+        reverse: true,
       };
   }
 }

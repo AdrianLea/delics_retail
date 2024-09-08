@@ -1,19 +1,15 @@
 import {
-  Await,
   Form,
   Outlet,
   useLoaderData,
   useMatches,
   useOutlet,
 } from '@remix-run/react';
-import {Suspense} from 'react';
-import {json, defer, redirect} from '@shopify/remix-oxygen';
-import {flattenConnection} from '@shopify/hydrogen';
+import {defer, redirect} from '@shopify/remix-oxygen';
 
 import {CUSTOMER_DETAILS_QUERY} from '../graphql/customer-account/CustomerDetailsQuery';
 
 import {getFeaturedData} from './($locale).featured-products';
-import {doLogout} from './($locale).account.logout';
 
 import {
   Button,
@@ -23,13 +19,9 @@ import {
   AccountDetails,
   AccountAddressBook,
   Modal,
-  ProductSwimlane,
 } from '~/components';
-import {FeaturedCollections} from '~/components/FeaturedCollections';
 import {usePrefixPathWithLocale} from '~/lib/utils';
-import {CACHE_NONE, routeHeaders} from '~/data/cache';
-import {ORDER_CARD_FRAGMENT} from '~/components/OrderCard';
-
+import {routeHeaders} from '~/data/cache';
 export const headers = routeHeaders;
 
 export async function loader({request, context, params}) {
@@ -45,12 +37,10 @@ export async function loader({request, context, params}) {
     {
       customer,
       heading,
-      featuredData: getFeaturedData(context.storefront),
     },
     {
       headers: {
         'Cache-Control': 'no-cache, no-store, must-revalidate',
-        'Set-Cookie': await context.session.commit(),
       },
     },
   );
@@ -95,7 +85,10 @@ function Account({customer, heading, featuredData}) {
     <>
       <PageHeader heading={heading}>
         <Form method="post" action={usePrefixPathWithLocale('/account/logout')}>
-          <button type="submit" className="text-black">
+          <button
+            type="submit"
+            className="text-black border border-gray-200 rounded-md px-4 py-2 hover:bg-gray-50"
+          >
             Sign out
           </button>
         </Form>
@@ -158,7 +151,7 @@ export async function getCustomer(context) {
    * If the customer failed to load, we assume their access token is invalid.
    */
   if (!data || !data.data.customer) {
-    console.log('No customer');
+    redirect('account/login');
   }
 
   return data.data.customer;

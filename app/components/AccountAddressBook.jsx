@@ -28,9 +28,12 @@ export function AccountAddressBook({customer, addresses}) {
                 <Address address={customer.defaultAddress} defaultAddress />
               )}
               {addresses
-                .filter((address) => address.id !== customer.defaultAddress?.id)
+                .filter(
+                  (address) =>
+                    address?.node?.id !== customer.defaultAddress?.id,
+                )
                 .map((address) => (
-                  <Address key={address.id} address={address} />
+                  <Address key={address?.node?.id} address={address?.node} />
                 ))}
             </div>
           )}
