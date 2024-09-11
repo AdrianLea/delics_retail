@@ -10,7 +10,6 @@ import {
   useDrawer,
   Text,
   Input,
-  IconLogin,
   IconAccount,
   IconBag,
   IconSearch,
@@ -22,14 +21,6 @@ import {
 import {useIsHomePath} from '~/lib/utils';
 import {useIsHydrated} from '~/hooks/useIsHydrated';
 import {useCartFetchers} from '~/hooks/useCartFetchers';
-
-export async function loader({params, context}) {
-  const {shop} = await context.storefront.query(ANNOUNCEMENT_QUERY);
-
-  return defer({
-    shop,
-  });
-}
 
 export function Layout({children, layout}) {
   const {headerMenu, footerMenu} = layout;
@@ -67,6 +58,10 @@ function Header({title, menu, layout}) {
     shopByCollection: {
       title: 'Collections',
       items: menu.items,
+    },
+    null: {
+      title: '',
+      items: [],
     },
     Dresses: {title: 'Dresses', to: 'collections/Dresses'},
     Tops: {title: 'Tops', to: 'collections/Tops'},
@@ -292,6 +287,7 @@ function DesktopHeader({isHome, menu, openCart, layout, content}) {
   const params = useParams();
   const {y} = useWindowScroll();
   const [currentSection, setCurrentSection] = useState(null);
+  const [isVisible, setIsVisible] = useState(false);
   const handleMouseEnter = (section) => {
     setCurrentSection(section);
   };
@@ -299,16 +295,25 @@ function DesktopHeader({isHome, menu, openCart, layout, content}) {
   const handleMouseLeave = () => {
     setCurrentSection(null);
   };
+
+  useEffect(() => {
+    if (currentSection) {
+      setIsVisible(true);
+    } else {
+      setIsVisible(false);
+    }
+  }, [currentSection]);
+
   return (
     <header className="hidden lg:flex flex-col sticky z-50 top-0">
       <div
         role="banner"
         className={`${
-          isHome
+          isHome || currentSection != null
             ? 'bg-white hover:bg-opacity-100 hover:text-black'
             : 'bg-white text-black'
         } ${
-          isHome && y < 10
+          isHome && y < 10 && currentSection == null
             ? 'bg-opacity-0 text-white border-b border-b-white border-opacity-50 hover:text-black'
             : 'bg-opacity-100 text-black'
         } items-center transition duration-300  justify-center w-full leading-none  px-12`}
@@ -363,45 +368,51 @@ function DesktopHeader({isHome, menu, openCart, layout, content}) {
               {/* Top level menu items */}
               {Object.keys(content).map((key) => {
                 const section = content[key];
-                return section.to ? (
-                  <Link
-                    key={section.title}
-                    to={section.to}
-                    prefetch="intent"
-                    className=" pb-1 font-nimubs text-[1rem] font-bold "
-                  >
-                    {section.title}
-                  </Link>
-                ) : (
-                  <button
-                    key={section.title}
-                    className=" pb-1 font-nimubs text-[1rem] font-bold "
-                    onMouseEnter={() => handleMouseEnter(key)}
-                    onMouseLeave={handleMouseLeave}
-                  >
-                    {section.title}
-                  </button>
-                );
+                if (key != 'null') {
+                  return section.to ? (
+                    <Link
+                      key={section.title}
+                      to={section.to}
+                      prefetch="intent"
+                      className=" pb-1 font-nimubs text-[1rem] font-bold "
+                    >
+                      {section.title}
+                    </Link>
+                  ) : (
+                    <button
+                      key={section.title}
+                      className=" pb-1 font-nimubs text-[1rem] font-bold "
+                      onMouseEnter={() => handleMouseEnter(key)}
+                      onMouseLeave={handleMouseLeave}
+                    >
+                      {section.title}
+                    </button>
+                  );
+                } else {
+                  return null;
+                }
               })}
             </nav>
           </div>
         </div>
       </div>
-      {currentSection && (
-        <div
-          className="absolute top-[112.8px] w-full subsection-dropdown flex flex-row border-t justify-center gap-12 font-nimubs font-bold bg-white"
-          onMouseEnter={() => handleMouseEnter(currentSection)}
-          onMouseLeave={handleMouseLeave}
-        >
-          {content[currentSection].items.map((item) => {
-            return (
-              <Link key={item.id} to={item.to} className="py-1">
-                {item.title}
-              </Link>
-            );
-          })}
-        </div>
-      )}
+
+      <div
+        className={`absolute top-[112.8px] w-full subsection-dropdown flex flex-row border-t justify-center gap-12 font-nimubs font-bold bg-white transition-opacity duration-300 ${
+          isVisible ? 'opacity-100' : 'opacity-0'
+        }`}
+        onMouseEnter={() => handleMouseEnter(currentSection)}
+        onMouseLeave={handleMouseLeave}
+      >
+        {content[currentSection].items.map((item) => {
+          return (
+            <Link key={item.id} to={item.to} className="py-1">
+              {item.title}
+            </Link>
+          );
+        })}
+      </div>
+
       <AnnouncementBar isHome={isHome} />
     </header>
   );
