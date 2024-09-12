@@ -147,7 +147,7 @@ function redirectToFirstVariant({product, request}) {
 
 export default function Product() {
   const {product, shop, recommended, variants} = useLoaderData();
-  const {media, title, vendor, descriptionHtml} = product;
+  const {media, title, descriptionHtml} = product;
   const {shippingPolicy, refundPolicy} = shop;
   const selectedVariant = useOptimisticVariant(
     product.selectedVariant,
@@ -242,17 +242,17 @@ export default function Product() {
         data={{
           products: [
             {
-              id: product.id,
-              title: product.title,
+              id: product?.id,
+              title: product?.title,
               price: selectedVariant?.price.amount || '0',
-              vendor: product.vendor,
+              vendor: product?.vendor,
               variantId: selectedVariant?.id || '',
               variantTitle: selectedVariant?.title || '',
-              collections: product.collections,
+              collections: product?.collections,
               compareAtPrice: selectedVariant?.compareAtPrice?.amount || '0',
               selectedVaraint: selectedVariant,
-              imageURL: selectedVariant.image.url,
-              url: product.url,
+              imageURL: selectedVariant?.image?.url,
+              url: product?.url,
               quantity: 1,
             },
           ],
@@ -263,7 +263,7 @@ export default function Product() {
 }
 
 export function ProductForm({variants}) {
-  const {product, analytics, storeDomain} = useLoaderData();
+  const {product, analytics} = useLoaderData();
 
   const closeRef = useRef(null);
 
