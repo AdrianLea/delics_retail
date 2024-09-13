@@ -165,7 +165,9 @@ function MenuMobileNav({menu, onClose, content}) {
       {/* Top level menu items */}
       {Object.keys(content).map((key) => {
         const section = content[key];
-
+        if (key === 'null') {
+          return <div key={section.title}><div/>;
+        }
         return section.items ? (
           <Dropdown title={section.title} key={section.title}>
             <div className="flex flex-col gap-3">
