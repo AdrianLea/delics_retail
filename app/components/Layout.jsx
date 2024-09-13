@@ -166,7 +166,7 @@ function MenuMobileNav({menu, onClose, content}) {
       {Object.keys(content).map((key) => {
         const section = content[key];
         if (key === 'null') {
-          return <div key="null"></div>;
+          return null;
         }
         return section.items ? (
           <Dropdown title={section.title} key={section.title}>
