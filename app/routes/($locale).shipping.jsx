@@ -85,20 +85,20 @@ const shippingData = {
     {
       Country: 'Singapore',
       'Shipping Cost': 'MYR 74.00',
-      'Order Amount (USD)': '$250.00',
-      'Order Amount (RM)': 'MYR 1,175.00',
+      'Order Amount (USD)': '$220.00',
+      'Order Amount (RM)': 'MYR 1,000.00',
     },
     {
       Country: 'Thailand',
       'Shipping Cost': 'MYR 76.00',
-      'Order Amount (USD)': '$250.00',
-      'Order Amount (RM)': 'MYR 1,175.00',
+      'Order Amount (USD)': '$220.00',
+      'Order Amount (RM)': 'MYR 1,000.00',
     },
     {
       Country: 'Vietnam',
       'Shipping Cost': 'MYR 78.00',
-      'Order Amount (USD)': '$250.00',
-      'Order Amount (RM)': 'MYR 1,175.00',
+      'Order Amount (USD)': '$220.00',
+      'Order Amount (RM)': 'MYR 1,000.00',
     },
     {
       Country: 'UK',
