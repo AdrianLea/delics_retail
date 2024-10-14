@@ -49,7 +49,7 @@ export async function loader({request, context: {storefront}}) {
       country: storefront.i18n.country,
       language: storefront.i18n.language,
     },
-    cache: storefront.CacheLong(),
+    cache: storefront.CacheNone(),
   });
 
   invariant(products, 'No data returned from top products query');

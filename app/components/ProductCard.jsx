@@ -129,33 +129,6 @@ export function ProductCard({
           </div>
         </div>
       </Link>
-      {quickAdd && firstVariant.availableForSale && (
-        <AddToCartButton
-          lines={[
-            {
-              quantity: 1,
-              merchandiseId: firstVariant.id,
-            },
-          ]}
-          variant="secondary"
-          className="mt-2"
-          analytics={{
-            products: [productAnalytics],
-            totalValue: parseFloat(productAnalytics.price),
-          }}
-        >
-          <Text as="span" className="flex items-center justify-center gap-2">
-            Add to Cart
-          </Text>
-        </AddToCartButton>
-      )}
-      {quickAdd && !firstVariant.availableForSale && (
-        <Button variant="secondary" className="mt-2" disabled>
-          <Text as="span" className="flex items-center justify-center gap-2">
-            Sold out
-          </Text>
-        </Button>
-      )}
     </div>
   );
 }

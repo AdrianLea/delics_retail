@@ -1,4 +1,4 @@
-import {useRef, Suspense, useEffect} from 'react';
+import {useRef, Suspense} from 'react';
 import {Disclosure, Listbox} from '@headlessui/react';
 import {defer, redirect} from '@shopify/remix-oxygen';
 import {useLoaderData, Await} from '@remix-run/react';
@@ -15,7 +15,6 @@ import invariant from 'tiny-invariant';
 import clsx from 'clsx';
 
 import {
-  BuyNow,
   Heading,
   IconCaret,
   IconCheck,
@@ -43,6 +42,7 @@ export async function loader({params, request, context}) {
   if (selectedOptions.slice(-1)[0]?.name == 'fbclid') {
     selectedOptions.pop();
   }
+
   const {shop, product} = await context.storefront.query(PRODUCT_QUERY, {
     variables: {
       handle: productHandle,
@@ -56,17 +56,9 @@ export async function loader({params, request, context}) {
     throw new Response('product', {status: 404});
   }
 
-  if (!product.selectedVariant) {
+  if (selectedOptions.length === 0) {
     return redirectToFirstVariant({product, request});
   }
-  var vars = {
-    variables: {
-      handle: productHandle,
-      selectedOptions,
-      country: context.storefront.i18n.country,
-      language: context.storefront.i18n.language,
-    },
-  };
 
   // In order to show which variants are available in the UI, we need to query
   // all of them. But there might be a *lot*, so instead separate the variants
@@ -132,7 +124,6 @@ function redirectToFirstVariant({product, request}) {
   let firstVariant = product.variants.nodes[0];
   for (let index = 0; index < product.variants.nodes.length; index++) {
     const variant = product.variants.nodes[index];
-
     if (variant.availableForSale) {
       firstVariant = variant;
       break;
@@ -141,7 +132,6 @@ function redirectToFirstVariant({product, request}) {
   for (const option of firstVariant.selectedOptions) {
     searchParams.set(option.name, option.value);
   }
-
   throw redirect(`/products/${product.handle}?${searchParams.toString()}`, 302);
 }
 
@@ -545,7 +535,7 @@ const PRODUCT_QUERY = `#graphql
           ...Media
         }
       }
-      variants(first: 30) {
+      variants(first: 100) {
         nodes {
           ...ProductVariantFragment
         }

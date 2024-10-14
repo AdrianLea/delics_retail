@@ -359,11 +359,12 @@ export function CartEmpty({hidden = false, layout = 'drawer', onClose}) {
       </section>
       <section className="grid gap-8 pt-16">
         <FeaturedProducts
-          count={4}
+          count={6}
           heading="Shop Best Sellers"
           layout={layout}
           onClose={onClose}
           sortKey="BEST_SELLING"
+          query="available_for_sale:true"
         />
       </section>
     </div>
