@@ -19,17 +19,17 @@ export function Cart({layout, onClose, cart}) {
   return (
     <>
       <CartEmpty hidden={linesCount} onClose={onClose} layout={layout} />
-      <CartDetails cart={cart} layout={layout} />
+      <CartDetails cart={cart} layout={layout} onClose={onClose} />
     </>
   );
 }
 
-export function CartDetails({layout, cart}) {
+export function CartDetails({layout, cart, onClose}) {
   // @todo: get optimistic cart cost
   const cartHasItems = !!cart && cart.totalQuantity > 0;
   const container = {
-    drawer: 'grid grid-cols-1 h-screen-no-nav grid-rows-[1fr_auto]',
-    page: 'w-full pb-12 grid md:grid-cols-2 md:items-start gap-8 md:gap-8 lg:gap-12',
+    drawer: 'h-screen overflow-y-scroll flex flex-col',
+    page: 'w-full pb-12 grid md:grid-cols-2 md:items-start gap-8 md:gap-8 lg:gap-12  ',
   };
 
   return (
@@ -41,6 +41,16 @@ export function CartDetails({layout, cart}) {
           <CartCheckoutActions checkoutUrl={cart.checkoutUrl} />
         </CartSummary>
       )}
+      <section className="grid gap-8 pt-16 px-2 pb-nav">
+        <FeaturedProducts
+          count={6}
+          heading="Shop Best Sellers"
+          layout={layout}
+          onClose={onClose}
+          sortKey="BEST_SELLING"
+          query="available_for_sale:true"
+        />
+      </section>
     </div>
   );
 }
@@ -122,7 +132,7 @@ function CartLines({layout = 'drawer', lines: cartLines}) {
     y > 0 ? 'border-t' : '',
     layout === 'page'
       ? 'flex-grow md:translate-y-4'
-      : 'px-6 pb-6 sm-max:pt-2 overflow-auto transition md:px-12',
+      : 'px-6 pb-6 sm-max:pt-2 transition md:px-12 h-fit',
   ]);
 
   return (
@@ -158,7 +168,7 @@ function CartCheckoutActions({checkoutUrl}) {
 function CartSummary({cost, layout, children = null}) {
   const summary = {
     drawer: 'grid gap-4 p-6 border-t md:px-12 bg-white',
-    page: 'sticky top-nav grid gap-6 p-4 md:px-6 md:translate-y-4 bg-white rounded w-full',
+    page: 'y-10 grid gap-6 p-4 md:px-6 md:translate-y-4 bg-white rounded w-full',
   };
 
   return (

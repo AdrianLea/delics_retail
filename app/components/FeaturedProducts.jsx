@@ -43,7 +43,7 @@ export function FeaturedProducts({
 
   return (
     <>
-      <Heading format size="copy" className="t-4">
+      <Heading format size="copy" className="t-4 m-auto font-bold text-lg">
         {heading}
       </Heading>
       <div

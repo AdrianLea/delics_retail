@@ -221,9 +221,7 @@ function MobileHeader({layout, isHome, openCart, openMenu, content}) {
     >
       <div
         className={`${
-          isHome
-            ? 'bg-white hover:bg-opacity-100 hover:text-blacks'
-            : 'bg-white text-black shadow-darkHeader'
+          isHome ? 'bg-white' : 'bg-white text-black shadow-darkHeader'
         } ${
           isHome && y < 10
             ? 'bg-opacity-0 text-white border-b border-b-white border-opacity-50'
@@ -290,6 +288,7 @@ function DesktopHeader({isHome, menu, openCart, layout, content}) {
   const {y} = useWindowScroll();
   const [currentSection, setCurrentSection] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [isActive, setIsActive] = useState(false);
   const handleMouseEnter = (section) => {
     setCurrentSection(section);
   };
@@ -310,6 +309,8 @@ function DesktopHeader({isHome, menu, openCart, layout, content}) {
     <header className="hidden lg:flex flex-col sticky z-50 top-0">
       <div
         role="banner"
+        onMouseEnter={() => setIsActive(true)}
+        onMouseLeave={() => setIsActive(false)}
         className={`${
           isHome || currentSection != null
             ? 'bg-white hover:bg-opacity-100 hover:text-black'
@@ -362,7 +363,11 @@ function DesktopHeader({isHome, menu, openCart, layout, content}) {
                 </button>
               </Form>
               <AccountLink className="relative flex items-center justify-center w-8 h-8 focus:ring-primary/5" />
-              <CartCount isHome={isHome} openCart={openCart} />
+              <CartCount
+                isHome={isHome}
+                openCart={openCart}
+                isActive={isActive}
+              />
             </div>
           </div>
           <div className="pt-1">
@@ -428,7 +433,7 @@ function AccountLink({className}) {
   );
 }
 
-function CartCount({isHome, openCart}) {
+function CartCount({isActive, openCart, isHome}) {
   const [root] = useMatches();
 
   return (
@@ -438,7 +443,8 @@ function CartCount({isHome, openCart}) {
           <Badge
             openCart={openCart}
             count={cart?.totalQuantity || 0}
-            dark={isHome}
+            isActive={isActive}
+            isHome={isHome}
           />
         )}
       </Await>
@@ -446,7 +452,7 @@ function CartCount({isHome, openCart}) {
   );
 }
 
-function Badge({openCart, dark, count}) {
+function Badge({openCart, isActive, count, isHome}) {
   const isHydrated = useIsHydrated();
   const {y} = useWindowScroll();
   const BadgeCounter = useMemo(
@@ -455,14 +461,16 @@ function Badge({openCart, dark, count}) {
         <IconBag />
         <div
           className={`${
-            dark && y < 10 ? 'text-black bg-white' : 'text-white bg-black'
+            !isHome || (isHome && (y > 10 || isActive))
+              ? 'text-white bg-black'
+              : 'text-black bg-white'
           } transition duration-300 absolute bottom-1 right-1 text-[0.625rem] font-medium subpixel-antialiased h-3 min-w-[0.75rem] flex items-center justify-center leading-none text-center rounded-full w-auto px-[0.125rem] pb-px`}
         >
           <span>{count || 0}</span>
         </div>
       </>
     ),
-    [count, y, dark],
+    [count, isActive, y, isHome],
   );
 
   return isHydrated ? (

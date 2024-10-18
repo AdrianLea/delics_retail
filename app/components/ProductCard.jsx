@@ -7,7 +7,7 @@ import {
   Video,
 } from '@shopify/hydrogen';
 
-import {Text, Link, AddToCartButton, Button} from '~/components';
+import {Link} from '~/components';
 import {isDiscounted} from '~/lib/utils';
 import {getProductPlaceholder} from '~/lib/placeholders';
 
@@ -56,16 +56,6 @@ export function ProductCard({
   } else if (preorder == true) {
     cardLabel = 'PREORDER NOW';
   }
-
-  const productAnalytics = {
-    productGid: product.id,
-    variantGid: firstVariant.id,
-    name: product.title,
-    variantName: firstVariant.title,
-    brand: product.vendor,
-    price: firstVariant.price.amount,
-    quantity: 1,
-  };
 
   return (
     <div className="grid gap-2 relative">
