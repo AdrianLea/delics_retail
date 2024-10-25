@@ -280,6 +280,21 @@ export type CustomerDetailsQuery = {
   };
 };
 
+export type CustomerEmailQueryVariables = CustomerAccountAPI.Exact<{
+  [key: string]: never;
+}>;
+
+export type CustomerEmailQuery = {
+  customer: {
+    emailAddress?: CustomerAccountAPI.Maybe<
+      Pick<
+        CustomerAccountAPI.CustomerEmailAddress,
+        'emailAddress' | 'marketingState'
+      >
+    >;
+  };
+};
+
 export type MoneyFragment = Pick<
   CustomerAccountAPI.MoneyV2,
   'amount' | 'currencyCode'
@@ -581,6 +596,10 @@ interface GeneratedQueryTypes {
   '#graphql\n  query CustomerDetails {\n    customer {\n      ...CustomerDetails\n    }\n  }\n  #graphql\n  fragment OrderFragment on Order {\n    id\n    number\n    processedAt\n    financialStatus\n    fulfillments(first: 1) {\n      nodes {\n        status\n      }\n    }\n    totalPrice {\n      amount\n      currencyCode\n    }\n    lineItems(first: 2) {\n      edges {\n        node {\n          title\n          image {\n            altText\n            height\n            url\n            width\n          }\n        }\n      }\n    }\n  }\n\n  fragment AddressPartial on CustomerAddress {\n    id\n    formatted\n    firstName\n    lastName\n    company\n    address1\n    address2\n    territoryCode\n    zoneCode\n    city\n    zip\n    phoneNumber\n  }\n\n  fragment CustomerDetails on Customer {\n    firstName\n    lastName\n    phoneNumber {\n      phoneNumber\n    }\n    emailAddress {\n      emailAddress\n    }\n    defaultAddress {\n      ...AddressPartial\n    }\n    addresses(first: 6) {\n      edges {\n        node {\n          ...AddressPartial\n        }\n      }\n    }\n    orders(first: 250, sortKey: PROCESSED_AT, reverse: true) {\n      edges {\n        node {\n          ...OrderFragment\n        }\n      }\n    }\n  }\n\n': {
     return: CustomerDetailsQuery;
     variables: CustomerDetailsQueryVariables;
+  };
+  '#graphql\n  query customerEmail {\n    customer {\n      emailAddress {\n        emailAddress\n        marketingState\n      }\n    }\n  }\n': {
+    return: CustomerEmailQuery;
+    variables: CustomerEmailQueryVariables;
   };
   '#graphql\n\n  fragment Money on MoneyV2 {\n    amount\n    currencyCode\n  }\n  fragment AddressFull on CustomerAddress {\n  \taddress1\n    address2\n    city\n    company\n    country\n    firstName\n    formatted\n    formattedArea\n    id\n    lastName\n    name\n    phoneNumber\n    province\n    territoryCode\n    zip\n    zoneCode\n  }\n  \n  \n  fragment Fulfillment on Fulfillment{\n    createdAt\n    estimatedDeliveryAt\n    id\n    isPickedUp\n    latestShipmentStatus\n    requiresShipping\n    status\n    updatedAt\n    events(first : 100) {\n\t\t\tedges {\n\t\t\t\tnode {\n\t\t\t\t\thappenedAt\n\t\t\t\t\tid\n\t\t\t\t\tstatus\n\t\t\t\t}\n\t\t\t}\n    }\n    fulfillmentLineItems(first : 100) {\n\t\t\tedges {\n\t\t\t\tnode {\n\t\t\t\t\tid\n\t\t\t\t\tlineItem {\n\t\t\t\t\t\tprice {\n\t\t\t\t\t\t\t...Money\n\t\t\t\t\t\t}\n\t\t\t\t\t\ttitle\n\t\t\t\t\t}\n\t\t\t\t\tquantity\n\t\t\t\t}\n\t\t\t}\n    }\n  }\n  \n  \n\n  query CustomerOrder($orderId: ID!) {\n     \n    order(id: $orderId) {\n      ... on Order {\n        fulfillments(first : 100) {\n          edges {\n\t\t\t\t\t\tnode {\n\t\t\t\t\t\t\t...Fulfillment\n\t\t\t\t\t\t}\n        }\n        }\n        billingAddress {\n          ...AddressFull\n        }\n        cancelReason\n        cancelledAt\n        confirmationNumber\n        createdAt\n        currencyCode\n        financialStatus\n        locationName\n        name\n        note\n        number\n        paymentInformation {\n\t\t\t\t\ttotalPaidAmount {\n\t\t\t\t\t\t...Money\n\t\t\t\t\t}\n        }\n        poNumber\n        processedAt\n        refunds {\n\t\t\t\t\tcreatedAt\n\t\t\t\t\tid\n\t\t\t\t\treturnName\n\t\t\t\t\ttotalRefunded {\n\t\t\t\t\t\t\t...Money\n\t\t\t\t\t}\n\t\t\t\t\tupdatedAt\n        }\n        requiresShipping\n        shippingAddress {\n\t\t\t\t\t...AddressFull\n        }\n        shippingDiscountAllocations {\n\t\t\t\t\tallocatedAmount {\n\t\t\t\t\t\t\t...Money\n\t\t\t\t\t}\n            \n\t\t\t\t\tdiscountApplication {\n\t\t\t\t\t\tallocationMethod\n\t\t\t\t\t\ttargetSelection\n\t\t\t\t\t\ttargetType\n\t\t\t\t\t\tvalue {\n\t\t\t\t\t\t\t...Money\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n        }\n        shippingLine {\n\t\t\t\t\thandle\n\t\t\t\t\toriginalPrice {\n\t\t\t\t\t\t...Money\n\t\t\t\t\t}\n\t\t\t\t\ttitle\n        }\n        statusPageUrl\n        subtotal {\n          ...Money\n        }\n        totalDuties {\n          ...Money\n        }\n        totalPrice {\n          ...Money\n        }\n        totalRefunded {\n          ...Money\n        }\n        totalShipping {\n          ...Money\n        }\n        totalTax {\n          ...Money\n        }\n        totalTip {\n          ...Money\n        }\n\t\t\t}    \n    }\n\t}\n\n': {
     return: CustomerOrderQuery;

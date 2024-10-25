@@ -85,6 +85,55 @@ export function createKlaviyoClient(Klaviyo_api_key) {
     }
   }
 
+  async function createBackInStockSubscription(email, itemId) {
+    const url = 'https://a.klaviyo.com/api/back-in-stock-subscriptions';
+    const options = {
+      method: 'POST',
+      headers: {
+        accept: ' application/vnd.api+json',
+        revision: '2024-10-15',
+        'content-type': 'application/vnd.api+json',
+        Authorization: `Klaviyo-API-Key ${Klaviyo_api_key}`,
+      },
+      body: JSON.stringify({
+        data: {
+          type: 'back-in-stock-subscription',
+          attributes: {
+            profile: {
+              data: {
+                type: 'profile',
+                attributes: {
+                  email,
+                },
+              },
+            },
+            channels: ['EMAIL'],
+          },
+          relationships: {
+            variant: {
+              data: {
+                type: 'catalog-variant',
+                id: `$shopify:::$default:::${itemId}`,
+              },
+            },
+          },
+        },
+      }),
+    };
+    try {
+      const response = await fetch(url, options);
+      if (!response.ok) {
+        console.log(JSON.stringify(response));
+        return {success: false, response};
+      }
+
+      return {success: true, response};
+    } catch (error) {
+      console.log('here');
+      return {success: false, error};
+    }
+  }
+
   async function getSubscribedCouponFromProfile(
     profile,
     retries = 20,
@@ -136,5 +185,6 @@ export function createKlaviyoClient(Klaviyo_api_key) {
     createKlaviyoProfile,
     subscribeKlaviyoProfile,
     getSubscribedCouponFromProfile,
+    createBackInStockSubscription,
   };
 }

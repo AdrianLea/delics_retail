@@ -1,7 +1,14 @@
-import {useRef, Suspense} from 'react';
+import {useRef, Suspense, useState, useEffect} from 'react';
+import {
+  Form,
+  useLoaderData,
+  Await,
+  useSubmit,
+  useActionData,
+  useNavigation,
+} from '@remix-run/react';
 import {Disclosure, Listbox} from '@headlessui/react';
 import {defer, redirect} from '@shopify/remix-oxygen';
-import {useLoaderData, Await} from '@remix-run/react';
 import {
   AnalyticsPageType,
   Money,
@@ -13,6 +20,8 @@ import {
 } from '@shopify/hydrogen';
 import invariant from 'tiny-invariant';
 import clsx from 'clsx';
+
+import {createKlaviyoClient} from '../lib/createKlaviyoClient.server';
 
 import {
   Heading,
@@ -28,12 +37,69 @@ import {
   AddToCartButton,
   Button,
 } from '~/components';
+import {CUSTOMER_EMAIL_QUERY} from '~/graphql/customer-account/CustomerEmailQuery';
 import {getExcerpt} from '~/lib/utils';
 import {seoPayload} from '~/lib/seo.server';
 import {routeHeaders} from '~/data/cache';
 import {MEDIA_FRAGMENT, PRODUCT_CARD_FRAGMENT} from '~/data/fragments';
-
 export const headers = routeHeaders;
+
+export async function action({context, request}) {
+  const formData = await request.formData();
+  const email = formData.get('email');
+  const productId = formData.get('productId');
+  const klaviyoClient = createKlaviyoClient(context.env.KLAVIYO_API_KEY);
+  const resultProfile = await klaviyoClient.createKlaviyoProfile(email);
+  var profileId = null;
+  if (resultProfile.response) {
+    const res = await resultProfile.response.json();
+    if (resultProfile.success) {
+      profileId = res.data.id;
+    } else if (res.errors[0]?.meta?.duplicate_profile_id) {
+      profileId = res.errors[0].meta.duplicate_profile_id;
+    } else {
+      return {success: false, message: res.errors[0].detail};
+    }
+  } else {
+    return {sucess: false, message: 'Network error 1, please try again'};
+  }
+
+  const resultSubscribe = await klaviyoClient.subscribeKlaviyoProfile(
+    {
+      id: profileId,
+      attributes: {
+        email,
+      },
+    },
+    'VNXjm7',
+  );
+
+  if (resultSubscribe.response) {
+    const text = await resultSubscribe.response.text(); // Read the response body as text
+    if (text) {
+      const res = JSON.parse(text); // Try parsing the text as JSON
+      if (!resultSubscribe.success) {
+        return {success: false, message: res.errors[0].detail};
+      }
+    }
+  }
+
+  const resultNotify = await klaviyoClient.createBackInStockSubscription(
+    email,
+    productId,
+  );
+  if (resultNotify.response) {
+    const text = await resultNotify.response.text(); // Read the response body as text
+    if (text) {
+      const res = JSON.parse(text); // Try parsing the text as JSON
+      if (!resultNotify.success) {
+        return {success: false, message: res.errors[0].detail};
+      }
+    }
+  }
+
+  return {success: true};
+}
 
 export async function loader({params, request, context}) {
   const {productHandle} = params;
@@ -60,6 +126,19 @@ export async function loader({params, request, context}) {
     return redirectToFirstVariant({product, request});
   }
 
+  var customer;
+  if (await context.customerAccount.isLoggedIn()) {
+    try {
+      const response = await context.customerAccount.query(
+        CUSTOMER_EMAIL_QUERY,
+      );
+      if (response.error || !response) {
+        console.log('err');
+      } else {
+        customer = response.data.customer;
+      }
+    } catch (error) {}
+  }
   // In order to show which variants are available in the UI, we need to query
   // all of them. But there might be a *lot*, so instead separate the variants
   // into it's own separate query that is deferred. So there's a brief moment
@@ -116,6 +195,7 @@ export async function loader({params, request, context}) {
       totalValue: parseFloat(selectedVariant.price.amount),
     },
     seo,
+    customer,
   });
 }
 
@@ -136,9 +216,16 @@ function redirectToFirstVariant({product, request}) {
 }
 
 export default function Product() {
-  const {product, shop, recommended, variants} = useLoaderData();
+  const [modalOpen, setModalOpen] = useState(false);
+  const {product, shop, recommended, variants, customer} = useLoaderData();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isFinished, setIsFinished] = useState(false);
   const {media, title, descriptionHtml} = product;
   const {shippingPolicy, refundPolicy} = shop;
+  const actionData = useActionData();
+  var success = actionData?.success ? actionData.success : false;
+  const nav = useNavigation();
+  const submit = useSubmit();
   const selectedVariant = useOptimisticVariant(
     product.selectedVariant,
     variants,
@@ -148,8 +235,65 @@ export default function Product() {
     selectedVariant?.compareAtPrice?.amount &&
     selectedVariant?.price?.amount < selectedVariant?.compareAtPrice?.amount;
 
+  useEffect(() => {
+    if (nav.state === 'submitting' && success == null) {
+      setIsLoading(true);
+    } else if (nav.state === 'idle' && success == true) {
+      setIsFinished(true);
+      setModalOpen(false);
+    }
+  }, [nav.state, success]);
+
+  const toggleModal = () => {
+    if (customer?.emailAddress?.emailAddress) {
+      const formData = new FormData();
+      const productId = selectedVariant?.id?.match(/\d+$/)?.[0];
+      formData.append('email', customer?.emailAddress?.emailAddress);
+      formData.append('productId', productId);
+      submit(formData, {method: 'post'});
+    } else {
+      setModalOpen(!modalOpen);
+    }
+  };
+
   return (
     <>
+      {modalOpen ? (
+        <div
+          className="relative z-50"
+          aria-labelledby="modal-title"
+          role="dialog"
+          aria-modal="true"
+          id="modal-bg"
+        >
+          <div className="fixed inset-0 transition-opacity bg-opacity-75 bg-primary/40"></div>
+          <div className="fixed inset-0 z-50 overflow-y-auto">
+            <div className="flex items-center justify-center min-h-full p-4 text-center sm:p-0">
+              <div
+                className="relative flex-1 px-4 pt-5 pb-4 overflow-hidden text-left transition-all transform rounded shadow-xl bg-contrast sm:my-12 sm:flex-none sm:w-full sm:max-w-sm sm:p-6"
+                role="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+                onKeyPress={(e) => {
+                  e.stopPropagation();
+                }}
+                tabIndex={0}
+              >
+                <div className="absolute top-0 right-0 hidden pt-4 pr-4 sm:block">
+                  <button
+                    onClick={toggleModal}
+                    className="p-4 -m-4 transition text-primary hover:text-primary/50"
+                  >
+                    <IconClose aria-label="Close panel" />
+                  </button>
+                </div>
+                <ModalForm toggleModal={toggleModal} customer={customer} />
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : null}
       <Section className="px-0 md:px-8 lg:px-12">
         <div className="grid items-start md:gap-6 lg:gap-20 md:grid-cols-2 lg:grid-cols-3">
           <ProductGallery
@@ -172,14 +316,22 @@ export default function Product() {
                   {isOnSale && (
                     <Money
                       withoutTrailingZeros
-                      data={product.selectedVariant?.compareAtPrice}
+                      data={product?.selectedVariant?.compareAtPrice}
                       as="span"
                       className="opacity-50 strike"
                     />
                   )}
                 </span>
               </div>
-              <Suspense fallback={<ProductForm variants={[]} />}>
+              <Suspense
+                fallback={
+                  <ProductForm
+                    variants={[]}
+                    toggleModal={toggleModal}
+                    isFinished={isFinished}
+                  />
+                }
+              >
                 <Await
                   errorElement="There was a problem loading related products"
                   resolve={variants}
@@ -187,6 +339,8 @@ export default function Product() {
                   {(resp) => (
                     <ProductForm
                       variants={resp.product?.variants.nodes || []}
+                      toggleModal={toggleModal}
+                      isFinished={isFinished}
                     />
                   )}
                 </Await>
@@ -252,10 +406,42 @@ export default function Product() {
   );
 }
 
-export function ProductForm({variants}) {
-  const {product, analytics} = useLoaderData();
+function ModalForm(toggleModal) {
+  const submit = useSubmit();
+  const {product} = useLoaderData();
+  const selectedVariant = product?.selectedVariant;
+  const actionData = useActionData();
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const productId = selectedVariant?.id?.match(/\d+$/)?.[0];
+    formData.append('productId', productId);
+    submit(formData, {method: 'post'});
+  };
+  return (
+    <div className="p-2" onSubmit={handleSubmit}>
+      <Form method="post" className="flex flex-col">
+        <p className="font-bold pb-1">Sign up to receive updates</p>
+        {actionData?.success === false ? (
+          <p className="text-red-500">Something went wrong, please try again</p>
+        ) : null}
+        <p className="pb-1">Email:</p>
+        <input type="email" name="email" required />
+        <button
+          type="submit"
+          className="mt-2 px-4 py-2 bg-black hover:bg-gray-800 text-white rounded"
+        >
+          Sign Up
+        </button>
+      </Form>
+    </div>
+  );
+}
 
+export function ProductForm({variants, toggleModal, isFinished}) {
+  const {product, analytics} = useLoaderData();
   const closeRef = useRef(null);
+  const actionData = useActionData();
 
   /**
    * Likewise, we're defaulting to the first variant for purposes
@@ -268,6 +454,7 @@ export function ProductForm({variants}) {
     ...analytics.products[0],
     quantity: 1,
   };
+
   const {publish, shop, cart, prevCart} = useAnalytics();
 
   return (
@@ -371,9 +558,27 @@ export function ProductForm({variants}) {
         {selectedVariant && (
           <div className="grid items-stretch gap-4">
             {isOutOfStock ? (
-              <Button variant="secondary" disabled>
-                <Text>Sold out</Text>
-              </Button>
+              <>
+                <Button variant="secondary" disabled>
+                  <Text>Sold out</Text>
+                </Button>
+                {actionData?.success === false ? (
+                  <p className="text-red-500">
+                    An error occured, please try again
+                  </p>
+                ) : null}
+                {!isFinished ? (
+                  <Button onClick={() => toggleModal()}>
+                    <Text className="text-white">Notify me when available</Text>
+                  </Button>
+                ) : (
+                  <div className="inline-block rounded font-medium text-center py-3 px-6 bg-pink-200">
+                    <Text className="text-white">
+                      We will notify you when this product is available
+                    </Text>
+                  </div>
+                )}
+              </>
             ) : (
               <AddToCartButton
                 lines={[
