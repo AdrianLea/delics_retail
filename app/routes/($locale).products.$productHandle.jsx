@@ -105,8 +105,9 @@ export async function loader({params, request, context}) {
   const {productHandle} = params;
 
   const selectedOptions = getSelectedProductOptions(request);
-  if (selectedOptions.slice(-1)[0]?.name == 'fbclid') {
-    selectedOptions.pop();
+
+  if (selectedOptions[0]?.name == '_kx') {
+    selectedOptions.shift();
   }
 
   const {shop, product} = await context.storefront.query(PRODUCT_QUERY, {
@@ -168,12 +169,12 @@ export async function loader({params, request, context}) {
   const selectedVariant = product.selectedVariant ?? firstVariant;
 
   const productAnalytics = {
-    productGid: product.id,
-    variantGid: selectedVariant.id,
-    name: product.title,
-    variantName: selectedVariant.title,
-    brand: product.vendor,
-    price: selectedVariant.price.amount,
+    productGid: product?.id,
+    variantGid: selectedVariant?.id,
+    name: product?.title,
+    variantName: selectedVariant?.title,
+    brand: product?.vendor,
+    price: selectedVariant?.price?.amount,
   };
 
   const seo = seoPayload.product({
@@ -192,7 +193,7 @@ export async function loader({params, request, context}) {
       pageType: AnalyticsPageType.product,
       resourceId: product.id,
       products: [productAnalytics],
-      totalValue: parseFloat(selectedVariant.price.amount),
+      totalValue: parseFloat(selectedVariant?.price?.amount),
     },
     seo,
     customer,
@@ -388,7 +389,7 @@ export default function Product() {
             {
               id: product?.id,
               title: product?.title,
-              price: selectedVariant?.price.amount || '0',
+              price: selectedVariant?.price?.amount || '0',
               vendor: product?.vendor,
               variantId: selectedVariant?.id || '',
               variantTitle: selectedVariant?.title || '',
