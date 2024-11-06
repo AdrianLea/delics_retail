@@ -6,6 +6,7 @@ import {
   useMoney,
   Video,
 } from '@shopify/hydrogen';
+import {useState, useEffect} from 'react';
 
 import {Link} from '~/components';
 import {isDiscounted} from '~/lib/utils';
@@ -20,6 +21,7 @@ export function ProductCard({
   quickAdd,
 }) {
   let cardLabel;
+  const [onSale, setOnSale] = useState(false);
 
   const cardProduct = product?.variants ? product : getProductPlaceholder();
   if (!cardProduct?.variants?.nodes?.length) return null;
@@ -52,10 +54,20 @@ export function ProductCard({
   } else if (soldOut == true) {
     cardLabel = 'SOLD OUT';
   } else if (isDiscounted(price, compareAtPrice)) {
-    cardLabel = 'SALE';
+    cardLabel = `${Math.round(
+      (1 - price.amount / compareAtPrice.amount) * 100,
+    )}% OFF`;
   } else if (preorder == true) {
     cardLabel = 'PREORDER NOW';
   }
+
+  useEffect(() => {
+    if (isDiscounted(price, compareAtPrice)) {
+      setOnSale(true);
+    } else {
+      setOnSale(false);
+    }
+  }, [price, compareAtPrice]);
 
   return (
     <div className="grid gap-2 relative">
@@ -98,7 +110,11 @@ export function ProductCard({
               />
             )}
           </div>
-          <div className="bg-black text-white font-bold font-nimubs rounded-sm absolute top-0 left-0 m-2 px-1 z-[35]">
+          <div
+            className={`${
+              onSale ? 'bg-red-600' : 'bg-black'
+            } text-white font-bold font-nimubs rounded-sm absolute top-0 left-0 m-2 px-1 z-[35]`}
+          >
             <span>{cardLabel}</span>
           </div>
           <div className="grid gap px-2">

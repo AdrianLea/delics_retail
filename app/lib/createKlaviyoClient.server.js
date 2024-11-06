@@ -123,13 +123,11 @@ export function createKlaviyoClient(Klaviyo_api_key) {
     try {
       const response = await fetch(url, options);
       if (!response.ok) {
-        console.log(JSON.stringify(response));
         return {success: false, response};
       }
 
       return {success: true, response};
     } catch (error) {
-      console.log('here');
       return {success: false, error};
     }
   }

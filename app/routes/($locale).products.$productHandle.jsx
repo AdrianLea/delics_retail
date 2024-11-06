@@ -319,7 +319,7 @@ export default function Product() {
                       withoutTrailingZeros
                       data={product?.selectedVariant?.compareAtPrice}
                       as="span"
-                      className="opacity-50 strike"
+                      className="opacity-50 strike mx-3"
                     />
                   )}
                 </span>
