@@ -24,7 +24,6 @@ export function ProductCard({
   const [onSale, setOnSale] = useState(false);
 
   const cardProduct = product?.variants ? product : getProductPlaceholder();
-  if (!cardProduct?.variants?.nodes?.length) return null;
 
   const firstVariant = flattenConnection(cardProduct.variants)[0];
   const mediaRef = product?.metafields[0];
@@ -36,7 +35,6 @@ export function ProductCard({
     backImage = mediaRef.reference.image;
   }
 
-  if (!firstVariant) return null;
   const {image, price, compareAtPrice} = firstVariant;
   let soldOut = true;
   let preorder = false;
@@ -48,6 +46,13 @@ export function ProductCard({
       }
     }
   }
+  useEffect(() => {
+    if (isDiscounted(price, compareAtPrice)) {
+      setOnSale(true);
+    } else {
+      setOnSale(false);
+    }
+  }, [price, compareAtPrice]);
 
   if (label) {
     cardLabel = label;
@@ -60,14 +65,6 @@ export function ProductCard({
   } else if (preorder == true) {
     cardLabel = 'PREORDER NOW';
   }
-
-  useEffect(() => {
-    if (isDiscounted(price, compareAtPrice)) {
-      setOnSale(true);
-    } else {
-      setOnSale(false);
-    }
-  }, [price, compareAtPrice]);
 
   return (
     <div className="grid gap-2 relative">
@@ -110,11 +107,7 @@ export function ProductCard({
               />
             )}
           </div>
-          <div
-            className={`${
-              onSale ? 'bg-red-600' : 'bg-black'
-            } text-white font-bold font-nimubs rounded-sm absolute top-0 left-0 m-2 px-1 z-[35]`}
-          >
+          <div className="bg-black text-white font-bold font-nimubs rounded-sm absolute top-0 left-0 m-2 px-1 z-[35]">
             <span>{cardLabel}</span>
           </div>
           <div className="grid gap px-2">
@@ -123,7 +116,13 @@ export function ProductCard({
             </h3>
             <div className="flex gap-4 ">
               <span className="flex gap-4 text-[0.69rem] pb-5">
-                <Money withoutTrailingZeros data={price} />
+                <Money
+                  withoutTrailingZeros
+                  data={price}
+                  className={`font-bold ${
+                    onSale ? 'text-red-600' : 'text-black'
+                  }`}
+                />
                 {isDiscounted(price, compareAtPrice) && (
                   <CompareAtPrice
                     className={'opacity-50'}
