@@ -451,6 +451,9 @@ export function ProductForm({variants, toggleModal, isFinished}) {
    */
   const selectedVariant = product.selectedVariant;
   const isOutOfStock = !selectedVariant?.availableForSale;
+
+  console.log(selectedVariant.currentlyNotInStock);
+
   const productAnalytics = {
     ...analytics.products[0],
     quantity: 1,
@@ -556,6 +559,11 @@ export function ProductForm({variants, toggleModal, isFinished}) {
             );
           }}
         </VariantSelector>
+        {!isOutOfStock && selectedVariant?.currentlyNotInStock && (
+          <p className="text-red-500">
+            This product is only available for preorder
+          </p>
+        )}
         {selectedVariant && (
           <div className="grid items-stretch gap-4">
             {isOutOfStock ? (
@@ -678,6 +686,7 @@ const PRODUCT_VARIANT_FRAGMENT = `#graphql
   fragment ProductVariantFragment on ProductVariant {
     id
     availableForSale
+    currentlyNotInStock
     selectedOptions {
       name
       value

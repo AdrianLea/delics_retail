@@ -67,6 +67,7 @@ function Header({title, menu, layout}) {
     Tops: {title: 'Tops', to: 'collections/Tops'},
     Bottoms: {title: 'Bottoms', to: 'collections/Bottoms'},
     Accessories: {title: 'Accessories', to: 'collections/Accessories'},
+    Bags: {title: 'Bags', to: 'collections/Bags'},
   };
 
   const {
