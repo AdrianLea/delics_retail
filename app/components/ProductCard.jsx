@@ -37,13 +37,10 @@ export function ProductCard({
 
   const {image, price, compareAtPrice} = firstVariant;
   let soldOut = true;
-  let preorder = false;
+
   for (let i = 0; i < cardProduct.variants.nodes.length; i++) {
     if (cardProduct.variants.nodes[i].availableForSale) {
       soldOut = false;
-      if (cardProduct.variants.nodes[i].currentlyNotInStock) {
-        preorder = true;
-      }
     }
   }
   useEffect(() => {
@@ -62,8 +59,6 @@ export function ProductCard({
     cardLabel = `${Math.round(
       (1 - price.amount / compareAtPrice.amount) * 100,
     )}% OFF`;
-  } else if (preorder == true) {
-    cardLabel = 'PREORDER NOW';
   }
 
   return (
