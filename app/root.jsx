@@ -12,9 +12,7 @@ import {
   useRouteError,
 } from '@remix-run/react';
 import {
-  ShopifySalesChannel,
   getSeoMeta,
-  useLoadScript,
   getShopAnalytics,
   Analytics,
   useNonce,
@@ -122,7 +120,6 @@ export default function App() {
           cart={data.cart}
           shop={data.shop}
           consent={data.consent}
-          customData={{foo: 'bar'}}
         >
           <Layout
             key={`${locale.language}-${locale.country}`}

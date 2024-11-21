@@ -1,11 +1,11 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useNavigation} from '@remix-run/react';
 import {gsap} from 'gsap';
 
 export function Loading() {
   const ctx = useRef(null);
   const loaderBar = useRef(null);
-  const loadEnded = useRef(false);
+  const [loadEnded, setLoadEnded] = useState(false);
   const fetcher = useNavigation();
   const finishLoad = useRef(null);
   const startLoad = useRef(null);
@@ -39,15 +39,17 @@ export function Loading() {
 
   useEffect(() => {
     startLoad.current.pause(0);
-    if (fetcher.state == 'idle' && loadEnded.current == true) {
+    if (fetcher.state == 'idle' && loadEnded == false) {
+      setLoadEnded(true);
       startLoad.current.pause(0);
-      loadEnded.current = false;
       finishLoad.current.play(0);
-    } else if (fetcher.state == 'loading') {
+      console.log('one');
+    } else if (fetcher.state == 'loading' && loadEnded == true) {
+      console.log('two');
+      setLoadEnded(false);
       startLoad.current.play(0);
-      loadEnded.current = true;
     }
-  }, [fetcher]);
+  }, [fetcher, loadEnded]);
 
   return (
     <div className="w-full h-[10px] fixed top-0 left-0 z-[100]">
