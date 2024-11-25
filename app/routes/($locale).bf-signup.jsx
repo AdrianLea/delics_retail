@@ -40,7 +40,7 @@ export async function action({context, request}) {
         phone_number: phoneNumber,
       },
     },
-    'VNXjm7',
+    'VkmDEs',
   );
 
   if (resultSubscribe.response) {
@@ -50,31 +50,12 @@ export async function action({context, request}) {
       if (!resultSubscribe.success) {
         return {success: false, message: res.errors[0].detail};
       }
-    }
-  }
-
-  const resultCode = await klaviyoClient.getSubscribedCouponFromProfile({
-    id: profileId,
-  });
-
-  if (resultCode.response) {
-    if (resultCode.success) {
-      const couponItem = resultCode.response.data.find(
-        (item) =>
-          item.id.includes('10PercentCode') &&
-          item.attributes.status === 'ASSIGNED_TO_PROFILE',
-      );
-      const couponCode = couponItem.attributes.unique_code;
-      return {
-        success: true,
-        code: couponCode,
-      };
     } else {
-      return {success: false, message: resultCode.response.errors[0].detail};
+      return {success: false};
     }
-  } else {
-    return {sucess: false, message: resultCode.error};
   }
+
+  return {success: true};
 }
 
 export default function Redeem() {
@@ -82,13 +63,6 @@ export default function Redeem() {
   const [number, setNumber] = useState('');
   const [isValid, setIsValid] = useState(false);
   const navigation = useNavigation();
-  const copyToClipboard = async (text) => {
-    try {
-      await navigator.clipboard.writeText(text);
-    } catch {
-      console.error('error clipboard');
-    }
-  };
   return (
     <section className="flex h-screen">
       <div className="flex md:flex-row flex-col bg-black w-full h-full">
@@ -108,13 +82,11 @@ export default function Redeem() {
               }`}
             >
               <div className="text-white md:text-4xl text-2xl py-4 font-bold">
-                UNLOCK 10% OFF
+                BLACK FRIDAY SALE
               </div>
+
               <div className="text-white py-2">
-                Don&lsquo;t miss out on our exclusive deals and offers
-              </div>
-              <div className="text-white py-2">
-                Sign up for a 10% discount code off
+                Sign up for early access to our black friday sale event
               </div>
               <Form method="post">
                 <div className="text-white pb-1 pt-2">Email:</div>
@@ -169,44 +141,8 @@ export default function Redeem() {
                 actionData?.success ? 'block' : 'hidden'
               }`}
             >
-              <div className="text-white font-bold text-2xl">
-                Thank you! Use this code to receive 10% off your next purchase
-              </div>
-              <div className="w-full text-center mt-10 bg-white px-12 text-xl font-bold relative h-fit flex flex-row justify-center">
-                <div className="flex-grow h-fit my-auto">
-                  {actionData?.code}
-                </div>
-
-                <button
-                  onClick={() => copyToClipboard(actionData?.code)}
-                  className="w-fit h-full bg-white py-3 text-white font-bold font-sans px-1"
-                >
-                  <svg
-                    fill="#000000"
-                    height="30px"
-                    width="30px"
-                    version="1.1"
-                    id="Capa_1"
-                    xmlns="http://www.w3.org/2000/svg"
-                    xmlnsXlink="http://www.w3.org/1999/xlink"
-                    viewBox="0 0 352.804 352.804"
-                    xmlSpace="preserve"
-                  >
-                    <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                    <g
-                      id="SVGRepo_tracerCarrier"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    ></g>
-                    <g id="SVGRepo_iconCarrier">
-                      {' '}
-                      <g>
-                        {' '}
-                        <path d="M318.54,57.282h-47.652V15c0-8.284-6.716-15-15-15H34.264c-8.284,0-15,6.716-15,15v265.522c0,8.284,6.716,15,15,15h47.651 v42.281c0,8.284,6.716,15,15,15H318.54c8.284,0,15-6.716,15-15V72.282C333.54,63.998,326.824,57.282,318.54,57.282z M49.264,265.522V30h191.623v27.282H96.916c-8.284,0-15,6.716-15,15v193.24H49.264z M303.54,322.804H111.916V87.282H303.54V322.804 z"></path>{' '}
-                      </g>{' '}
-                    </g>
-                  </svg>
-                </button>
+              <div className="text-white font-bold text-2xl w-full text-center">
+                Thank you for signing up, remember to check your inbox!
               </div>
             </div>
           </div>

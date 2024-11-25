@@ -765,6 +765,12 @@ function FooterMenu({menu}) {
               to: '/redeem',
             }}
           />
+          <FooterLink
+            item={{
+              title: 'Black Friday Sale',
+              to: '/bf-signup',
+            }}
+          />
         </div>
         <div className="flex flex-col gap-1">
           <h2 className="text-lg font-bold text-white">Follow Us</h2>

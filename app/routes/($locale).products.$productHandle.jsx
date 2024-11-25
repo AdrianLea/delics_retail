@@ -219,7 +219,6 @@ function redirectToFirstVariant({product, request}) {
 export default function Product() {
   const [modalOpen, setModalOpen] = useState(false);
   const {product, shop, recommended, variants, customer} = useLoaderData();
-  const [isLoading, setIsLoading] = useState(false);
   const [isFinished, setIsFinished] = useState(false);
   const {media, title, descriptionHtml} = product;
   const {shippingPolicy, refundPolicy} = shop;
@@ -237,9 +236,7 @@ export default function Product() {
     selectedVariant?.price?.amount < selectedVariant?.compareAtPrice?.amount;
 
   useEffect(() => {
-    if (nav.state === 'submitting' && success == null) {
-      setIsLoading(true);
-    } else if (nav.state === 'idle' && success == true) {
+    if (nav.state === 'idle' && success == true) {
       setIsFinished(true);
       setModalOpen(false);
     }
@@ -451,8 +448,6 @@ export function ProductForm({variants, toggleModal, isFinished}) {
    */
   const selectedVariant = product.selectedVariant;
   const isOutOfStock = !selectedVariant?.availableForSale;
-
-  console.log(selectedVariant.currentlyNotInStock);
 
   const productAnalytics = {
     ...analytics.products[0],

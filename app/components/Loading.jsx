@@ -43,9 +43,7 @@ export function Loading() {
       setLoadEnded(true);
       startLoad.current.pause(0);
       finishLoad.current.play(0);
-      console.log('one');
     } else if (fetcher.state == 'loading' && loadEnded == true) {
-      console.log('two');
       setLoadEnded(false);
       startLoad.current.play(0);
     }

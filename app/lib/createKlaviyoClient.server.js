@@ -38,9 +38,9 @@ export function createKlaviyoClient(Klaviyo_api_key) {
     const options = {
       method: 'POST',
       headers: {
-        accept: 'application/json',
-        revision: '2024-07-15',
-        'content-type': 'application/json',
+        accept: 'application/vnd.api+json',
+        revision: '2024-10-15',
+        'content-type': 'application/vnd.api+json',
         Authorization: `Klaviyo-API-Key ${Klaviyo_api_key}`,
       },
       body: JSON.stringify({
@@ -53,14 +53,20 @@ export function createKlaviyoClient(Klaviyo_api_key) {
                 {
                   type: 'profile',
                   attributes: {
+                    subscriptions: {
+                      email: {
+                        marketing: {
+                          consent: 'SUBSCRIBED',
+                        },
+                      },
+                    },
                     email: profileObject.attributes.email,
-                    phone_number: profileObject.attributes.phone_number,
-
-                    id: profileObject.id,
                   },
+                  id: profileObject.id,
                 },
               ],
             },
+            historical_import: false,
           },
           relationships: {
             list: {
@@ -75,7 +81,8 @@ export function createKlaviyoClient(Klaviyo_api_key) {
     };
     try {
       const response = await fetch(url, options);
-      if (!response.ok) {
+
+      if (!response?.ok) {
         return {success: false, response};
       }
 
