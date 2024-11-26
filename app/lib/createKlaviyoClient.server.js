@@ -81,12 +81,11 @@ export function createKlaviyoClient(Klaviyo_api_key) {
     };
     try {
       const response = await fetch(url, options);
-
       if (!response?.ok) {
         return {success: false, response};
       }
 
-      return {success: true, response};
+      return {success: true};
     } catch (error) {
       return {success: false, error};
     }

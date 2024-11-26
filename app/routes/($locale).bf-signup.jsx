@@ -43,19 +43,16 @@ export async function action({context, request}) {
     'VkmDEs',
   );
 
-  if (resultSubscribe.response) {
-    const text = await resultSubscribe.response.text(); // Read the response body as text
-    if (text) {
-      const res = JSON.parse(text); // Try parsing the text as JSON
-      if (!resultSubscribe.success) {
-        return {success: false, message: res.errors[0].detail};
-      }
+  if (resultSubscribe?.success) {
+    return {success: true};
+  } else {
+    if (resultSubscribe?.response) {
+      const res = await resultSubscribe.response.json();
+      return {success: false, message: res.errors[0].detail};
     } else {
-      return {success: false};
+      return {success: false, message: 'Network error 1'};
     }
   }
-
-  return {success: true};
 }
 
 export default function Redeem() {
