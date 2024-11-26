@@ -97,6 +97,7 @@ export async function loader({params, request, context}) {
         country: context.storefront.i18n.country,
         language: context.storefront.i18n.language,
       },
+      cache: context.storefront.CacheNone(),
     },
   );
 

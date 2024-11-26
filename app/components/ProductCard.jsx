@@ -6,7 +6,7 @@ import {
   useMoney,
   Video,
 } from '@shopify/hydrogen';
-import {useState, useEffect} from 'react';
+import {useState, useEffect, startTransition} from 'react';
 
 import {Link} from '~/components';
 import {getProductPlaceholder} from '~/lib/placeholders';
@@ -52,22 +52,24 @@ export function ProductCard({
   }
 
   useEffect(() => {
-    if (checkSale(compareAtPrice, price)) {
-      setOnSale(true);
-    } else {
-      setOnSale(false);
-    }
-  }, [compareAtPrice, price]);
+    startTransition(() => {
+      if (checkSale(compareAtPrice, price)) {
+        setOnSale(true);
+      } else {
+        setOnSale(false);
+      }
 
-  if (label) {
-    cardLabel = label;
-  } else if (soldOut == true) {
-    cardLabel = 'SOLD OUT';
-  } else if (checkSale(compareAtPrice, price)) {
-    cardLabel = `${Math.round(
-      (1 - price.amount / compareAtPrice.amount) * 100,
-    )}% OFF`;
-  }
+      if (label) {
+        cardLabel = label;
+      } else if (soldOut === true) {
+        cardLabel = 'SOLD OUT';
+      } else if (checkSale(compareAtPrice, price)) {
+        cardLabel = `${Math.round(
+          (1 - price.amount / compareAtPrice.amount) * 100,
+        )}% OFF`;
+      }
+    });
+  }, [compareAtPrice, price, label, soldOut]);
 
   return (
     <div className="grid gap-2 relative">
