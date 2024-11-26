@@ -9,7 +9,6 @@ import {
 import {useState, useEffect} from 'react';
 
 import {Link} from '~/components';
-import {isDiscounted} from '~/lib/utils';
 import {getProductPlaceholder} from '~/lib/placeholders';
 
 export function ProductCard({
@@ -36,6 +35,7 @@ export function ProductCard({
   }
 
   const {image, price, compareAtPrice} = firstVariant;
+
   let soldOut = true;
 
   for (let i = 0; i < cardProduct.variants.nodes.length; i++) {
@@ -43,19 +43,27 @@ export function ProductCard({
       soldOut = false;
     }
   }
+  function checkSale(compare, price) {
+    if (compare) {
+      return parseFloat(compare.amount) > parseFloat(price.amount);
+    } else {
+      return false;
+    }
+  }
+
   useEffect(() => {
-    if (isDiscounted(price, compareAtPrice)) {
+    if (checkSale(compareAtPrice, price)) {
       setOnSale(true);
     } else {
       setOnSale(false);
     }
-  }, [price, compareAtPrice]);
+  }, [compareAtPrice, price]);
 
   if (label) {
     cardLabel = label;
   } else if (soldOut == true) {
     cardLabel = 'SOLD OUT';
-  } else if (isDiscounted(price, compareAtPrice)) {
+  } else if (checkSale(compareAtPrice, price)) {
     cardLabel = `${Math.round(
       (1 - price.amount / compareAtPrice.amount) * 100,
     )}% OFF`;
@@ -120,7 +128,7 @@ export function ProductCard({
                     onSale ? 'text-red-600' : 'text-black'
                   }`}
                 />
-                {isDiscounted(price, compareAtPrice) && (
+                {checkSale(compareAtPrice, price) && (
                   <CompareAtPrice
                     className={'opacity-50'}
                     data={compareAtPrice}
