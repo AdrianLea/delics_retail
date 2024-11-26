@@ -19,11 +19,10 @@ export function ProductCard({
   onClick,
   quickAdd,
 }) {
-  let cardLabel;
   const [onSale, setOnSale] = useState(false);
 
   const cardProduct = product?.variants ? product : getProductPlaceholder();
-
+  const [cardLabel, setCardLabel] = useState();
   const firstVariant = flattenConnection(cardProduct.variants)[0];
   const mediaRef = product?.metafields[0];
   let backVideo = null;
@@ -60,13 +59,15 @@ export function ProductCard({
       }
 
       if (label) {
-        cardLabel = label;
+        setCardLabel(label);
       } else if (soldOut === true) {
-        cardLabel = 'SOLD OUT';
+        setCardLabel('SOLD OUT');
       } else if (checkSale(compareAtPrice, price)) {
-        cardLabel = `${Math.round(
-          (1 - price.amount / compareAtPrice.amount) * 100,
-        )}% OFF`;
+        setCardLabel(
+          `${Math.round(
+            (1 - price.amount / compareAtPrice.amount) * 100,
+          )}% OFF`,
+        );
       }
     });
   }, [compareAtPrice, price, label, soldOut]);
