@@ -27,28 +27,8 @@ export default async function handleRequest(
       '*.cloudfront.com',
       '*.cloudfront.net',
       'https://cdnjs.cloudflare.com',
-      'https://w.behold.so',
-      'https://feeds.behold.so',
     ],
-    connectSrc: [
-      '*.klaviyo.com',
-      'wss://flying-secondly-eft.ngrok-free.app:*',
-      'https://feeds.behold.so',
-    ],
-    imgSrc: [
-      "'self'",
-      'https://cdn.shopify.com',
-      '*.klaviyo.com',
-      'data:',
-      'https://behold.pictures',
-      'https://scontent-ord5-3.cdninstagram.com',
-      'https://scontent-ord5-2.cdninstagram.com',
-      'https://scontent-ord5-1.cdninstagram.com',
-      'https://scontent-ord5-3.cdninstagram.com',
-      'https://scontent-ord5-2.cdninstagram.com',
-      'https://d3k81ch9hvuctc.cloudfront.net',
-      'https://cdnjs.cloudflare.com',
-    ],
+    connectSrc: ['*.klaviyo.com', 'wss://flying-secondly-eft.ngrok-free.app:*'],
   });
 
   const body = await renderToReadableStream(

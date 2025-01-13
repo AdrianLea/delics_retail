@@ -151,19 +151,13 @@ export default function Collection() {
                   </Button>
                 </div>
                 <Grid layout="products">
-                  {nodes
-                    .sort((a, b) => {
-                      if (a.availableForSale && !b.availableForSale) return -1;
-                      if (!a.availableForSale && b.availableForSale) return 1;
-                      return 0;
-                    })
-                    .map((product, i) => (
-                      <ProductCard
-                        key={product.id}
-                        product={product}
-                        loading={getImageLoadingPriority(i)}
-                      />
-                    ))}
+                  {nodes.map((product, i) => (
+                    <ProductCard
+                      key={product.id}
+                      product={product}
+                      loading={getImageLoadingPriority(i)}
+                    />
+                  ))}
                 </Grid>
                 <div className="flex items-center justify-center mt-6">
                   <Button as={NextLink} variant="secondary" width="full">

@@ -461,9 +461,7 @@ export function ProductForm({variants, toggleModal, isFinished}) {
       <div className="grid gap-4">
         <VariantSelector
           handle={product.handle}
-          options={product.options.filter(
-            (option) => option.optionValues.length > 1,
-          )}
+          options={product.options}
           variants={variants}
         >
           {({option}) => {
@@ -737,14 +735,7 @@ const PRODUCT_QUERY = `#graphql
       }
       options {
         name
-        optionValues {
-          firstSelectableVariant {
-
-            ...ProductVariantFragment
-          }
-          name
-          id
-        }
+        values
       }
       selectedVariant: variantBySelectedOptions(selectedOptions: $selectedOptions) {
         ...ProductVariantFragment

@@ -42,7 +42,7 @@ export type MediaFragment =
 
 export type ProductCardFragment = Pick<
   StorefrontAPI.Product,
-  'id' | 'title' | 'publishedAt' | 'handle' | 'vendor' | 'availableForSale'
+  'id' | 'title' | 'publishedAt' | 'handle' | 'vendor'
 > & {
   variants: {
     nodes: Array<
@@ -200,56 +200,6 @@ export type GetShopPrimaryDomainQuery = {
   shop: {primaryDomain: Pick<StorefrontAPI.Domain, 'url'>};
 };
 
-export type HeroimagesqueryQueryVariables = StorefrontAPI.Exact<{
-  [key: string]: never;
-}>;
-
-export type HeroimagesqueryQuery = {
-  collections: {
-    nodes: Array<
-      Pick<
-        StorefrontAPI.Collection,
-        'handle' | 'title' | 'onlineStoreUrl' | 'id'
-      > & {
-        metafields: Array<
-          StorefrontAPI.Maybe<
-            Pick<StorefrontAPI.Metafield, 'value'> & {
-              reference?: StorefrontAPI.Maybe<{
-                image?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Image, 'url'>>;
-              }>;
-            }
-          >
-        >;
-      }
-    >;
-  };
-};
-
-export type CollectionShowcaseImageQueryQueryVariables = StorefrontAPI.Exact<{
-  collectionName: StorefrontAPI.Scalars['String']['input'];
-}>;
-
-export type CollectionShowcaseImageQueryQuery = {
-  collections: {
-    nodes: Array<
-      Pick<
-        StorefrontAPI.Collection,
-        'handle' | 'title' | 'onlineStoreUrl' | 'id'
-      > & {
-        metafields: Array<
-          StorefrontAPI.Maybe<
-            Pick<StorefrontAPI.Metafield, 'value'> & {
-              reference?: StorefrontAPI.Maybe<{
-                image?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Image, 'url'>>;
-              }>;
-            }
-          >
-        >;
-      }
-    >;
-  };
-};
-
 export type SeoCollectionContentQueryVariables = StorefrontAPI.Exact<{
   country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
   language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
@@ -271,152 +221,7 @@ export type HomepageFeaturedProductsQuery = {
         nodes: Array<
           Pick<
             StorefrontAPI.Product,
-            | 'id'
-            | 'title'
-            | 'publishedAt'
-            | 'handle'
-            | 'vendor'
-            | 'availableForSale'
-          > & {
-            variants: {
-              nodes: Array<
-                Pick<
-                  StorefrontAPI.ProductVariant,
-                  'id' | 'availableForSale' | 'currentlyNotInStock'
-                > & {
-                  image?: StorefrontAPI.Maybe<
-                    Pick<
-                      StorefrontAPI.Image,
-                      'url' | 'altText' | 'width' | 'height'
-                    >
-                  >;
-                  price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
-                  compareAtPrice?: StorefrontAPI.Maybe<
-                    Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>
-                  >;
-                  selectedOptions: Array<
-                    Pick<StorefrontAPI.SelectedOption, 'name' | 'value'>
-                  >;
-                  product: Pick<StorefrontAPI.Product, 'handle' | 'title'>;
-                }
-              >;
-            };
-            metafields: Array<
-              StorefrontAPI.Maybe<
-                Pick<StorefrontAPI.Metafield, 'id'> & {
-                  reference?: StorefrontAPI.Maybe<
-                    | (Pick<
-                        StorefrontAPI.MediaImage,
-                        'id' | 'mediaContentType'
-                      > & {
-                        image?: StorefrontAPI.Maybe<
-                          Pick<StorefrontAPI.Image, 'url'>
-                        >;
-                      })
-                    | (Pick<StorefrontAPI.Video, 'id' | 'mediaContentType'> & {
-                        sources: Array<
-                          Pick<
-                            StorefrontAPI.VideoSource,
-                            'url' | 'format' | 'mimeType'
-                          >
-                        >;
-                      })
-                  >;
-                }
-              >
-            >;
-          }
-        >;
-      };
-    }>;
-  };
-};
-
-export type HomepageBestSellingQueryVariables = StorefrontAPI.Exact<{
-  country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
-  language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
-}>;
-
-export type HomepageBestSellingQuery = {
-  products: {
-    nodes: Array<
-      Pick<
-        StorefrontAPI.Product,
-        | 'id'
-        | 'title'
-        | 'publishedAt'
-        | 'handle'
-        | 'vendor'
-        | 'availableForSale'
-      > & {
-        variants: {
-          nodes: Array<
-            Pick<
-              StorefrontAPI.ProductVariant,
-              'id' | 'availableForSale' | 'currentlyNotInStock'
-            > & {
-              image?: StorefrontAPI.Maybe<
-                Pick<
-                  StorefrontAPI.Image,
-                  'url' | 'altText' | 'width' | 'height'
-                >
-              >;
-              price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
-              compareAtPrice?: StorefrontAPI.Maybe<
-                Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>
-              >;
-              selectedOptions: Array<
-                Pick<StorefrontAPI.SelectedOption, 'name' | 'value'>
-              >;
-              product: Pick<StorefrontAPI.Product, 'handle' | 'title'>;
-            }
-          >;
-        };
-        metafields: Array<
-          StorefrontAPI.Maybe<
-            Pick<StorefrontAPI.Metafield, 'id'> & {
-              reference?: StorefrontAPI.Maybe<
-                | (Pick<StorefrontAPI.MediaImage, 'id' | 'mediaContentType'> & {
-                    image?: StorefrontAPI.Maybe<
-                      Pick<StorefrontAPI.Image, 'url'>
-                    >;
-                  })
-                | (Pick<StorefrontAPI.Video, 'id' | 'mediaContentType'> & {
-                    sources: Array<
-                      Pick<
-                        StorefrontAPI.VideoSource,
-                        'url' | 'format' | 'mimeType'
-                      >
-                    >;
-                  })
-              >;
-            }
-          >
-        >;
-      }
-    >;
-  };
-};
-
-export type CollectionShowcaseQueryQueryVariables = StorefrontAPI.Exact<{
-  country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
-  language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
-  collectionName: StorefrontAPI.Scalars['String']['input'];
-}>;
-
-export type CollectionShowcaseQueryQuery = {
-  collections: {
-    nodes: Array<{
-      products: {
-        nodes: Array<
-          Pick<
-            StorefrontAPI.Product,
-            | 'id'
-            | 'title'
-            | 'publishedAt'
-            | 'handle'
-            | 'vendor'
-            | 'availableForSale'
+            'id' | 'title' | 'publishedAt' | 'handle' | 'vendor'
           > & {
             variants: {
               nodes: Array<
@@ -498,12 +303,7 @@ export type ApiAllProductsQuery = {
     nodes: Array<
       Pick<
         StorefrontAPI.Product,
-        | 'id'
-        | 'title'
-        | 'publishedAt'
-        | 'handle'
-        | 'vendor'
-        | 'availableForSale'
+        'id' | 'title' | 'publishedAt' | 'handle' | 'vendor'
       > & {
         variants: {
           nodes: Array<
@@ -597,12 +397,7 @@ export type CollectionDetailsQuery = {
         nodes: Array<
           Pick<
             StorefrontAPI.Product,
-            | 'id'
-            | 'title'
-            | 'publishedAt'
-            | 'handle'
-            | 'vendor'
-            | 'availableForSale'
+            'id' | 'title' | 'publishedAt' | 'handle' | 'vendor'
           > & {
             variants: {
               nodes: Array<
@@ -730,12 +525,7 @@ export type FeaturedItemsQuery = {
     nodes: Array<
       Pick<
         StorefrontAPI.Product,
-        | 'id'
-        | 'title'
-        | 'publishedAt'
-        | 'handle'
-        | 'vendor'
-        | 'availableForSale'
+        'id' | 'title' | 'publishedAt' | 'handle' | 'vendor'
       > & {
         variants: {
           nodes: Array<
@@ -835,42 +625,7 @@ export type ProductQuery = {
       'id' | 'title' | 'vendor' | 'handle' | 'descriptionHtml' | 'description'
     > & {
       collections: {nodes: Array<Pick<StorefrontAPI.Collection, 'title'>>};
-      options: Array<
-        Pick<StorefrontAPI.ProductOption, 'name'> & {
-          optionValues: Array<
-            Pick<StorefrontAPI.ProductOptionValue, 'name' | 'id'> & {
-              firstSelectableVariant?: StorefrontAPI.Maybe<
-                Pick<
-                  StorefrontAPI.ProductVariant,
-                  | 'id'
-                  | 'availableForSale'
-                  | 'currentlyNotInStock'
-                  | 'sku'
-                  | 'title'
-                > & {
-                  selectedOptions: Array<
-                    Pick<StorefrontAPI.SelectedOption, 'name' | 'value'>
-                  >;
-                  image?: StorefrontAPI.Maybe<
-                    Pick<
-                      StorefrontAPI.Image,
-                      'id' | 'url' | 'altText' | 'width' | 'height'
-                    >
-                  >;
-                  price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
-                  compareAtPrice?: StorefrontAPI.Maybe<
-                    Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>
-                  >;
-                  unitPrice?: StorefrontAPI.Maybe<
-                    Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>
-                  >;
-                  product: Pick<StorefrontAPI.Product, 'title' | 'handle'>;
-                }
-              >;
-            }
-          >;
-        }
-      >;
+      options: Array<Pick<StorefrontAPI.ProductOption, 'name' | 'values'>>;
       selectedVariant?: StorefrontAPI.Maybe<
         Pick<
           StorefrontAPI.ProductVariant,
@@ -1029,12 +784,7 @@ export type ProductRecommendationsQuery = {
     Array<
       Pick<
         StorefrontAPI.Product,
-        | 'id'
-        | 'title'
-        | 'publishedAt'
-        | 'handle'
-        | 'vendor'
-        | 'availableForSale'
+        'id' | 'title' | 'publishedAt' | 'handle' | 'vendor'
       > & {
         variants: {
           nodes: Array<
@@ -1087,12 +837,7 @@ export type ProductRecommendationsQuery = {
     nodes: Array<
       Pick<
         StorefrontAPI.Product,
-        | 'id'
-        | 'title'
-        | 'publishedAt'
-        | 'handle'
-        | 'vendor'
-        | 'availableForSale'
+        'id' | 'title' | 'publishedAt' | 'handle' | 'vendor'
       > & {
         variants: {
           nodes: Array<
@@ -1161,12 +906,7 @@ export type AllProductsQuery = {
     nodes: Array<
       Pick<
         StorefrontAPI.Product,
-        | 'id'
-        | 'title'
-        | 'publishedAt'
-        | 'handle'
-        | 'vendor'
-        | 'availableForSale'
+        'id' | 'title' | 'publishedAt' | 'handle' | 'vendor'
       > & {
         variants: {
           nodes: Array<
@@ -1242,12 +982,7 @@ export type PaginatedProductsSearchQuery = {
     nodes: Array<
       Pick<
         StorefrontAPI.Product,
-        | 'id'
-        | 'title'
-        | 'publishedAt'
-        | 'handle'
-        | 'vendor'
-        | 'availableForSale'
+        'id' | 'title' | 'publishedAt' | 'handle' | 'vendor'
       > & {
         variants: {
           nodes: Array<
@@ -1341,35 +1076,19 @@ interface GeneratedQueryTypes {
     return: GetShopPrimaryDomainQuery;
     variables: GetShopPrimaryDomainQueryVariables;
   };
-  '#graphql\nquery heroimagesquery {\n  collections(\n    first: 15\n  ) {\n    nodes {\n      metafields(\n        identifiers: [{namespace: "custom", key: "herodesktop"}, {namespace: "custom", key: "heromobile"}, {namespace: "custom", key: "herodescriptiontext"}, {namespace: "custom", key: "herobuttontext"}]\n      ) {\n        reference {\n          ... on MediaImage {\n            image {\n              url\n            }\n          }\n        }\n        value\n      }\n      handle\n      title\n      onlineStoreUrl\n      id\n    }\n  }\n}': {
-    return: HeroimagesqueryQuery;
-    variables: HeroimagesqueryQueryVariables;
-  };
-  '#graphql\nquery collectionShowcaseImageQuery($collectionName: String!) {\n  collections(\n    first:1\n    query:$collectionName\n  ) {\n    nodes {\n      metafields(\n        identifiers: [{namespace: "custom", key: "collectionspageimage"}]\n      ) {\n        reference {\n          ... on MediaImage {\n            image {\n              url\n            }\n          }\n        }\n        value\n      }\n      handle\n      title\n      onlineStoreUrl\n      id\n    }\n  }\n}': {
-    return: CollectionShowcaseImageQueryQuery;
-    variables: CollectionShowcaseImageQueryQueryVariables;
-  };
   '#graphql\n  query seoCollectionContent($country: CountryCode, $language: LanguageCode)\n  @inContext(country: $country, language: $language) {\n    shop {\n      name\n      description\n    }\n  }\n': {
     return: SeoCollectionContentQuery;
     variables: SeoCollectionContentQueryVariables;
   };
-  '#graphql\n  query homepageFeaturedProducts($country: CountryCode, $language: LanguageCode)\n  @inContext(country: $country, language: $language) {\n    collections(first: 1, query:"title:New Arrivals", reverse: false) {\n      nodes {\n        products(first: 8, sortKey: CREATED) {\n          nodes {\n            id\n            ...ProductCard\n          }\n        }\n      }\n    }\n  }\n  #graphql\n  fragment ProductCard on Product {\n    id\n    title\n    publishedAt\n    handle\n    vendor\n    availableForSale\n    variants(first: 100) {\n      nodes {\n        id\n        availableForSale\n        image {\n          url\n          altText\n          width\n          height\n        }\n        price {\n          amount\n          currencyCode\n        }\n        compareAtPrice {\n          amount\n          currencyCode\n        }\n        selectedOptions {\n          name\n          value\n        }\n        product {\n          handle\n          title\n        }\n        currentlyNotInStock\n      }\n    }\n    metafields(identifiers: [{namespace: "custom", key: "backmedia"}]) {\n      id\n      reference {\n        ... on MediaImage {\n          id\n          image {\n            url\n          }\n          mediaContentType\n        }\n        ... on Video {\n          id\n          sources {\n            url\n            format\n            mimeType\n          }\n          mediaContentType\n        }\n      }\n    }\n  }\n\n': {
+  '#graphql\n  query homepageFeaturedProducts($country: CountryCode, $language: LanguageCode)\n  @inContext(country: $country, language: $language) {\n    collections(first: 1, query:"title:New Arrivals", reverse: false) {\n      nodes {\n        products(first: 10, sortKey: BEST_SELLING) {\n          nodes {\n            id\n            ...ProductCard\n          }\n        }\n      }\n    }\n  }\n  #graphql\n  fragment ProductCard on Product {\n    id\n    title\n    publishedAt\n    handle\n    vendor\n    variants(first: 100) {\n      nodes {\n        id\n        availableForSale\n        image {\n          url\n          altText\n          width\n          height\n        }\n        price {\n          amount\n          currencyCode\n        }\n        compareAtPrice {\n          amount\n          currencyCode\n        }\n        selectedOptions {\n          name\n          value\n        }\n        product {\n          handle\n          title\n        }\n        currentlyNotInStock\n      }\n    }\n    metafields(identifiers: [{namespace: "custom", key: "backmedia"}]) {\n      id\n      reference {\n        ... on MediaImage {\n          id\n          image {\n            url\n          }\n          mediaContentType\n        }\n        ... on Video {\n          id\n          sources {\n            url\n            format\n            mimeType\n          }\n          mediaContentType\n        }\n      }\n    }\n  }\n\n': {
     return: HomepageFeaturedProductsQuery;
     variables: HomepageFeaturedProductsQueryVariables;
   };
-  '#graphql\n  query homepageBestSelling($country: CountryCode, $language: LanguageCode)\n  @inContext(country: $country, language: $language) {\n    products(first: 8, sortKey: BEST_SELLING) {\n      nodes {\n        id\n        ...ProductCard\n      }\n    }\n  }\n  #graphql\n  fragment ProductCard on Product {\n    id\n    title\n    publishedAt\n    handle\n    vendor\n    availableForSale\n    variants(first: 100) {\n      nodes {\n        id\n        availableForSale\n        image {\n          url\n          altText\n          width\n          height\n        }\n        price {\n          amount\n          currencyCode\n        }\n        compareAtPrice {\n          amount\n          currencyCode\n        }\n        selectedOptions {\n          name\n          value\n        }\n        product {\n          handle\n          title\n        }\n        currentlyNotInStock\n      }\n    }\n    metafields(identifiers: [{namespace: "custom", key: "backmedia"}]) {\n      id\n      reference {\n        ... on MediaImage {\n          id\n          image {\n            url\n          }\n          mediaContentType\n        }\n        ... on Video {\n          id\n          sources {\n            url\n            format\n            mimeType\n          }\n          mediaContentType\n        }\n      }\n    }\n  }\n\n': {
-    return: HomepageBestSellingQuery;
-    variables: HomepageBestSellingQueryVariables;
-  };
-  '#graphql\n      query collectionShowcaseQuery($country: CountryCode, $language: LanguageCode, $collectionName: String!)\n      @inContext(country: $country, language: $language) {\n        collections(first: 1, query:$collectionName , reverse: false) {\n          nodes {\n            products(first: 4, sortKey: BEST_SELLING) {\n              nodes {\n                id\n                ...ProductCard\n              }\n            }\n          }\n        }\n      }\n      #graphql\n  fragment ProductCard on Product {\n    id\n    title\n    publishedAt\n    handle\n    vendor\n    availableForSale\n    variants(first: 100) {\n      nodes {\n        id\n        availableForSale\n        image {\n          url\n          altText\n          width\n          height\n        }\n        price {\n          amount\n          currencyCode\n        }\n        compareAtPrice {\n          amount\n          currencyCode\n        }\n        selectedOptions {\n          name\n          value\n        }\n        product {\n          handle\n          title\n        }\n        currentlyNotInStock\n      }\n    }\n    metafields(identifiers: [{namespace: "custom", key: "backmedia"}]) {\n      id\n      reference {\n        ... on MediaImage {\n          id\n          image {\n            url\n          }\n          mediaContentType\n        }\n        ... on Video {\n          id\n          sources {\n            url\n            format\n            mimeType\n          }\n          mediaContentType\n        }\n      }\n    }\n  }\n\n    ': {
-    return: CollectionShowcaseQueryQuery;
-    variables: CollectionShowcaseQueryQueryVariables;
-  };
-  '#graphql\n  query ApiAllProducts(\n    $query: String\n    $count: Int\n    $reverse: Boolean\n    $country: CountryCode\n    $language: LanguageCode\n    $sortKey: ProductSortKeys\n  ) @inContext(country: $country, language: $language) {\n    products(first: $count, sortKey: $sortKey, reverse: $reverse, query: $query) {\n      nodes {\n        ...ProductCard\n      }\n    }\n  }\n  #graphql\n  fragment ProductCard on Product {\n    id\n    title\n    publishedAt\n    handle\n    vendor\n    availableForSale\n    variants(first: 100) {\n      nodes {\n        id\n        availableForSale\n        image {\n          url\n          altText\n          width\n          height\n        }\n        price {\n          amount\n          currencyCode\n        }\n        compareAtPrice {\n          amount\n          currencyCode\n        }\n        selectedOptions {\n          name\n          value\n        }\n        product {\n          handle\n          title\n        }\n        currentlyNotInStock\n      }\n    }\n    metafields(identifiers: [{namespace: "custom", key: "backmedia"}]) {\n      id\n      reference {\n        ... on MediaImage {\n          id\n          image {\n            url\n          }\n          mediaContentType\n        }\n        ... on Video {\n          id\n          sources {\n            url\n            format\n            mimeType\n          }\n          mediaContentType\n        }\n      }\n    }\n  }\n\n': {
+  '#graphql\n  query ApiAllProducts(\n    $query: String\n    $count: Int\n    $reverse: Boolean\n    $country: CountryCode\n    $language: LanguageCode\n    $sortKey: ProductSortKeys\n  ) @inContext(country: $country, language: $language) {\n    products(first: $count, sortKey: $sortKey, reverse: $reverse, query: $query) {\n      nodes {\n        ...ProductCard\n      }\n    }\n  }\n  #graphql\n  fragment ProductCard on Product {\n    id\n    title\n    publishedAt\n    handle\n    vendor\n    variants(first: 100) {\n      nodes {\n        id\n        availableForSale\n        image {\n          url\n          altText\n          width\n          height\n        }\n        price {\n          amount\n          currencyCode\n        }\n        compareAtPrice {\n          amount\n          currencyCode\n        }\n        selectedOptions {\n          name\n          value\n        }\n        product {\n          handle\n          title\n        }\n        currentlyNotInStock\n      }\n    }\n    metafields(identifiers: [{namespace: "custom", key: "backmedia"}]) {\n      id\n      reference {\n        ... on MediaImage {\n          id\n          image {\n            url\n          }\n          mediaContentType\n        }\n        ... on Video {\n          id\n          sources {\n            url\n            format\n            mimeType\n          }\n          mediaContentType\n        }\n      }\n    }\n  }\n\n': {
     return: ApiAllProductsQuery;
     variables: ApiAllProductsQueryVariables;
   };
-  '#graphql\n  query CollectionDetails($handle: String!, $country: CountryCode, $language: LanguageCode, $filters: [ProductFilter!], $sortKey: ProductCollectionSortKeys!, $reverse: Boolean, $first: Int, $last: Int, $startCursor: String, $endCursor: String) @inContext(country: $country, language: $language) {\n    collection(handle: $handle) {\n      id\n      handle\n      title\n      description\n      seo {\n        description\n        title\n      }\n      image {\n        id\n        url\n        width\n        height\n        altText\n      }\n      products(\n        first: $first\n        last: $last\n        before: $startCursor\n        after: $endCursor\n        filters: $filters\n        sortKey: $sortKey\n        reverse: $reverse\n      ) {\n        filters {\n          id\n          label\n          type\n          values {\n            id\n            label\n            count\n            input\n          }\n        }\n        nodes {\n          ...ProductCard\n        }\n        pageInfo {\n          hasPreviousPage\n          hasNextPage\n          hasNextPage\n          endCursor\n          startCursor\n        }\n      }\n      metafields(identifiers: {key: "collectionspageimage", namespace: "custom"}) {\n        reference {\n          ... on MediaImage {\n            id\n            image {\n              url\n            }\n          }\n        }\n      }\n    }\n    collections(first: 15) {\n      edges {\n        node {\n          title\n          handle\n        }\n      }\n    }\n  }\n  #graphql\n  fragment ProductCard on Product {\n    id\n    title\n    publishedAt\n    handle\n    vendor\n    availableForSale\n    variants(first: 100) {\n      nodes {\n        id\n        availableForSale\n        image {\n          url\n          altText\n          width\n          height\n        }\n        price {\n          amount\n          currencyCode\n        }\n        compareAtPrice {\n          amount\n          currencyCode\n        }\n        selectedOptions {\n          name\n          value\n        }\n        product {\n          handle\n          title\n        }\n        currentlyNotInStock\n      }\n    }\n    metafields(identifiers: [{namespace: "custom", key: "backmedia"}]) {\n      id\n      reference {\n        ... on MediaImage {\n          id\n          image {\n            url\n          }\n          mediaContentType\n        }\n        ... on Video {\n          id\n          sources {\n            url\n            format\n            mimeType\n          }\n          mediaContentType\n        }\n      }\n    }\n  }\n\n': {
+  '#graphql\n  query CollectionDetails($handle: String!, $country: CountryCode, $language: LanguageCode, $filters: [ProductFilter!], $sortKey: ProductCollectionSortKeys!, $reverse: Boolean, $first: Int, $last: Int, $startCursor: String, $endCursor: String) @inContext(country: $country, language: $language) {\n    collection(handle: $handle) {\n      id\n      handle\n      title\n      description\n      seo {\n        description\n        title\n      }\n      image {\n        id\n        url\n        width\n        height\n        altText\n      }\n      products(\n        first: $first\n        last: $last\n        before: $startCursor\n        after: $endCursor\n        filters: $filters\n        sortKey: $sortKey\n        reverse: $reverse\n      ) {\n        filters {\n          id\n          label\n          type\n          values {\n            id\n            label\n            count\n            input\n          }\n        }\n        nodes {\n          ...ProductCard\n        }\n        pageInfo {\n          hasPreviousPage\n          hasNextPage\n          hasNextPage\n          endCursor\n          startCursor\n        }\n      }\n      metafields(identifiers: {key: "collectionspageimage", namespace: "custom"}) {\n        reference {\n          ... on MediaImage {\n            id\n            image {\n              url\n            }\n          }\n        }\n      }\n    }\n    collections(first: 15) {\n      edges {\n        node {\n          title\n          handle\n        }\n      }\n    }\n  }\n  #graphql\n  fragment ProductCard on Product {\n    id\n    title\n    publishedAt\n    handle\n    vendor\n    variants(first: 100) {\n      nodes {\n        id\n        availableForSale\n        image {\n          url\n          altText\n          width\n          height\n        }\n        price {\n          amount\n          currencyCode\n        }\n        compareAtPrice {\n          amount\n          currencyCode\n        }\n        selectedOptions {\n          name\n          value\n        }\n        product {\n          handle\n          title\n        }\n        currentlyNotInStock\n      }\n    }\n    metafields(identifiers: [{namespace: "custom", key: "backmedia"}]) {\n      id\n      reference {\n        ... on MediaImage {\n          id\n          image {\n            url\n          }\n          mediaContentType\n        }\n        ... on Video {\n          id\n          sources {\n            url\n            format\n            mimeType\n          }\n          mediaContentType\n        }\n      }\n    }\n  }\n\n': {
     return: CollectionDetailsQuery;
     variables: CollectionDetailsQueryVariables;
   };
@@ -1377,7 +1096,7 @@ interface GeneratedQueryTypes {
     return: CollectionsQuery;
     variables: CollectionsQueryVariables;
   };
-  '#graphql\n  query FeaturedItems(\n    $country: CountryCode\n    $language: LanguageCode\n    $pageBy: Int = 12\n  ) @inContext(country: $country, language: $language) {\n    featuredCollections: collections(first: 3, sortKey: UPDATED_AT) {\n      nodes {\n        ...FeaturedCollectionDetails\n      }\n    }\n    featuredProducts: products(first: $pageBy) {\n      nodes {\n        ...ProductCard\n      }\n    }\n  }\n\n  #graphql\n  fragment ProductCard on Product {\n    id\n    title\n    publishedAt\n    handle\n    vendor\n    availableForSale\n    variants(first: 100) {\n      nodes {\n        id\n        availableForSale\n        image {\n          url\n          altText\n          width\n          height\n        }\n        price {\n          amount\n          currencyCode\n        }\n        compareAtPrice {\n          amount\n          currencyCode\n        }\n        selectedOptions {\n          name\n          value\n        }\n        product {\n          handle\n          title\n        }\n        currentlyNotInStock\n      }\n    }\n    metafields(identifiers: [{namespace: "custom", key: "backmedia"}]) {\n      id\n      reference {\n        ... on MediaImage {\n          id\n          image {\n            url\n          }\n          mediaContentType\n        }\n        ... on Video {\n          id\n          sources {\n            url\n            format\n            mimeType\n          }\n          mediaContentType\n        }\n      }\n    }\n  }\n\n  #graphql\n  fragment FeaturedCollectionDetails on Collection {\n    id\n    title\n    handle\n    image {\n      altText\n      width\n      height\n      url\n    }\n  }\n\n': {
+  '#graphql\n  query FeaturedItems(\n    $country: CountryCode\n    $language: LanguageCode\n    $pageBy: Int = 12\n  ) @inContext(country: $country, language: $language) {\n    featuredCollections: collections(first: 3, sortKey: UPDATED_AT) {\n      nodes {\n        ...FeaturedCollectionDetails\n      }\n    }\n    featuredProducts: products(first: $pageBy) {\n      nodes {\n        ...ProductCard\n      }\n    }\n  }\n\n  #graphql\n  fragment ProductCard on Product {\n    id\n    title\n    publishedAt\n    handle\n    vendor\n    variants(first: 100) {\n      nodes {\n        id\n        availableForSale\n        image {\n          url\n          altText\n          width\n          height\n        }\n        price {\n          amount\n          currencyCode\n        }\n        compareAtPrice {\n          amount\n          currencyCode\n        }\n        selectedOptions {\n          name\n          value\n        }\n        product {\n          handle\n          title\n        }\n        currentlyNotInStock\n      }\n    }\n    metafields(identifiers: [{namespace: "custom", key: "backmedia"}]) {\n      id\n      reference {\n        ... on MediaImage {\n          id\n          image {\n            url\n          }\n          mediaContentType\n        }\n        ... on Video {\n          id\n          sources {\n            url\n            format\n            mimeType\n          }\n          mediaContentType\n        }\n      }\n    }\n  }\n\n  #graphql\n  fragment FeaturedCollectionDetails on Collection {\n    id\n    title\n    handle\n    image {\n      altText\n      width\n      height\n      url\n    }\n  }\n\n': {
     return: FeaturedItemsQuery;
     variables: FeaturedItemsQueryVariables;
   };
@@ -1385,7 +1104,7 @@ interface GeneratedQueryTypes {
     return: PageDetailsQuery;
     variables: PageDetailsQueryVariables;
   };
-  '#graphql\n  query Product(\n    $country: CountryCode\n    $language: LanguageCode\n    $handle: String!\n    $selectedOptions: [SelectedOptionInput!]!\n  ) @inContext(country: $country, language: $language) {\n    product(handle: $handle) {\n      id\n      title\n      vendor\n      handle\n      descriptionHtml\n      description\n      collections(first: 1) {\n        nodes {\n          title\n        }\n      }\n      options {\n        name\n        optionValues {\n          firstSelectableVariant {\n\n            ...ProductVariantFragment\n          }\n          name\n          id\n        }\n      }\n      selectedVariant: variantBySelectedOptions(selectedOptions: $selectedOptions) {\n        ...ProductVariantFragment\n      }\n      media(first: 7) {\n        nodes {\n          ...Media\n        }\n      }\n      variants(first: 100) {\n        nodes {\n          ...ProductVariantFragment\n        }\n      }\n      seo {\n        description\n        title\n      }\n    }\n    shop {\n      name\n      primaryDomain {\n        url\n      }\n      shippingPolicy {\n        body\n        handle\n      }\n      refundPolicy {\n        body\n        handle\n      }\n    }\n  }\n  #graphql\n  fragment Media on Media {\n    __typename\n    mediaContentType\n    alt\n    previewImage {\n      url\n    }\n    ... on MediaImage {\n      id\n      image {\n        id\n        url\n        width\n        height\n      }\n    }\n    ... on Video {\n      id\n      sources {\n        mimeType\n        url\n      }\n    }\n    ... on Model3d {\n      id\n      sources {\n        mimeType\n        url\n      }\n    }\n    ... on ExternalVideo {\n      id\n      embedUrl\n      host\n    }\n  }\n\n  #graphql\n  fragment ProductVariantFragment on ProductVariant {\n    id\n    availableForSale\n    currentlyNotInStock\n    selectedOptions {\n      name\n      value\n    }\n    image {\n      id\n      url\n      altText\n      width\n      height\n    }\n    price {\n      amount\n      currencyCode\n    }\n    compareAtPrice {\n      amount\n      currencyCode\n    }\n    sku\n    title\n    unitPrice {\n      amount\n      currencyCode\n    }\n    product {\n      title\n      handle\n    }\n  }\n\n': {
+  '#graphql\n  query Product(\n    $country: CountryCode\n    $language: LanguageCode\n    $handle: String!\n    $selectedOptions: [SelectedOptionInput!]!\n  ) @inContext(country: $country, language: $language) {\n    product(handle: $handle) {\n      id\n      title\n      vendor\n      handle\n      descriptionHtml\n      description\n      collections(first: 1) {\n        nodes {\n          title\n        }\n      }\n      options {\n        name\n        values\n      }\n      selectedVariant: variantBySelectedOptions(selectedOptions: $selectedOptions) {\n        ...ProductVariantFragment\n      }\n      media(first: 7) {\n        nodes {\n          ...Media\n        }\n      }\n      variants(first: 100) {\n        nodes {\n          ...ProductVariantFragment\n        }\n      }\n      seo {\n        description\n        title\n      }\n    }\n    shop {\n      name\n      primaryDomain {\n        url\n      }\n      shippingPolicy {\n        body\n        handle\n      }\n      refundPolicy {\n        body\n        handle\n      }\n    }\n  }\n  #graphql\n  fragment Media on Media {\n    __typename\n    mediaContentType\n    alt\n    previewImage {\n      url\n    }\n    ... on MediaImage {\n      id\n      image {\n        id\n        url\n        width\n        height\n      }\n    }\n    ... on Video {\n      id\n      sources {\n        mimeType\n        url\n      }\n    }\n    ... on Model3d {\n      id\n      sources {\n        mimeType\n        url\n      }\n    }\n    ... on ExternalVideo {\n      id\n      embedUrl\n      host\n    }\n  }\n\n  #graphql\n  fragment ProductVariantFragment on ProductVariant {\n    id\n    availableForSale\n    currentlyNotInStock\n    selectedOptions {\n      name\n      value\n    }\n    image {\n      id\n      url\n      altText\n      width\n      height\n    }\n    price {\n      amount\n      currencyCode\n    }\n    compareAtPrice {\n      amount\n      currencyCode\n    }\n    sku\n    title\n    unitPrice {\n      amount\n      currencyCode\n    }\n    product {\n      title\n      handle\n    }\n  }\n\n': {
     return: ProductQuery;
     variables: ProductQueryVariables;
   };
@@ -1393,15 +1112,15 @@ interface GeneratedQueryTypes {
     return: VariantsQuery;
     variables: VariantsQueryVariables;
   };
-  '#graphql\n  query productRecommendations(\n    $productId: ID!\n    $count: Int\n    $country: CountryCode\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    recommended: productRecommendations(productId: $productId) {\n      ...ProductCard\n    }\n    additional: products(first: $count, sortKey: BEST_SELLING) {\n      nodes {\n        ...ProductCard\n      }\n    }\n  }\n  #graphql\n  fragment ProductCard on Product {\n    id\n    title\n    publishedAt\n    handle\n    vendor\n    availableForSale\n    variants(first: 100) {\n      nodes {\n        id\n        availableForSale\n        image {\n          url\n          altText\n          width\n          height\n        }\n        price {\n          amount\n          currencyCode\n        }\n        compareAtPrice {\n          amount\n          currencyCode\n        }\n        selectedOptions {\n          name\n          value\n        }\n        product {\n          handle\n          title\n        }\n        currentlyNotInStock\n      }\n    }\n    metafields(identifiers: [{namespace: "custom", key: "backmedia"}]) {\n      id\n      reference {\n        ... on MediaImage {\n          id\n          image {\n            url\n          }\n          mediaContentType\n        }\n        ... on Video {\n          id\n          sources {\n            url\n            format\n            mimeType\n          }\n          mediaContentType\n        }\n      }\n    }\n  }\n\n': {
+  '#graphql\n  query productRecommendations(\n    $productId: ID!\n    $count: Int\n    $country: CountryCode\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    recommended: productRecommendations(productId: $productId) {\n      ...ProductCard\n    }\n    additional: products(first: $count, sortKey: BEST_SELLING) {\n      nodes {\n        ...ProductCard\n      }\n    }\n  }\n  #graphql\n  fragment ProductCard on Product {\n    id\n    title\n    publishedAt\n    handle\n    vendor\n    variants(first: 100) {\n      nodes {\n        id\n        availableForSale\n        image {\n          url\n          altText\n          width\n          height\n        }\n        price {\n          amount\n          currencyCode\n        }\n        compareAtPrice {\n          amount\n          currencyCode\n        }\n        selectedOptions {\n          name\n          value\n        }\n        product {\n          handle\n          title\n        }\n        currentlyNotInStock\n      }\n    }\n    metafields(identifiers: [{namespace: "custom", key: "backmedia"}]) {\n      id\n      reference {\n        ... on MediaImage {\n          id\n          image {\n            url\n          }\n          mediaContentType\n        }\n        ... on Video {\n          id\n          sources {\n            url\n            format\n            mimeType\n          }\n          mediaContentType\n        }\n      }\n    }\n  }\n\n': {
     return: ProductRecommendationsQuery;
     variables: ProductRecommendationsQueryVariables;
   };
-  '#graphql\n  query AllProducts(\n    $country: CountryCode\n    $language: LanguageCode\n    $first: Int\n    $last: Int\n    $startCursor: String\n    $endCursor: String\n  ) @inContext(country: $country, language: $language) {\n    products(first: $first, last: $last, before: $startCursor, after: $endCursor) {\n      nodes {\n        ...ProductCard\n      }\n      pageInfo {\n        hasPreviousPage\n        hasNextPage\n        hasNextPage\n        startCursor\n        endCursor\n\n      }\n    }\n  }\n  #graphql\n  fragment ProductCard on Product {\n    id\n    title\n    publishedAt\n    handle\n    vendor\n    availableForSale\n    variants(first: 100) {\n      nodes {\n        id\n        availableForSale\n        image {\n          url\n          altText\n          width\n          height\n        }\n        price {\n          amount\n          currencyCode\n        }\n        compareAtPrice {\n          amount\n          currencyCode\n        }\n        selectedOptions {\n          name\n          value\n        }\n        product {\n          handle\n          title\n        }\n        currentlyNotInStock\n      }\n    }\n    metafields(identifiers: [{namespace: "custom", key: "backmedia"}]) {\n      id\n      reference {\n        ... on MediaImage {\n          id\n          image {\n            url\n          }\n          mediaContentType\n        }\n        ... on Video {\n          id\n          sources {\n            url\n            format\n            mimeType\n          }\n          mediaContentType\n        }\n      }\n    }\n  }\n\n': {
+  '#graphql\n  query AllProducts(\n    $country: CountryCode\n    $language: LanguageCode\n    $first: Int\n    $last: Int\n    $startCursor: String\n    $endCursor: String\n  ) @inContext(country: $country, language: $language) {\n    products(first: $first, last: $last, before: $startCursor, after: $endCursor) {\n      nodes {\n        ...ProductCard\n      }\n      pageInfo {\n        hasPreviousPage\n        hasNextPage\n        hasNextPage\n        startCursor\n        endCursor\n\n      }\n    }\n  }\n  #graphql\n  fragment ProductCard on Product {\n    id\n    title\n    publishedAt\n    handle\n    vendor\n    variants(first: 100) {\n      nodes {\n        id\n        availableForSale\n        image {\n          url\n          altText\n          width\n          height\n        }\n        price {\n          amount\n          currencyCode\n        }\n        compareAtPrice {\n          amount\n          currencyCode\n        }\n        selectedOptions {\n          name\n          value\n        }\n        product {\n          handle\n          title\n        }\n        currentlyNotInStock\n      }\n    }\n    metafields(identifiers: [{namespace: "custom", key: "backmedia"}]) {\n      id\n      reference {\n        ... on MediaImage {\n          id\n          image {\n            url\n          }\n          mediaContentType\n        }\n        ... on Video {\n          id\n          sources {\n            url\n            format\n            mimeType\n          }\n          mediaContentType\n        }\n      }\n    }\n  }\n\n': {
     return: AllProductsQuery;
     variables: AllProductsQueryVariables;
   };
-  '#graphql\n  query PaginatedProductsSearch(\n    $country: CountryCode\n    $endCursor: String\n    $first: Int\n    $language: LanguageCode\n    $last: Int\n    $searchTerm: String\n    $startCursor: String\n  ) @inContext(country: $country, language: $language) {\n    products(\n      first: $first,\n      last: $last,\n      before: $startCursor,\n      after: $endCursor,\n      sortKey: RELEVANCE,\n      query: $searchTerm\n    ) {\n      nodes {\n        ...ProductCard\n      }\n      pageInfo {\n        hasPreviousPage\n        hasNextPage\n        hasNextPage\n        startCursor\n        endCursor\n      }\n    }\n  }\n\n  #graphql\n  fragment ProductCard on Product {\n    id\n    title\n    publishedAt\n    handle\n    vendor\n    availableForSale\n    variants(first: 100) {\n      nodes {\n        id\n        availableForSale\n        image {\n          url\n          altText\n          width\n          height\n        }\n        price {\n          amount\n          currencyCode\n        }\n        compareAtPrice {\n          amount\n          currencyCode\n        }\n        selectedOptions {\n          name\n          value\n        }\n        product {\n          handle\n          title\n        }\n        currentlyNotInStock\n      }\n    }\n    metafields(identifiers: [{namespace: "custom", key: "backmedia"}]) {\n      id\n      reference {\n        ... on MediaImage {\n          id\n          image {\n            url\n          }\n          mediaContentType\n        }\n        ... on Video {\n          id\n          sources {\n            url\n            format\n            mimeType\n          }\n          mediaContentType\n        }\n      }\n    }\n  }\n\n': {
+  '#graphql\n  query PaginatedProductsSearch(\n    $country: CountryCode\n    $endCursor: String\n    $first: Int\n    $language: LanguageCode\n    $last: Int\n    $searchTerm: String\n    $startCursor: String\n  ) @inContext(country: $country, language: $language) {\n    products(\n      first: $first,\n      last: $last,\n      before: $startCursor,\n      after: $endCursor,\n      sortKey: RELEVANCE,\n      query: $searchTerm\n    ) {\n      nodes {\n        ...ProductCard\n      }\n      pageInfo {\n        hasPreviousPage\n        hasNextPage\n        hasNextPage\n        startCursor\n        endCursor\n      }\n    }\n  }\n\n  #graphql\n  fragment ProductCard on Product {\n    id\n    title\n    publishedAt\n    handle\n    vendor\n    variants(first: 100) {\n      nodes {\n        id\n        availableForSale\n        image {\n          url\n          altText\n          width\n          height\n        }\n        price {\n          amount\n          currencyCode\n        }\n        compareAtPrice {\n          amount\n          currencyCode\n        }\n        selectedOptions {\n          name\n          value\n        }\n        product {\n          handle\n          title\n        }\n        currentlyNotInStock\n      }\n    }\n    metafields(identifiers: [{namespace: "custom", key: "backmedia"}]) {\n      id\n      reference {\n        ... on MediaImage {\n          id\n          image {\n            url\n          }\n          mediaContentType\n        }\n        ... on Video {\n          id\n          sources {\n            url\n            format\n            mimeType\n          }\n          mediaContentType\n        }\n      }\n    }\n  }\n\n': {
     return: PaginatedProductsSearchQuery;
     variables: PaginatedProductsSearchQueryVariables;
   };
