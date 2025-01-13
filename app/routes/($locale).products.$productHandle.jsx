@@ -738,10 +738,6 @@ const PRODUCT_QUERY = `#graphql
       options {
         name
         optionValues {
-          firstSelectableVariant {
-
-            ...ProductVariantFragment
-          }
           name
           id
         }
