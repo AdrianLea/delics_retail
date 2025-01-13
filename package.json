@@ -31,6 +31,7 @@
     "clsx": "^1.2.1",
     "country-state-city": "^3.2.1",
     "cross-env": "^7.0.3",
+    "esbuild": "^0.24.0",
     "graphql": "^16.6.0",
     "graphql-tag": "^2.12.6",
     "gsap": "^3.12.5",
