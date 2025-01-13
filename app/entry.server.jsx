@@ -48,6 +48,7 @@ export default async function handleRequest(
       'https://scontent-ord5-2.cdninstagram.com',
       'https://d3k81ch9hvuctc.cloudfront.net',
       'https://cdnjs.cloudflare.com',
+      'https://localhost:3100',
     ],
   });
 
