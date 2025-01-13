@@ -499,7 +499,7 @@ export function ProductForm({variants, toggleModal, isFinished}) {
                                 open ? 'max-h-48' : 'max-h-0',
                               )}
                             >
-                              {option.values
+                              {option.optionValues
                                 .filter((value) => value.isAvailable)
                                 .map(({value, to, isActive}) => (
                                   <Listbox.Option
