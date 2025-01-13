@@ -2,8 +2,9 @@ import {defer} from '@shopify/remix-oxygen';
 import {Suspense} from 'react';
 import {Await, useLoaderData} from '@remix-run/react';
 import {AnalyticsPageType} from '@shopify/hydrogen';
+import BeholdWidget from '@behold/react';
 
-import {ProductSwimlane} from '~/components';
+import {CollectionShowcase, ProductCard, Grid, Link} from '~/components';
 import {PRODUCT_CARD_FRAGMENT} from '~/data/fragments';
 import {seoPayload} from '~/lib/seo.server';
 import {routeHeaders} from '~/data/cache';
@@ -24,21 +25,40 @@ export async function loader({params, context}) {
   }
 
   const {shop} = await context.storefront.query(HOMEPAGE_SEO_QUERY);
+  const homepageCollectionList = ['Trophy Wives', 'LOVESICK'];
+
+  const collectionShowcasePromises = homepageCollectionList.map((collection) =>
+    context.storefront.query(HOMEPAGE_COLLECTION_SHOWCASE_QUERY, {
+      variables: {
+        collectionName: `title:${collection}`,
+      },
+    }),
+  );
+
+  const collectionShowcaseImagesPromises = homepageCollectionList.map(
+    (collection) =>
+      context.storefront.query(COLLECTION_SHOWCASE_IMAGE_QUERY, {
+        variables: {
+          collectionName: `title:${collection}`,
+        },
+      }),
+  );
+
+  const collectionShowcaseData = await Promise.all([
+    ...collectionShowcasePromises,
+    ...collectionShowcaseImagesPromises,
+  ]);
 
   const seo = seoPayload.home();
 
   return defer({
     shop,
     slider_images: context.storefront.query(HOMEPAGE_SLIDER_QUERY),
-
-    featuredProducts: context.storefront.query(
+    collectionShowcaseData,
+    newArrivalProducts: context.storefront.query(
       HOMEPAGE_FEATURED_PRODUCTS_QUERY,
-      {
-        variables: {
-          first: 1,
-        },
-      },
     ),
+    featuredProducts: context.storefront.query(HOMEPAGE_BEST_SELLING_QUERY),
     analytics: {
       pageType: AnalyticsPageType.home,
     },
@@ -49,6 +69,9 @@ export async function loader({params, context}) {
 export default function Homepage() {
   const {featuredProducts} = useLoaderData();
   const {slider_images} = useLoaderData();
+  const {collectionShowcaseData} = useLoaderData();
+  const {newArrivalProducts} = useLoaderData();
+
   return (
     <>
       {slider_images && (
@@ -68,49 +91,150 @@ export default function Homepage() {
           </Await>
         </Suspense>
       )}
-      <div className="w-full h-screen -mt-[92px] md:-mt-[140px] bg-gray-100"></div>
-      <section
-        className={`flex flex-row w-full flex-wrap items-center justify-center p-2 bg-gray-100 border-b border-gray-300`}
-      >
-        <div className="max-w-[600px] items-center py-2">
-          <h2 className="text-center font-bold text-2xl">About Us</h2>
-          <p className="py-7 px-1 font-sans text-center">
-            DEL’CS WORLD is a female-owned Malaysian brand launched in February
-            2023. We started as a low-key curated thrift store at our little
-            retail space DEL’CS RETAIL in Taman Paramount in 2020. Since then,
-            the community around DEL’CS has grown tremendously, which cultivated
-            our love to serve you guys the most fashionable pieces with the
-            utmost quality.
-          </p>
-        </div>
+      <div className="w-full h-screen -mt-[92px] md:-mt-[140px] bg-gray-100 mb-5"></div>
+      {/* <div className="my-[200px] md:w-[90%] mx-auto">
+        <h1 className="text-[40px] text-center font-bold">
+          What is Del'cs World?
+        </h1>
+        <br></br>
+        <p className="text-[20px] text-center">
+          DEL’CS WORLD is a female fashion label born and based in Kuala Lumpur,
+          Malaysia.
+        </p>
+        <br></br>
+        <p className="text-[20px] text-center">
+          The average DEL’CS wearer is the effortlessly cool girl you walked
+          past on the streets last week who you can’t stop thinking about.
+          They’re probably the best dressed in the room and yes, you should’ve
+          asked from their Instagram.
+        </p>
+        <br></br>
+        <p className="text-[20px] text-center">
+          They’re probably the best dressed in the room and yes, you should’ve
+          asked from their Instagram. Created by Youths, For Youths — our brand
+          creates staple quality pieces to bring young fashionable people
+          together for any occasion from lounging around after school to going
+          to a weekend pilates sesh, or a night out with your best friends.
+        </p>
+      </div> */}
+
+      <section>
+        <Suspense>
+          <Await resolve={collectionShowcaseData}>
+            {(data) => {
+              const halfLength = data.length / 2;
+              const collectionShowcaseProducts = data.slice(0, halfLength);
+              const collectionShowcaseImages = data.slice(halfLength);
+              return collectionShowcaseProducts.map((resolve, index) => (
+                <CollectionShowcase
+                  count={4}
+                  products={resolve.collections.nodes[0].products.nodes}
+                  key={`key-${index}`}
+                  image={
+                    collectionShowcaseImages[index].collections.nodes[0]
+                      .metafields[0].reference.image
+                  }
+                />
+              ));
+            }}
+          </Await>
+        </Suspense>
       </section>
+
       {featuredProducts && (
         <Suspense>
           <Await resolve={featuredProducts}>
-            {({collections}) => {
-              if (!collections.nodes[0].products.nodes) return <></>;
+            {({products}) => {
               return (
-                <ProductSwimlane
-                  products={collections.nodes[0].products}
-                  title="Shop Our Latest"
-                  count={4}
+                <FeaturedProductsSection
+                  products={products.nodes}
+                  title={'BEST SELLERS'}
                 />
               );
             }}
           </Await>
         </Suspense>
       )}
+
+      {newArrivalProducts && (
+        <Suspense>
+          <Await resolve={newArrivalProducts}>
+            {({collections}) => {
+              return (
+                <FeaturedProductsSection
+                  products={collections.nodes[0].products.nodes}
+                  title={'NEW ARRIVALS'}
+                />
+              );
+            }}
+          </Await>
+        </Suspense>
+      )}
+      <p className="mx-auto font-bold text-xl mt-28 mb-14 text-center">
+        FIND US @DELCSWORLD
+      </p>
+      <BeholdWidget feedId="T0yVjKCZmwEaCMN0pzcw" />
+      <div className="m-14" />
     </>
   );
 }
 
-const HOMEPAGE_SLIDER_QUERY = `query heroimagesquery {
+function FeaturedProductsSection({title, products, to}) {
+  return (
+    <>
+      <h2 className="mx-auto font-bold text-xl my-28 text-center">{title}</h2>
+      <div className={`grid lg:w-[95%] 2xl:w-[1200px] mx-auto gap-x-6 gap-y-8`}>
+        <Grid layout="products">
+          {products.map((product) => (
+            <ProductCard product={product} key={product.id} quickAdd />
+          ))}
+        </Grid>
+        <Link
+          className="flex items-center justify-center text-center bg-black text-white hover:bg-transparent border hover:text-black w-[125px] h-[40px] text-md font-semibold shadow-sm rounded-md m-auto"
+          to={to}
+        >
+          VIEW ALL
+        </Link>
+      </div>
+    </>
+  );
+}
+
+const HOMEPAGE_SLIDER_QUERY = `#graphql
+query heroimagesquery {
   collections(
     first: 15
   ) {
     nodes {
       metafields(
         identifiers: [{namespace: "custom", key: "herodesktop"}, {namespace: "custom", key: "heromobile"}, {namespace: "custom", key: "herodescriptiontext"}, {namespace: "custom", key: "herobuttontext"}]
+      ) {
+        reference {
+          ... on MediaImage {
+            image {
+              url
+            }
+          }
+        }
+        value
+      }
+      handle
+      title
+      onlineStoreUrl
+      id
+    }
+  }
+}`;
+
+const COLLECTION_SHOWCASE_IMAGE_QUERY = `#graphql
+query collectionShowcaseImageQuery($collectionName: String!) {
+  collections(
+    first:1
+    query:$collectionName
+  ) {
+    nodes {
+      metafields(
+        identifiers: [{namespace: "custom", key: "collectionspageimage"}]
       ) {
         reference {
           ... on MediaImage {
@@ -144,7 +268,7 @@ export const HOMEPAGE_FEATURED_PRODUCTS_QUERY = `#graphql
   @inContext(country: $country, language: $language) {
     collections(first: 1, query:"title:New Arrivals", reverse: false) {
       nodes {
-        products(first: 10, sortKey: BEST_SELLING) {
+        products(first: 8, sortKey: CREATED) {
           nodes {
             id
             ...ProductCard
@@ -155,3 +279,33 @@ export const HOMEPAGE_FEATURED_PRODUCTS_QUERY = `#graphql
   }
   ${PRODUCT_CARD_FRAGMENT}
 `;
+
+export const HOMEPAGE_BEST_SELLING_QUERY = `#graphql
+  query homepageBestSelling($country: CountryCode, $language: LanguageCode)
+  @inContext(country: $country, language: $language) {
+    products(first: 8, sortKey: BEST_SELLING) {
+      nodes {
+        id
+        ...ProductCard
+      }
+    }
+  }
+  ${PRODUCT_CARD_FRAGMENT}
+`;
+
+export const HOMEPAGE_COLLECTION_SHOWCASE_QUERY = `#graphql
+      query collectionShowcaseQuery($country: CountryCode, $language: LanguageCode, $collectionName: String!)
+      @inContext(country: $country, language: $language) {
+        collections(first: 1, query:$collectionName , reverse: false) {
+          nodes {
+            products(first: 4, sortKey: BEST_SELLING) {
+              nodes {
+                id
+                ...ProductCard
+              }
+            }
+          }
+        }
+      }
+      ${PRODUCT_CARD_FRAGMENT}
+    `;

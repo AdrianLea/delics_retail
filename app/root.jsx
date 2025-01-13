@@ -84,6 +84,7 @@ export async function loader({request, context}) {
     }),
     consent: {
       checkoutDomain: env.PUBLIC_CHECKOUT_DOMAIN,
+      withPrivacyBanner: true,
       storefrontAccessToken: env.PUBLIC_STOREFRONT_API_TOKEN,
     },
     seo,

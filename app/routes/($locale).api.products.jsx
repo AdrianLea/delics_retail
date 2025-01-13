@@ -19,6 +19,7 @@ export async function loader({request, context: {storefront}}) {
 
   const query = searchParams.get('query') ?? '';
   const sortKey = searchParams.get('sortKey') ?? 'BEST_SELLING';
+  const collectionName = searchParams.get('collectionName') ?? '';
 
   let reverse = false;
   try {
@@ -48,6 +49,7 @@ export async function loader({request, context: {storefront}}) {
       sortKey,
       country: storefront.i18n.country,
       language: storefront.i18n.language,
+      collectionName: `title:${collectionName}`,
     },
     cache: storefront.CacheNone(),
   });
