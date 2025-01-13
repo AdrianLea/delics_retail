@@ -129,7 +129,7 @@ export default function Homepage() {
                 <CollectionShowcase
                   count={4}
                   products={resolve.collections.nodes[0].products.nodes}
-                  key={`key-${index}`}
+                  key={`key-${index}-1`}
                   image={
                     collectionShowcaseImages[index].collections.nodes[0]
                       .metafields[0].reference.image
