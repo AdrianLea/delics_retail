@@ -55,19 +55,12 @@ function Header({title, menu, layout}) {
 
   const navContent = {
     newArrivals: {title: 'New Arrivals', to: 'collections/new-arrivals'},
-    shopByCollection: {
-      title: 'Collections',
-      items: menu.items,
-    },
-    null: {
-      title: '',
-      items: [],
-    },
     Dresses: {title: 'Dresses', to: 'collections/Dresses'},
     Tops: {title: 'Tops', to: 'collections/Tops'},
     Bottoms: {title: 'Bottoms', to: 'collections/Bottoms'},
-    Accessories: {title: 'Accessories', to: 'collections/Accessories'},
     Bags: {title: 'Bags', to: 'collections/Bags'},
+    Sunglasses: {title: 'Sunglasses', to: 'collections/Sunglasses'},
+    Sale: {title: 'Sale (Up to 50% Off)', to: 'collections/Sale'},
   };
 
   const {
@@ -121,10 +114,14 @@ function Header({title, menu, layout}) {
 
 function AnnouncementBar({isHome}) {
   const {y} = useWindowScroll();
+  const [clientY, setClientY] = useState(0);
+  useEffect(() => {
+    setClientY(y);
+  }, [y]);
   return (
     <div
       className={`announcement-bar w-full h-fit p-1 text-center font-bold text-sm transition duration-300 ${
-        y < 10 && isHome
+        clientY < 10 && isHome
           ? ' bg-none text-white'
           : 'opacity-100 text-white bg-black'
       }`}
@@ -215,6 +212,11 @@ function MobileHeader({layout, isHome, openCart, openMenu, content}) {
 
   const params = useParams();
   const {y} = useWindowScroll();
+  const [clientY, setClientY] = useState(0);
+
+  useEffect(() => {
+    setClientY(y);
+  }, [y]);
   return (
     <header
       role="banner"
@@ -224,7 +226,7 @@ function MobileHeader({layout, isHome, openCart, openMenu, content}) {
         className={`${
           isHome ? 'bg-white' : 'bg-white text-black shadow-darkHeader'
         } ${
-          isHome && y < 10
+          isHome && clientY < 10
             ? 'bg-opacity-0 text-white border-b border-b-white border-opacity-50'
             : 'bg-opacity-100 text-black shadow-darkHeader'
         }
@@ -271,6 +273,7 @@ function MobileHeader({layout, isHome, openCart, openMenu, content}) {
             src={layout.shop.brand.logo.image.url}
             alt="Delics"
             aspectRatio="3/1"
+            sizes="(max-width: 600px) 50vw, (max-width: 1024px) 33vw, 25vw"
           ></Image>
         </Link>
 
@@ -287,12 +290,17 @@ function MobileHeader({layout, isHome, openCart, openMenu, content}) {
 function DesktopHeader({isHome, menu, openCart, layout, content}) {
   const params = useParams();
   const {y} = useWindowScroll();
+  const [clientY, setClientY] = useState(0);
   const [currentSection, setCurrentSection] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
   const [isActive, setIsActive] = useState(false);
   const handleMouseEnter = (section) => {
     setCurrentSection(section);
   };
+
+  useEffect(() => {
+    setClientY(y);
+  }, [y]);
 
   const handleMouseLeave = () => {
     setCurrentSection(null);
@@ -317,7 +325,7 @@ function DesktopHeader({isHome, menu, openCart, layout, content}) {
             ? 'bg-white hover:bg-opacity-100 hover:text-black'
             : 'bg-white text-black'
         } ${
-          isHome && y < 10 && currentSection == null
+          isHome && clientY < 10 && currentSection == null
             ? 'bg-opacity-0 text-white border-b border-b-white border-opacity-50 hover:text-black'
             : 'bg-opacity-100 text-black'
         } items-center transition duration-300  justify-center w-full leading-none  px-12`}
@@ -336,6 +344,7 @@ function DesktopHeader({isHome, menu, openCart, layout, content}) {
                   src={layout.shop.brand.logo.image.url}
                   alt="Delics"
                   aspectRatio="3/1"
+                  sizes="(max-width: 600px) 50vw, (max-width: 1024px) 33vw, 25vw"
                 ></Image>
               )}
             </Link>
@@ -412,7 +421,7 @@ function DesktopHeader({isHome, menu, openCart, layout, content}) {
         onMouseEnter={() => handleMouseEnter(currentSection)}
         onMouseLeave={handleMouseLeave}
       >
-        {content[currentSection].items.map((item) => {
+        {content[currentSection]?.items?.map((item) => {
           return (
             <Link key={item.id} to={item.to} className="py-1">
               {item.title}
@@ -456,13 +465,20 @@ function CartCount({isActive, openCart, isHome}) {
 function Badge({openCart, isActive, count, isHome}) {
   const isHydrated = useIsHydrated();
   const {y} = useWindowScroll();
+  const [clientY, setClientY] = useState(0);
+  const [clientIsActive, setClientIsActive] = useState(isActive);
+
+  useEffect(() => {
+    setClientY(y);
+    setClientIsActive(isActive);
+  }, [y, isActive]);
   const BadgeCounter = useMemo(
     () => (
       <>
         <IconBag />
         <div
           className={`${
-            !isHome || (isHome && (y > 10 || isActive))
+            !isHome || (isHome && (clientY > 10 || clientIsActive))
               ? 'text-white bg-black'
               : 'text-black bg-white'
           } transition duration-300 absolute bottom-1 right-1 text-[0.625rem] font-medium subpixel-antialiased h-3 min-w-[0.75rem] flex items-center justify-center leading-none text-center rounded-full w-auto px-[0.125rem] pb-px`}
@@ -471,7 +487,7 @@ function Badge({openCart, isActive, count, isHome}) {
         </div>
       </>
     ),
-    [count, isActive, y, isHome],
+    [count, clientIsActive, clientY, isHome],
   );
 
   return isHydrated ? (

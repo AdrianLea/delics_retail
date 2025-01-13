@@ -165,11 +165,13 @@ function Slider({images, className}) {
               className={`opacity-70 w-full h-full overflow-hidden object-cover relative hidden lg:block`}
               src={element[0]}
               loading="lazy"
+              sizes="(max-width: 1024px) 100vw, 100vw"
             ></Image>
             <Image
               className={`opacity-70 w-full h-full overflow-hidden object-cover relative lg:hidden`}
               src={element[1]}
               loading="lazy"
+              sizes="(max-width: 1024px) 100vw, 100vw"
             ></Image>
             <div
               className={`information-holder absolute -translate-y-[50%] top-[50%] md:translate-y-0 md:top-[80%] md:left-[10%] font-mono left-[50%] -translate-x-[50%] md:translate-x-0 w-full`}
