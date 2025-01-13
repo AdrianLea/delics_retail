@@ -61,6 +61,7 @@ function Header({title, menu, layout}) {
     Bags: {title: 'Bags', to: 'collections/Bags'},
     Sunglasses: {title: 'Sunglasses', to: 'collections/Sunglasses'},
     Sale: {title: 'Sale (Up to 50% Off)', to: 'collections/Sale'},
+    Collections: {title: 'Collections', items: menu.items},
   };
 
   const {
@@ -380,7 +381,7 @@ function DesktopHeader({isHome, menu, openCart, layout, content}) {
               />
             </div>
           </div>
-          <div className="pt-1">
+          <div className="">
             <nav className="flex gap-12 items-center justify-center pt-2">
               {/* Top level menu items */}
               {Object.keys(content).map((key) => {
@@ -415,19 +416,23 @@ function DesktopHeader({isHome, menu, openCart, layout, content}) {
       </div>
 
       <div
-        className={`absolute top-[112.8px] w-full subsection-dropdown flex flex-row border-t justify-center gap-12 font-nimubs font-bold bg-white transition-opacity duration-300 ${
-          isVisible ? 'opacity-100' : 'opacity-0'
+        className={`absolute top-[107px] h-[100px] w-full ${
+          isVisible
+            ? 'opacity-100 pointer-events-auto'
+            : 'opacity-0 pointer-events-none'
         }`}
         onMouseEnter={() => handleMouseEnter(currentSection)}
         onMouseLeave={handleMouseLeave}
       >
-        {content[currentSection]?.items?.map((item) => {
-          return (
-            <Link key={item.id} to={item.to} className="py-1">
-              {item.title}
-            </Link>
-          );
-        })}
+        <div className="relative h-fit w-full subsection-dropdown flex flex-row border-t justify-center gap-12 font-nimubs font-bold transition-opacity duration-300 bg-white">
+          {content[currentSection]?.items?.map((item) => {
+            return (
+              <Link key={item.id} to={item.to} className="py-1">
+                {item.title}
+              </Link>
+            );
+          })}
+        </div>
       </div>
 
       <AnnouncementBar isHome={isHome} />

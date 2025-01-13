@@ -5,7 +5,7 @@ import {gsap} from 'gsap';
 export function Loading() {
   const ctx = useRef(null);
   const loaderBar = useRef(null);
-  const [loadEnded, setLoadEnded] = useState(false);
+  const [loadEnded, setLoadEnded] = useState(true);
   const fetcher = useNavigation();
   const finishLoad = useRef(null);
   const startLoad = useRef(null);
@@ -38,7 +38,6 @@ export function Loading() {
   }, []);
 
   useEffect(() => {
-    startLoad.current.pause(0);
     if (fetcher.state == 'idle' && loadEnded == false) {
       setLoadEnded(true);
       startLoad.current.pause(0);
