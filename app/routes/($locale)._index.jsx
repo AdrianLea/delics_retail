@@ -189,12 +189,15 @@ export default function Homepage() {
 }
 
 function FeaturedProductsSection({title, products, to}) {
+  const filteredProducts = products
+    .filter((product) => product.availableForSale)
+    .slice(0, 8);
   return (
     <>
       <h2 className="mx-auto font-bold text-xl my-28 text-center">{title}</h2>
       <div className={`grid w-[95%] mx-auto gap-x-6 gap-y-8`}>
         <Grid layout="products">
-          {products.map((product) => (
+          {filteredProducts.map((product) => (
             <ProductCard product={product} key={product.id} quickAdd />
           ))}
         </Grid>
@@ -277,7 +280,7 @@ export const HOMEPAGE_FEATURED_PRODUCTS_QUERY = `#graphql
   @inContext(country: $country, language: $language) {
     collections(first: 1, query:"title:New Arrivals", reverse: false) {
       nodes {
-        products(first: 8, sortKey: CREATED) {
+        products(first: 20, sortKey: CREATED) {
           nodes {
             id
             ...ProductCard
@@ -292,7 +295,7 @@ export const HOMEPAGE_FEATURED_PRODUCTS_QUERY = `#graphql
 export const HOMEPAGE_BEST_SELLING_QUERY = `#graphql
   query homepageBestSelling($country: CountryCode, $language: LanguageCode)
   @inContext(country: $country, language: $language) {
-    products(first: 8, sortKey: BEST_SELLING) {
+    products(first: 20, sortKey: BEST_SELLING) {
       nodes {
         id
         ...ProductCard
@@ -307,7 +310,7 @@ export const HOMEPAGE_COLLECTION_SHOWCASE_QUERY = `#graphql
       @inContext(country: $country, language: $language) {
         collections(first: 1, query:$collectionName , reverse: false) {
           nodes {
-            products(first: 4, sortKey: BEST_SELLING) {
+            products(first: 20, sortKey: BEST_SELLING) {
               nodes {
                 id
                 ...ProductCard

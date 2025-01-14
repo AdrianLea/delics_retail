@@ -22,6 +22,9 @@ export function CollectionShowcase({
   image,
   to,
 }) {
+  const filteredProducts = products
+    .filter((product) => product.availableForSale)
+    .slice(0, 4);
   return (
     <div className="my-10">
       <Link to={to} className="relative">
@@ -38,7 +41,7 @@ export function CollectionShowcase({
         </div>
       </Link>
       <div className="grid w-[95%] mx-auto gap-x-6 gap-y-8 my-5">
-        <CollectionShowcaseContent count={count} products={products} />
+        <CollectionShowcaseContent count={count} products={filteredProducts} />
       </div>
 
       <div className="flex justify-center mb-[72px]">
