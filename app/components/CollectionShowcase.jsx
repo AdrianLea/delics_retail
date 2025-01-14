@@ -33,7 +33,7 @@ export function CollectionShowcase({
           src={image.url}
           loading="lazy"
         ></Image>
-        <div className="absolute w-full h-full top-0 flex flex-col justify-end m-auto items-center text-center gap-3">
+        <div className="absolute w-full h-full top-0 flex flex-col justify-end items-center text-center gap-3 left-0">
           <p className="text-white font-bold text-5xl">{heading}</p>
           <button className="underline text-white text-2xl font-bold my-4">
             SHOP NOW
