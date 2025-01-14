@@ -456,12 +456,22 @@ export function ProductForm({variants, toggleModal, isFinished}) {
 
   const {publish, shop, cart, prevCart} = useAnalytics();
 
+  const deduplicatedOptions = product.options.map((option) => {
+    const uniqueOptionValues = Array.from(
+      new Map(option.optionValues.map((item) => [item.name, item])).values(),
+    );
+    return {
+      ...option,
+      optionValues: uniqueOptionValues,
+    };
+  });
+
   return (
     <div className="grid gap-10">
       <div className="grid gap-4">
         <VariantSelector
           handle={product.handle}
-          options={product.options.filter(
+          options={deduplicatedOptions.filter(
             (option) => option.optionValues.length > 1,
           )}
           variants={variants}
@@ -499,7 +509,7 @@ export function ProductForm({variants, toggleModal, isFinished}) {
                                 open ? 'max-h-48' : 'max-h-0',
                               )}
                             >
-                              {option.optionValues
+                              {option.values
                                 .filter((value) => value.isAvailable)
                                 .map(({value, to, isActive}) => (
                                   <Listbox.Option
