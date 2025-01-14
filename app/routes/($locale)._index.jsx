@@ -154,7 +154,6 @@ export default function Homepage() {
         <Suspense>
           <Await resolve={collectionShowcaseData}>
             {(data) => {
-              console.log(collectionShowcaseData);
               const halfLength = data.length / 2;
               const collectionShowcaseProducts = data.slice(0, halfLength);
               const collectionShowcaseImages = data.slice(halfLength);
@@ -194,7 +193,7 @@ function FeaturedProductsSection({title, products, to}) {
     .slice(0, 8);
   return (
     <>
-      <h2 className="mx-auto font-bold text-xl my-28 text-center">{title}</h2>
+      <h2 className="mx-auto font-bold text-3xl my-28 text-center">{title}</h2>
       <div className={`grid w-[95%] mx-auto gap-x-6 gap-y-8`}>
         <Grid layout="products">
           {filteredProducts.map((product) => (
