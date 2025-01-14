@@ -15,7 +15,7 @@ import {ProductCard, Skeleton, Text, Grid, Link} from '~/components';
  */
 export function CollectionShowcase({
   count = 4,
-  heading = 'Shop Best Sellers',
+  heading = 'LOVESICK COLLECTION',
   reverse,
   sortKey = 'BEST_SELLING',
   products,
@@ -23,15 +23,21 @@ export function CollectionShowcase({
   to,
 }) {
   return (
-    <div className="mb-5">
-      <Link to={to}>
+    <div className="my-10">
+      <Link to={to} className="relative">
         <Image
           className={`w-full h-full object-cover  mx-auto md:aspect-[12/5] aspect-[1/1]`}
           src={image.url}
           loading="lazy"
         ></Image>
+        <div className="absolute w-full h-full top-0 flex flex-col justify-end m-auto items-center text-center gap-3">
+          <p className="text-white font-bold text-5xl">{heading}</p>
+          <button className="underline text-white text-2xl font-bold my-4">
+            SHOP NOW
+          </button>
+        </div>
       </Link>
-      <div className="grid lg:w-[95%] 2xl:w-[1200px] mx-auto gap-x-6 gap-y-8 my-5">
+      <div className="grid w-[95%] mx-auto gap-x-6 gap-y-8 my-5">
         <CollectionShowcaseContent count={count} products={products} />
       </div>
 

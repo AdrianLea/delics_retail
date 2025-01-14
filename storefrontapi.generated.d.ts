@@ -406,69 +406,77 @@ export type CollectionShowcaseQueryQueryVariables = StorefrontAPI.Exact<{
 
 export type CollectionShowcaseQueryQuery = {
   collections: {
-    nodes: Array<{
-      products: {
-        nodes: Array<
-          Pick<
-            StorefrontAPI.Product,
-            | 'id'
-            | 'title'
-            | 'publishedAt'
-            | 'handle'
-            | 'vendor'
-            | 'availableForSale'
-          > & {
-            variants: {
-              nodes: Array<
-                Pick<
-                  StorefrontAPI.ProductVariant,
-                  'id' | 'availableForSale' | 'currentlyNotInStock'
-                > & {
-                  image?: StorefrontAPI.Maybe<
-                    Pick<
-                      StorefrontAPI.Image,
-                      'url' | 'altText' | 'width' | 'height'
-                    >
-                  >;
-                  price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
-                  compareAtPrice?: StorefrontAPI.Maybe<
-                    Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>
-                  >;
-                  selectedOptions: Array<
-                    Pick<StorefrontAPI.SelectedOption, 'name' | 'value'>
-                  >;
-                  product: Pick<StorefrontAPI.Product, 'handle' | 'title'>;
-                }
+    nodes: Array<
+      Pick<StorefrontAPI.Collection, 'onlineStoreUrl' | 'title'> & {
+        products: {
+          nodes: Array<
+            Pick<
+              StorefrontAPI.Product,
+              | 'id'
+              | 'title'
+              | 'publishedAt'
+              | 'handle'
+              | 'vendor'
+              | 'availableForSale'
+            > & {
+              variants: {
+                nodes: Array<
+                  Pick<
+                    StorefrontAPI.ProductVariant,
+                    'id' | 'availableForSale' | 'currentlyNotInStock'
+                  > & {
+                    image?: StorefrontAPI.Maybe<
+                      Pick<
+                        StorefrontAPI.Image,
+                        'url' | 'altText' | 'width' | 'height'
+                      >
+                    >;
+                    price: Pick<
+                      StorefrontAPI.MoneyV2,
+                      'amount' | 'currencyCode'
+                    >;
+                    compareAtPrice?: StorefrontAPI.Maybe<
+                      Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>
+                    >;
+                    selectedOptions: Array<
+                      Pick<StorefrontAPI.SelectedOption, 'name' | 'value'>
+                    >;
+                    product: Pick<StorefrontAPI.Product, 'handle' | 'title'>;
+                  }
+                >;
+              };
+              metafields: Array<
+                StorefrontAPI.Maybe<
+                  Pick<StorefrontAPI.Metafield, 'id'> & {
+                    reference?: StorefrontAPI.Maybe<
+                      | (Pick<
+                          StorefrontAPI.MediaImage,
+                          'id' | 'mediaContentType'
+                        > & {
+                          image?: StorefrontAPI.Maybe<
+                            Pick<StorefrontAPI.Image, 'url'>
+                          >;
+                        })
+                      | (Pick<
+                          StorefrontAPI.Video,
+                          'id' | 'mediaContentType'
+                        > & {
+                          sources: Array<
+                            Pick<
+                              StorefrontAPI.VideoSource,
+                              'url' | 'format' | 'mimeType'
+                            >
+                          >;
+                        })
+                    >;
+                  }
+                >
               >;
-            };
-            metafields: Array<
-              StorefrontAPI.Maybe<
-                Pick<StorefrontAPI.Metafield, 'id'> & {
-                  reference?: StorefrontAPI.Maybe<
-                    | (Pick<
-                        StorefrontAPI.MediaImage,
-                        'id' | 'mediaContentType'
-                      > & {
-                        image?: StorefrontAPI.Maybe<
-                          Pick<StorefrontAPI.Image, 'url'>
-                        >;
-                      })
-                    | (Pick<StorefrontAPI.Video, 'id' | 'mediaContentType'> & {
-                        sources: Array<
-                          Pick<
-                            StorefrontAPI.VideoSource,
-                            'url' | 'format' | 'mimeType'
-                          >
-                        >;
-                      })
-                  >;
-                }
-              >
-            >;
-          }
-        >;
-      };
-    }>;
+            }
+          >;
+        };
+      }
+    >;
   };
 };
 
@@ -1332,7 +1340,7 @@ interface GeneratedQueryTypes {
     return: HomepageBestSellingQuery;
     variables: HomepageBestSellingQueryVariables;
   };
-  '#graphql\n      query collectionShowcaseQuery($country: CountryCode, $language: LanguageCode, $collectionName: String!)\n      @inContext(country: $country, language: $language) {\n        collections(first: 1, query:$collectionName , reverse: false) {\n          nodes {\n            products(first: 4, sortKey: BEST_SELLING) {\n              nodes {\n                id\n                ...ProductCard\n              }\n            }\n          }\n        }\n      }\n      #graphql\n  fragment ProductCard on Product {\n    id\n    title\n    publishedAt\n    handle\n    vendor\n    availableForSale\n    variants(first: 100) {\n      nodes {\n        id\n        availableForSale\n        image {\n          url\n          altText\n          width\n          height\n        }\n        price {\n          amount\n          currencyCode\n        }\n        compareAtPrice {\n          amount\n          currencyCode\n        }\n        selectedOptions {\n          name\n          value\n        }\n        product {\n          handle\n          title\n        }\n        currentlyNotInStock\n      }\n    }\n    metafields(identifiers: [{namespace: "custom", key: "backmedia"}]) {\n      id\n      reference {\n        ... on MediaImage {\n          id\n          image {\n            url\n          }\n          mediaContentType\n        }\n        ... on Video {\n          id\n          sources {\n            url\n            format\n            mimeType\n          }\n          mediaContentType\n        }\n      }\n    }\n  }\n\n    ': {
+  '#graphql\n      query collectionShowcaseQuery($country: CountryCode, $language: LanguageCode, $collectionName: String!)\n      @inContext(country: $country, language: $language) {\n        collections(first: 1, query:$collectionName , reverse: false) {\n          nodes {\n            products(first: 4, sortKey: BEST_SELLING) {\n              nodes {\n                id\n                ...ProductCard\n              }\n            }\n            onlineStoreUrl\n            title\n          }\n        }\n      }\n      #graphql\n  fragment ProductCard on Product {\n    id\n    title\n    publishedAt\n    handle\n    vendor\n    availableForSale\n    variants(first: 100) {\n      nodes {\n        id\n        availableForSale\n        image {\n          url\n          altText\n          width\n          height\n        }\n        price {\n          amount\n          currencyCode\n        }\n        compareAtPrice {\n          amount\n          currencyCode\n        }\n        selectedOptions {\n          name\n          value\n        }\n        product {\n          handle\n          title\n        }\n        currentlyNotInStock\n      }\n    }\n    metafields(identifiers: [{namespace: "custom", key: "backmedia"}]) {\n      id\n      reference {\n        ... on MediaImage {\n          id\n          image {\n            url\n          }\n          mediaContentType\n        }\n        ... on Video {\n          id\n          sources {\n            url\n            format\n            mimeType\n          }\n          mediaContentType\n        }\n      }\n    }\n  }\n\n    ': {
     return: CollectionShowcaseQueryQuery;
     variables: CollectionShowcaseQueryQueryVariables;
   };

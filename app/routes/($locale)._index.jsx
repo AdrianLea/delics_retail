@@ -118,10 +118,43 @@ export default function Homepage() {
         </p>
       </div> */}
 
+      {newArrivalProducts && (
+        <Suspense>
+          <Await resolve={newArrivalProducts}>
+            {({collections}) => {
+              return (
+                <FeaturedProductsSection
+                  products={collections.nodes[0].products.nodes}
+                  title={'NEW ARRIVALS'}
+                  to={'/collections/new-arrivals'}
+                />
+              );
+            }}
+          </Await>
+        </Suspense>
+      )}
+
+      {featuredProducts && (
+        <Suspense>
+          <Await resolve={featuredProducts}>
+            {({products}) => {
+              return (
+                <FeaturedProductsSection
+                  products={products.nodes}
+                  title={'BEST SELLERS'}
+                  to={'/collections/delcs-world-vol-2?sort=best-selling'}
+                />
+              );
+            }}
+          </Await>
+        </Suspense>
+      )}
+
       <section>
         <Suspense>
           <Await resolve={collectionShowcaseData}>
             {(data) => {
+              console.log(collectionShowcaseData);
               const halfLength = data.length / 2;
               const collectionShowcaseProducts = data.slice(0, halfLength);
               const collectionShowcaseImages = data.slice(halfLength);
@@ -134,6 +167,11 @@ export default function Homepage() {
                     collectionShowcaseImages[index].collections.nodes[0]
                       .metafields[0].reference.image
                   }
+                  to={
+                    new URL(resolve.collections.nodes[0].onlineStoreUrl)
+                      .pathname
+                  }
+                  heading={`${resolve.collections.nodes[0].title.toUpperCase()} COLLECTION`}
                 />
               ));
             }}
@@ -141,35 +179,6 @@ export default function Homepage() {
         </Suspense>
       </section>
 
-      {featuredProducts && (
-        <Suspense>
-          <Await resolve={featuredProducts}>
-            {({products}) => {
-              return (
-                <FeaturedProductsSection
-                  products={products.nodes}
-                  title={'BEST SELLERS'}
-                />
-              );
-            }}
-          </Await>
-        </Suspense>
-      )}
-
-      {newArrivalProducts && (
-        <Suspense>
-          <Await resolve={newArrivalProducts}>
-            {({collections}) => {
-              return (
-                <FeaturedProductsSection
-                  products={collections.nodes[0].products.nodes}
-                  title={'NEW ARRIVALS'}
-                />
-              );
-            }}
-          </Await>
-        </Suspense>
-      )}
       <p className="mx-auto font-bold text-xl mt-28 mb-14 text-center">
         FIND US @DELCSWORLD
       </p>
@@ -183,7 +192,7 @@ function FeaturedProductsSection({title, products, to}) {
   return (
     <>
       <h2 className="mx-auto font-bold text-xl my-28 text-center">{title}</h2>
-      <div className={`grid lg:w-[95%] 2xl:w-[1200px] mx-auto gap-x-6 gap-y-8`}>
+      <div className={`grid w-[95%] mx-auto gap-x-6 gap-y-8`}>
         <Grid layout="products">
           {products.map((product) => (
             <ProductCard product={product} key={product.id} quickAdd />
@@ -304,6 +313,8 @@ export const HOMEPAGE_COLLECTION_SHOWCASE_QUERY = `#graphql
                 ...ProductCard
               }
             }
+            onlineStoreUrl
+            title
           }
         }
       }
