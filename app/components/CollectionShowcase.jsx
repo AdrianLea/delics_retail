@@ -33,9 +33,9 @@ export function CollectionShowcase({
           src={image.url}
           loading="lazy"
         ></Image>
-        <div className="relative w-full h-full -translate-y-[100%] flex flex-col justify-center items-center text-center gap-3">
-          <p className="text-white font-bold text-2xl sm:text-5xl">{heading}</p>
-          <button className="underline text-white text-xl sm:text-2xl font-bold my-4">
+        <div className="relative w-full h-full -translate-y-[100%] flex flex-col justify-center items-center text-center gap-1 sm:gap-3">
+          <p className="text-white font-bold text-3xl sm:text-5xl">{heading}</p>
+          <button className="underline text-white text-xl sm:text-2xl font-bold sm:my-4 my-2">
             SHOP NOW
           </button>
         </div>
