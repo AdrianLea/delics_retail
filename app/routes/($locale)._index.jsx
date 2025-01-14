@@ -178,7 +178,7 @@ export default function Homepage() {
         </Suspense>
       </section>
 
-      <p className="mx-auto font-bold text-xl mt-28 mb-14 text-center">
+      <p className="mx-auto font-bold text-3xl mt-28 mb-14 text-center">
         FIND US @DELCSWORLD
       </p>
       <BeholdWidget feedId="T0yVjKCZmwEaCMN0pzcw" />
