@@ -60,7 +60,6 @@ function Header({title, menu, layout}) {
     Bottoms: {title: 'Bottoms', to: 'collections/Bottoms'},
     Bags: {title: 'Bags', to: 'collections/Bags'},
     Sunglasses: {title: 'Sunglasses', to: 'collections/Sunglasses'},
-    Sale: {title: 'Sale (Up to 50% Off)', to: 'collections/Sale'},
     Collections: {title: 'Collections', items: menu.items},
   };
 
@@ -784,12 +783,6 @@ function FooterMenu({menu}) {
             item={{
               title: 'Unlock 10% off',
               to: '/redeem',
-            }}
-          />
-          <FooterLink
-            item={{
-              title: 'Black Friday Sale',
-              to: '/bf-signup',
             }}
           />
         </div>

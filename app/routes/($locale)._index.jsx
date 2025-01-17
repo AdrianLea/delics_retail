@@ -179,7 +179,7 @@ export default function Homepage() {
       </section>
 
       <p className="mx-auto font-bold text-3xl mt-28 mb-14 text-center">
-        FIND US @DELCSWORLD
+        FIND US @DELICSWORLD
       </p>
       <BeholdWidget feedId="T0yVjKCZmwEaCMN0pzcw" />
       <div className="m-14" />
