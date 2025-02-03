@@ -61,6 +61,10 @@ function Header({title, menu, layout}) {
     Bags: {title: 'Bags', to: 'collections/Bags'},
     Sunglasses: {title: 'Sunglasses', to: 'collections/Sunglasses'},
     Collections: {title: 'Collections', items: menu.items},
+    loveEvent: {
+      title: 'Love Island Event',
+      to: 'products/love-island-matchmaking-tickets',
+    },
   };
 
   const {
