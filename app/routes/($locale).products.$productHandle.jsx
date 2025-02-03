@@ -106,6 +106,10 @@ export async function loader({params, request, context}) {
   const {productHandle} = params;
 
   const selectedOptions = getSelectedProductOptions(request);
+  if (selectedOptions.length > 0) {
+    const lastOption = selectedOptions[selectedOptions.length - 1];
+    lastOption.value = lastOption.value.split('?')[0];
+  }
 
   if (selectedOptions[0]?.name == '_kx') {
     selectedOptions.shift();
