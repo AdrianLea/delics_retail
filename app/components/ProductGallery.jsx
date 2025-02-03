@@ -13,7 +13,7 @@ export function ProductGallery({media, className, selectedVariant}) {
     <div
       className={`swimlane md:grid-flow-row hiddenScroll md:p-0 md:overflow-x-auto md:grid-cols-2 ${className}`}
     >
-      <div className="aspect-square snap-center card-image bg-white w-mobileGallery md:w-full md:col-span-2">
+      <div className="snap-center card-image bg-white w-mobileGallery md:w-full md:col-span-2">
         <Image
           loading={'eager'}
           data={selectedVariant?.image}

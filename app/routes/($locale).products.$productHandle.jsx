@@ -6,6 +6,7 @@ import {
   useSubmit,
   useActionData,
   useNavigation,
+  useLocation,
 } from '@remix-run/react';
 import {Disclosure, Listbox} from '@headlessui/react';
 import {defer, redirect} from '@shopify/remix-oxygen';
@@ -220,6 +221,7 @@ export default function Product() {
   const [modalOpen, setModalOpen] = useState(false);
   const {product, shop, recommended, variants, customer} = useLoaderData();
   const [isFinished, setIsFinished] = useState(false);
+  const [modalType, setModalType] = useState('notify');
   const {media, title, descriptionHtml} = product;
   const {shippingPolicy, refundPolicy} = shop;
   const actionData = useActionData();
@@ -242,7 +244,7 @@ export default function Product() {
     }
   }, [nav.state, success]);
 
-  const toggleModal = () => {
+  const toggleModal = (type) => {
     if (customer?.emailAddress?.emailAddress) {
       const formData = new FormData();
       const productId = selectedVariant?.id?.match(/\d+$/)?.[0];
@@ -250,6 +252,7 @@ export default function Product() {
       formData.append('productId', productId);
       submit(formData, {method: 'post'});
     } else {
+      setModalType(type);
       setModalOpen(!modalOpen);
     }
   };
@@ -281,12 +284,16 @@ export default function Product() {
                 <div className="absolute top-0 right-0 hidden pt-4 pr-4 sm:block">
                   <button
                     onClick={toggleModal}
-                    className="p-4 -m-4 transition text-primary hover:text-primary/50"
+                    className="p-4 -m-4 transition text-black hover:text-blac/50"
                   >
                     <IconClose aria-label="Close panel" />
                   </button>
                 </div>
-                <ModalForm toggleModal={toggleModal} customer={customer} />
+                {modalType == 'notify' ? (
+                  <ModalForm toggleModal={toggleModal} customer={customer} />
+                ) : (
+                  <ConsentForm toggleModal={toggleModal} customer={customer} />
+                )}
               </div>
             </div>
           </div>
@@ -436,10 +443,84 @@ function ModalForm(toggleModal) {
   );
 }
 
+function ConsentForm({toggleModal}) {
+  const {product} = useLoaderData();
+  const selectedVariant = product?.selectedVariant;
+  const [consentGiven, setConsentGiven] = useState(false);
+
+  const handleCheckboxChange = (event) => {
+    setConsentGiven(event.target.checked);
+  };
+
+  return (
+    <div className="p-2">
+      <p className="font-bold pb-1">Terms & Conditions</p>
+      <p>
+        Disclaimer: Tickets for Del’cs Love Island event are strictly available
+        for individuals aged 18 to 30 years old only. By purchasing a ticket,
+        you acknowledge and agree to the following:
+        <br />
+        <br />
+        <strong>Age Verification:</strong> On the day of the event, participants
+        will be required to present a valid identification card (IC) to verify
+        their age.
+        <br />
+        <br />
+        <strong>Non-Compliance:</strong> If a participant is found to be younger
+        than 18 years old or older than 30 years old, their participation will
+        be cancelled. No refunds will be issued under these circumstances.
+        <br />
+        <br />
+        <strong>Agreement Confirmation:</strong> Before proceeding with the
+        purchase, you must click the &quot;Yes, I Agree&quot; button to confirm
+        your understanding and acceptance of these terms. By purchasing a
+        ticket, you confirm that you meet the age criteria and agree to comply
+        with these terms.
+      </p>
+      <label className="flex items-center mb-4 mt-2">
+        <input
+          type="checkbox"
+          className="mr-2"
+          checked={consentGiven}
+          onChange={handleCheckboxChange}
+        />
+        Yes, I Agree
+      </label>
+      <Link
+        to={
+          consentGiven
+            ? `/cart/${selectedVariant.id.replace(/[^\d]/g, '')}:1`
+            : '#'
+        }
+        className={`w-full inline-block rounded font-medium text-center py-3 px-6 ${
+          consentGiven
+            ? 'bg-black text-white'
+            : 'bg-gray-400 text-gray-700 cursor-not-allowed'
+        }`}
+        onClick={(e) => {
+          if (!consentGiven) e.preventDefault();
+        }}
+      >
+        Buy Now
+      </Link>
+    </div>
+  );
+}
+
 export function ProductForm({variants, toggleModal, isFinished}) {
   const {product, analytics} = useLoaderData();
   const closeRef = useRef(null);
   const actionData = useActionData();
+  const location = useLocation();
+  const [isTicket, setIsTicket] = useState(false);
+
+  useEffect(() => {
+    if (location.pathname.includes('ticket')) {
+      setIsTicket(true);
+    } else {
+      setIsTicket(false);
+    }
+  }, [location]);
 
   /**
    * Likewise, we're defaulting to the first variant for purposes
@@ -554,7 +635,7 @@ export function ProductForm({variants, toggleModal, isFinished}) {
                         className={clsx(
                           'leading-none py-1 border-b-[1.5px] cursor-pointer transition-all duration-200',
                           isActive ? 'border-black/50' : 'border-black/0',
-                          isAvailable ? 'opacity-100' : 'opacity-50',
+                          isAvailable ? 'text-black' : 'text-black/50',
                         )}
                       >
                         {value}
@@ -580,11 +661,11 @@ export function ProductForm({variants, toggleModal, isFinished}) {
                 </Button>
                 {actionData?.success === false ? (
                   <p className="text-red-500">
-                    An error occured, please try again
+                    An error occurred, please try again
                   </p>
                 ) : null}
                 {!isFinished ? (
-                  <Button onClick={() => toggleModal()}>
+                  <Button onClick={() => toggleModal('notify')}>
                     <Text className="text-white">Notify me when available</Text>
                   </Button>
                 ) : (
@@ -595,46 +676,50 @@ export function ProductForm({variants, toggleModal, isFinished}) {
                   </div>
                 )}
               </>
+            ) : isTicket ? (
+              <Button onClick={() => toggleModal('consent')}>
+                <Text className="text-white">Buy ticket</Text>
+              </Button>
             ) : (
-              <AddToCartButton
-                lines={[
-                  {
-                    merchandiseId: selectedVariant.id,
-                    quantity: 1,
-                  },
-                ]}
-                variant="primary"
-                data-test="add-to-cart"
-                analytics={{
-                  products: [productAnalytics],
-                  totalValue: parseFloat(productAnalytics.price),
-                }}
-                onClick={() => {
-                  publish('cart_viewed', {
-                    cart,
-                    prevCart,
-                    shop,
-                    url: window.location.href || '',
-                  });
-                }}
-              >
-                <Text
-                  as="span"
-                  className="flex items-center justify-center gap-2 text-white"
+              <>
+                <AddToCartButton
+                  lines={[
+                    {
+                      merchandiseId: selectedVariant.id,
+                      quantity: 1,
+                    },
+                  ]}
+                  variant="primary"
+                  data-test="add-to-cart"
+                  analytics={{
+                    products: [productAnalytics],
+                    totalValue: parseFloat(productAnalytics.price),
+                  }}
+                  onClick={() => {
+                    publish('cart_viewed', {
+                      cart,
+                      prevCart,
+                      shop,
+                      url: window.location.href || '',
+                    });
+                  }}
                 >
-                  <span>Add to Cart</span>
-                </Text>
-              </AddToCartButton>
-            )}
-            {!isOutOfStock && (
-              <Link
-                to={`/cart/${selectedVariant.id.replace(/[^\d]/g, '')}:1`}
-                className={
-                  'w-full inline-block rounded font-medium text-center py-3 px-6 bg-black text-white'
-                }
-              >
-                Buy Now
-              </Link>
+                  <Text
+                    as="span"
+                    className="flex items-center justify-center gap-2 text-white"
+                  >
+                    <span>Add to Cart</span>
+                  </Text>
+                </AddToCartButton>
+                <Link
+                  to={`/cart/${selectedVariant.id.replace(/[^\d]/g, '')}:1`}
+                  className={
+                    'w-full inline-block rounded font-medium text-center py-3 px-6 bg-black text-white'
+                  }
+                >
+                  Buy Now
+                </Link>
+              </>
             )}
           </div>
         )}
