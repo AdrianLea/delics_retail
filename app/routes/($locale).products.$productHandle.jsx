@@ -110,7 +110,7 @@ export async function loader({params, request, context}) {
     selectedOptions.shift();
   }
 
-  if (selectedOptions[selectedOptions.length - 1].name == 'fbclid') {
+  if (selectedOptions[selectedOptions.length - 1]?.name == 'fbclid') {
     selectedOptions.pop();
   }
 
