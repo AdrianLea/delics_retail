@@ -72,6 +72,8 @@ export default function Homepage() {
   const {collectionShowcaseData} = useLoaderData();
   const {newArrivalProducts} = useLoaderData();
 
+  console.log(slider_images);
+
   return (
     <>
       {slider_images && (
@@ -214,7 +216,7 @@ function FeaturedProductsSection({title, products, to}) {
 const HOMEPAGE_SLIDER_QUERY = `#graphql
 query heroimagesquery {
   collections(
-    first: 15
+    first: 30
   ) {
     nodes {
       metafields(

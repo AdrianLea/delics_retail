@@ -177,10 +177,10 @@ function Slider({images, className}) {
               className={`information-holder absolute -translate-y-[50%] top-[50%] md:translate-y-0 md:top-[80%] md:left-[10%] font-mono left-[50%] -translate-x-[50%] md:translate-x-0 w-full`}
             >
               <div
-                className={`header hidden font-bold opacity-0 px-2 w-fit font-inclusiveSans md:text-xl text-white bg-none m-auto md:m-0 text-[1.7rem] text-center md:normal-case uppercase`}
+                className={`header hidden font-bold opacity-0 w-fit font-inclusiveSans md:text-xl text-white bg-none m-auto md:m-0 text-[1.7rem] text-center md:normal-case uppercase`}
               ></div>
               <Link
-                className={`link hidden bg-transparent text-white md:font-bold md:text-black md:border border-b-2 border-white md:bg-pink-200 opacity-0 w-fit h-auto py-1 md:px-5 px-0 text-center font-sans md:text-2xl justify-center md:hover:bg-transparent md:hover:text-pink-200 md:hover:border md:border-pink-200 m-auto md:m-0`}
+                className={`link hidden bg-transparent text-white md:font-bold md:text-black md:border border-b-2 border-white md:bg-pink-200 opacity-0 w-fit h-auto py-1 md:px-5 px-0 text-center font-sans md:text-2xl justify-center md:hover:bg-transparent md:hover:text-pink-200 md:hover:border md:border-pink-200 m-auto md:m-0 rounded-sm shadow-md`}
                 key={element[5]}
                 to={new URL(element[4]).pathname}
                 prefetch="intent"

@@ -1320,7 +1320,7 @@ interface GeneratedQueryTypes {
     return: GetShopPrimaryDomainQuery;
     variables: GetShopPrimaryDomainQueryVariables;
   };
-  '#graphql\nquery heroimagesquery {\n  collections(\n    first: 15\n  ) {\n    nodes {\n      metafields(\n        identifiers: [{namespace: "custom", key: "herodesktop"}, {namespace: "custom", key: "heromobile"}, {namespace: "custom", key: "herodescriptiontext"}, {namespace: "custom", key: "herobuttontext"}]\n      ) {\n        reference {\n          ... on MediaImage {\n            image {\n              url\n            }\n          }\n        }\n        value\n      }\n      handle\n      title\n      onlineStoreUrl\n      id\n    }\n  }\n}': {
+  '#graphql\nquery heroimagesquery {\n  collections(\n    first: 30\n  ) {\n    nodes {\n      metafields(\n        identifiers: [{namespace: "custom", key: "herodesktop"}, {namespace: "custom", key: "heromobile"}, {namespace: "custom", key: "herodescriptiontext"}, {namespace: "custom", key: "herobuttontext"}]\n      ) {\n        reference {\n          ... on MediaImage {\n            image {\n              url\n            }\n          }\n        }\n        value\n      }\n      handle\n      title\n      onlineStoreUrl\n      id\n    }\n  }\n}': {
     return: HeroimagesqueryQuery;
     variables: HeroimagesqueryQueryVariables;
   };
