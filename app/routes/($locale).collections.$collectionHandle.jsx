@@ -1,4 +1,4 @@
-import {json, redirect} from '@shopify/remix-oxygen';
+import {json} from '@shopify/remix-oxygen';
 import {useLoaderData} from '@remix-run/react';
 import {
   flattenConnection,
@@ -40,12 +40,6 @@ export async function loader({params, request, context}) {
   const {sortKey, reverse} = getSortValuesFromParam(searchParams.get('sort'));
   const filters = [];
   const appliedFilters = [];
-
-  const url = new URL(request.url);
-  if (url.pathname === '/collections/love-island-tickets') {
-    // Redirect to /products/love-island-matchmaking-tickets
-    throw redirect('/products/love-island-matchmaking-tickets', 302);
-  }
 
   for (const [key, value] of searchParams.entries()) {
     if (available === key) {
