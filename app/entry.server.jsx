@@ -17,7 +17,12 @@ export default async function handleRequest(
       checkoutDomain: context.env.PUBLIC_CHECKOUT_DOMAIN,
       storeDomain: context.env.PUBLIC_STORE_DOMAIN,
     },
-    styleSrc: ["'self'", 'https://cdn.shopify.com', '*.klaviyo.com'],
+    styleSrc: [
+      "'self'",
+      'https://cdn.shopify.com',
+      '*.klaviyo.com',
+      'https://unpkg.com/react-image-crop/dist/ReactCrop.css',
+    ],
 
     defaultSrc: [
       "'self'",

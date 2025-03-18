@@ -11,7 +11,7 @@ export function ProductSwimlane({
   ...props
 }) {
   return (
-    <Section padding="y" {...props} divider="top">
+    <Section padding="y" {...props}>
       <h2 className="text-center w-full font-bold text-2xl">{title}</h2>
       <div className="swimlane hiddenScroll md:pb-8 md:scroll-px-8 lg:scroll-px-12 md:px-8 lg:px-12 snap-x">
         {products.nodes.map((product) => (

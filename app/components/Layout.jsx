@@ -31,7 +31,7 @@ export function Layout({children, layout}) {
   }, []);
   return (
     <>
-      <div className="flex flex-col min-h-screen">
+      <div className="flex flex-col">
         <div className="">
           <a href="#mainContent" className="sr-only">
             Skip to content
@@ -41,7 +41,7 @@ export function Layout({children, layout}) {
         {headerMenu && (
           <Header title={layout.shop.name} menu={headerMenu} layout={layout} />
         )}
-        <main role="main" id="mainContent" className="flex-grow">
+        <main role="main" id="mainContent" className="">
           {children}
         </main>
       </div>

@@ -62,6 +62,10 @@ export const links = () => {
       rel: 'stylesheet',
       href: require('./intl-tel-input-master/build/css/intlTelInput.css'),
     },
+    {
+      rel: 'stylesheet',
+      href: 'https://unpkg.com/react-image-crop/dist/ReactCrop.css',
+    },
   ];
 };
 
@@ -132,6 +136,7 @@ export default function App() {
         </Analytics.Provider>
         <ScrollRestoration nonce={nonce} />
         <Script src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=Rw7fmd" />
+        <Script src="https://unpkg.com/react-image-crop/dist/index.umd.cjs" />
         <Scripts nonce={nonce} />
         <LiveReload nonce={nonce} />
       </body>
@@ -183,6 +188,7 @@ export function ErrorBoundary({error}) {
           )}
         </Layout>
         <Script src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=Rw7fmd" />
+        <Script src="https://unpkg.com/react-image-crop/dist/index.umd.cjs" />
         <Scripts nonce={nonce} />
         <LiveReload nonce={nonce} />
       </body>
