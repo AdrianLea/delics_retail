@@ -255,7 +255,7 @@ const App = () => {
 };
 
 export const FEATURED_PRODUCTS_QUERY = `#graphql
-  query homepageFeaturedProducts($country: CountryCode, $language: LanguageCode)
+  query imageFeaturedProducts($country: CountryCode, $language: LanguageCode)
   @inContext(country: $country, language: $language) {
     collections(first: 1, query:"title:Sleepy Student", reverse: false) {
       nodes {

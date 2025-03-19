@@ -794,6 +794,79 @@ export type FeaturedItemsQuery = {
   };
 };
 
+export type ImageFeaturedProductsQueryVariables = StorefrontAPI.Exact<{
+  country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
+  language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
+}>;
+
+export type ImageFeaturedProductsQuery = {
+  collections: {
+    nodes: Array<{
+      products: {
+        nodes: Array<
+          Pick<
+            StorefrontAPI.Product,
+            | 'id'
+            | 'title'
+            | 'publishedAt'
+            | 'handle'
+            | 'vendor'
+            | 'availableForSale'
+          > & {
+            variants: {
+              nodes: Array<
+                Pick<
+                  StorefrontAPI.ProductVariant,
+                  'id' | 'availableForSale' | 'currentlyNotInStock'
+                > & {
+                  image?: StorefrontAPI.Maybe<
+                    Pick<
+                      StorefrontAPI.Image,
+                      'url' | 'altText' | 'width' | 'height'
+                    >
+                  >;
+                  price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+                  compareAtPrice?: StorefrontAPI.Maybe<
+                    Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>
+                  >;
+                  selectedOptions: Array<
+                    Pick<StorefrontAPI.SelectedOption, 'name' | 'value'>
+                  >;
+                  product: Pick<StorefrontAPI.Product, 'handle' | 'title'>;
+                }
+              >;
+            };
+            metafields: Array<
+              StorefrontAPI.Maybe<
+                Pick<StorefrontAPI.Metafield, 'id'> & {
+                  reference?: StorefrontAPI.Maybe<
+                    | (Pick<
+                        StorefrontAPI.MediaImage,
+                        'id' | 'mediaContentType'
+                      > & {
+                        image?: StorefrontAPI.Maybe<
+                          Pick<StorefrontAPI.Image, 'url'>
+                        >;
+                      })
+                    | (Pick<StorefrontAPI.Video, 'id' | 'mediaContentType'> & {
+                        sources: Array<
+                          Pick<
+                            StorefrontAPI.VideoSource,
+                            'url' | 'format' | 'mimeType'
+                          >
+                        >;
+                      })
+                  >;
+                }
+              >
+            >;
+          }
+        >;
+      };
+    }>;
+  };
+};
+
 export type PageDetailsQueryVariables = StorefrontAPI.Exact<{
   language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
   handle: StorefrontAPI.Scalars['String']['input'];
@@ -1359,6 +1432,10 @@ interface GeneratedQueryTypes {
   '#graphql\n  query FeaturedItems(\n    $country: CountryCode\n    $language: LanguageCode\n    $pageBy: Int = 12\n  ) @inContext(country: $country, language: $language) {\n    featuredCollections: collections(first: 3, sortKey: UPDATED_AT) {\n      nodes {\n        ...FeaturedCollectionDetails\n      }\n    }\n    featuredProducts: products(first: $pageBy) {\n      nodes {\n        ...ProductCard\n      }\n    }\n  }\n\n  #graphql\n  fragment ProductCard on Product {\n    id\n    title\n    publishedAt\n    handle\n    vendor\n    availableForSale\n    variants(first: 100) {\n      nodes {\n        id\n        availableForSale\n        image {\n          url\n          altText\n          width\n          height\n        }\n        price {\n          amount\n          currencyCode\n        }\n        compareAtPrice {\n          amount\n          currencyCode\n        }\n        selectedOptions {\n          name\n          value\n        }\n        product {\n          handle\n          title\n        }\n        currentlyNotInStock\n      }\n    }\n    metafields(identifiers: [{namespace: "custom", key: "backmedia"}]) {\n      id\n      reference {\n        ... on MediaImage {\n          id\n          image {\n            url\n          }\n          mediaContentType\n        }\n        ... on Video {\n          id\n          sources {\n            url\n            format\n            mimeType\n          }\n          mediaContentType\n        }\n      }\n    }\n  }\n\n  #graphql\n  fragment FeaturedCollectionDetails on Collection {\n    id\n    title\n    handle\n    image {\n      altText\n      width\n      height\n      url\n    }\n  }\n\n': {
     return: FeaturedItemsQuery;
     variables: FeaturedItemsQueryVariables;
+  };
+  '#graphql\n  query imageFeaturedProducts($country: CountryCode, $language: LanguageCode)\n  @inContext(country: $country, language: $language) {\n    collections(first: 1, query:"title:Sleepy Student", reverse: false) {\n      nodes {\n        products(first: 20, sortKey: CREATED) {\n          nodes {\n            id\n            ...ProductCard\n          }\n        }\n      }\n    }\n  }\n  #graphql\n  fragment ProductCard on Product {\n    id\n    title\n    publishedAt\n    handle\n    vendor\n    availableForSale\n    variants(first: 100) {\n      nodes {\n        id\n        availableForSale\n        image {\n          url\n          altText\n          width\n          height\n        }\n        price {\n          amount\n          currencyCode\n        }\n        compareAtPrice {\n          amount\n          currencyCode\n        }\n        selectedOptions {\n          name\n          value\n        }\n        product {\n          handle\n          title\n        }\n        currentlyNotInStock\n      }\n    }\n    metafields(identifiers: [{namespace: "custom", key: "backmedia"}]) {\n      id\n      reference {\n        ... on MediaImage {\n          id\n          image {\n            url\n          }\n          mediaContentType\n        }\n        ... on Video {\n          id\n          sources {\n            url\n            format\n            mimeType\n          }\n          mediaContentType\n        }\n      }\n    }\n  }\n\n': {
+    return: ImageFeaturedProductsQuery;
+    variables: ImageFeaturedProductsQueryVariables;
   };
   '#graphql\n  query PageDetails($language: LanguageCode, $handle: String!)\n  @inContext(language: $language) {\n    page(handle: $handle) {\n      id\n      title\n      body\n      seo {\n        description\n        title\n      }\n    }\n  }\n': {
     return: PageDetailsQuery;
