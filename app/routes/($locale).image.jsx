@@ -142,7 +142,22 @@ const App = () => {
 
   return (
     <div className="flex flex-col items-center justify-center p-4 space-y-4">
-      <h1 className="text-2xl font-bold mb-4">Sleepy Student ID Generator</h1>
+      <section className="w-full max-w-xl">
+        <h1 className="text-2xl font-bold mb-4 text-center">
+          Sleepy Student ID Generator
+        </h1>
+        <div className="flex flex-col space-y-4">
+          <p>
+            1. Click on the ID card below to upload your photo. Make sure
+            it&apos;s a clear, front-facing photo.
+          </p>
+          <p>2. Crop your photo to fit the ID card.</p>
+          <p>
+            3. Click the &ldquo;Download Image&rdquo; button to save your ID
+            card.
+          </p>
+        </div>
+      </section>
       <div
         className="relative w-full max-w-xl bg-white shadow-lg rounded-lg overflow-hidden cursor-pointer"
         onClick={() => fileInputRef.current.click()}
@@ -173,8 +188,8 @@ const App = () => {
 
       {/* Crop Modal */}
       {isCropping && userImage && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-[40]">
-          <div className="bg-white rounded-lg p-4 max-w-md w-full">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-[60]">
+          <div className="bg-white rounded-lg p-4 max-w-md w-full flex flex-col items-center space-y-4">
             <h2 className="text-xl font-bold mb-4">Crop Your Photo</h2>
             <ReactCrop
               crop={crop}
@@ -187,7 +202,7 @@ const App = () => {
                 onLoad={onImageLoad}
                 ref={croppingImage}
                 alt="Cropping"
-                className="max-w-full"
+                style={{maxHeight: '50vh'}}
               />
             </ReactCrop>
             <button
@@ -242,7 +257,7 @@ const App = () => {
 export const FEATURED_PRODUCTS_QUERY = `#graphql
   query homepageFeaturedProducts($country: CountryCode, $language: LanguageCode)
   @inContext(country: $country, language: $language) {
-    collections(first: 1, query:"title:New Arrivals", reverse: false) {
+    collections(first: 1, query:"title:Sleepy Student", reverse: false) {
       nodes {
         products(first: 20, sortKey: CREATED) {
           nodes {
