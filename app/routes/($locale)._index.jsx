@@ -183,7 +183,7 @@ export default function Homepage() {
       <p className="mx-auto font-bold text-3xl mt-28 mb-14 text-center">
         FIND US @DELICSWORLD
       </p>
-      <BeholdWidget feedId="T0yVjKCZmwEaCMN0pzcw" />
+      <BeholdWidget feedId="lCjTMJ133zOPNzQ4j9mu" />
       <div className="m-14" />
     </>
   );
