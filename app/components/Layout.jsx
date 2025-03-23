@@ -58,9 +58,21 @@ function Header({title, menu, layout}) {
     Dresses: {title: 'Dresses', to: 'collections/Dresses'},
     Tops: {title: 'Tops', to: 'collections/Tops'},
     Bottoms: {title: 'Bottoms', to: 'collections/Bottoms'},
-    Bags: {title: 'Bags', to: 'collections/Bags'},
-    Sunglasses: {title: 'Sunglasses', to: 'collections/Sunglasses'},
+    Accessproes: {
+      title: 'Accessories',
+      items: [
+        {title: 'Bags', to: 'collections/Bags'},
+        {title: 'Sunglasses', to: 'collections/Sunglasses'},
+      ],
+    },
     Collections: {title: 'Collections', items: menu.items},
+    StudentId: {
+      title: 'Sleepy Student',
+      items: [
+        {title: 'Sleepy Student', to: 'collections/sleepy-student'},
+        {title: 'ID Generator', to: '/image'},
+      ],
+    },
   };
 
   const {

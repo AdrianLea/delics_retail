@@ -25,7 +25,11 @@ export async function loader({params, context}) {
   }
 
   const {shop} = await context.storefront.query(HOMEPAGE_SEO_QUERY);
-  const homepageCollectionList = ['Trophy Wives', 'LOVESICK'];
+  const homepageCollectionList = [
+    'Sleepy Student 📓♡',
+    'Trophy Wives',
+    'LOVESICK',
+  ];
 
   const collectionShowcasePromises = homepageCollectionList.map((collection) =>
     context.storefront.query(HOMEPAGE_COLLECTION_SHOWCASE_QUERY, {
@@ -71,8 +75,6 @@ export default function Homepage() {
   const {slider_images} = useLoaderData();
   const {collectionShowcaseData} = useLoaderData();
   const {newArrivalProducts} = useLoaderData();
-
-  console.log(slider_images);
 
   return (
     <>
@@ -166,7 +168,7 @@ export default function Homepage() {
                   key={`key-${index}-1`}
                   image={
                     collectionShowcaseImages[index].collections.nodes[0]
-                      .metafields[0].reference.image
+                      .metafields[0]?.reference.image
                   }
                   to={
                     new URL(resolve.collections.nodes[0].onlineStoreUrl)
@@ -279,9 +281,9 @@ const HOMEPAGE_SEO_QUERY = `#graphql
 export const HOMEPAGE_FEATURED_PRODUCTS_QUERY = `#graphql
   query homepageFeaturedProducts($country: CountryCode, $language: LanguageCode)
   @inContext(country: $country, language: $language) {
-    collections(first: 1, query:"title:New Arrivals", reverse: false) {
+    collections(first: 1, query:"title:New Arrivals", reverse: true) {
       nodes {
-        products(first: 20, sortKey: CREATED) {
+        products(first: 20, sortKey: CREATED, reverse: true) {
           nodes {
             id
             ...ProductCard
