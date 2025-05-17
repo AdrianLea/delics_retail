@@ -5,7 +5,7 @@ export const countries = {
     country: 'MY',
     currency: 'MYR',
     pathPrefix: '/en-my',
-    host: 'localhost:3000',
+    host: 'www.delicsworld.com',
   },
   '/en-au': {
     label: 'Australia (AUD $)',
@@ -13,7 +13,7 @@ export const countries = {
     country: 'AU',
     currency: 'AUD',
     pathPrefix: '/en-au',
-    host: 'localhost:3000',
+    host: 'www.delicsworld.com',
   },
   '/en-sg': {
     label: 'Singapore (SGD $)',
@@ -21,7 +21,7 @@ export const countries = {
     country: 'SG',
     currency: 'SGD',
     pathPrefix: '/en-sg',
-    host: 'localhost:3000',
+    host: 'www.delicsworld.com',
   },
   '/en-us': {
     label: 'United States (USD $)',
@@ -29,6 +29,6 @@ export const countries = {
     country: 'US',
     currency: 'USD',
     pathPrefix: '/en-us',
-    host: 'localhost:3000',
+    host: 'www.delicsworld.com',
   },
 };
