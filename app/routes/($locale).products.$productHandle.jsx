@@ -128,7 +128,7 @@ export async function loader({params, request, context}) {
   }
 
   if (selectedOptions.length === 0) {
-    return redirectToFirstVariant({product, request});
+    return redirectToFirstVariant({product, request, context});
   }
 
   var customer;
@@ -204,8 +204,11 @@ export async function loader({params, request, context}) {
   });
 }
 
-function redirectToFirstVariant({product, request}) {
+function redirectToFirstVariant({product, request, context}) {
+  // Get search params from URL
   const searchParams = new URLSearchParams(new URL(request.url).search);
+
+  // Find the first available variant
   let firstVariant = product.variants.nodes[0];
   for (let index = 0; index < product.variants.nodes.length; index++) {
     const variant = product.variants.nodes[index];
@@ -214,10 +217,20 @@ function redirectToFirstVariant({product, request}) {
       break;
     }
   }
+
+  // Set search params based on selected options
   for (const option of firstVariant.selectedOptions) {
     searchParams.set(option.name, option.value);
   }
-  throw redirect(`/products/${product.handle}?${searchParams.toString()}`, 302);
+
+  // Get locale path prefix from context
+  const {pathPrefix} = context.storefront.i18n;
+
+  // Use the pathPrefix explicitly in the redirect path
+  throw redirect(
+    `${pathPrefix}/products/${product.handle}?${searchParams.toString()}`,
+    302,
+  );
 }
 
 export default function Product() {
