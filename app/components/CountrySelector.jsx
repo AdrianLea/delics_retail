@@ -1,151 +1,48 @@
-import {useFetcher, useLocation, useMatches} from '@remix-run/react';
-import {useCallback, useEffect, useRef} from 'react';
-import {useInView} from 'react-intersection-observer';
-import clsx from 'clsx';
-import {CartForm} from '@shopify/hydrogen';
-
-import {Heading, Button, IconCheck} from '~/components';
-import {DEFAULT_LOCALE} from '~/lib/utils';
+import {Form, useMatches, useLocation, useFetcher} from '@remix-run/react';
+import {useEffect, useState} from 'react';
 
 export function CountrySelector() {
   const [root] = useMatches();
-  const fetcher = useFetcher();
-  const closeRef = useRef(null);
-  const selectedLocale = root.data?.selectedLocale ?? DEFAULT_LOCALE;
+  const selectedLocale = root.data.selectedLocale;
   const {pathname, search} = useLocation();
-  const pathWithoutLocale = `${pathname.replace(
-    selectedLocale.pathPrefix,
-    '',
-  )}${search}`;
 
-  const countries = fetcher.data ?? {};
-  const defaultLocale = countries?.['default'];
-  const defaultLocalePrefix = defaultLocale
-    ? `${defaultLocale?.language}-${defaultLocale?.country}`
-    : '';
+  const [countries, setCountries] = useState({});
 
-  const {ref, inView} = useInView({
-    threshold: 0,
-    triggerOnce: true,
-  });
-
-  const observerRef = useRef(null);
+  // Get available countries list
+  const fetcher = useFetcher();
   useEffect(() => {
-    ref(observerRef.current);
-  }, [ref, observerRef]);
+    if (!fetcher.data) {
+      fetcher.load('/api/countries');
+      return;
+    }
+    setCountries(fetcher.data);
+  }, [countries, fetcher.data]);
 
-  // Get available countries list when in view
-  useEffect(() => {
-    if (!inView || fetcher.data || fetcher.state === 'loading') return;
-    fetcher.load('admin/api/countries');
-  }, [inView, fetcher]);
-
-  const closeDropdown = useCallback(() => {
-    closeRef.current?.removeAttribute('open');
-  }, []);
+  const strippedPathname = pathname.replace(selectedLocale.pathPrefix, '');
 
   return (
-    <section
-      ref={observerRef}
-      className="grid w-[200px] gap-4"
-      onMouseLeave={closeDropdown}
-    >
-      <div className="relative bottom-5">
-        <details
-          className="absolute w-[200px]  dark:border-white overflow-clip"
-          ref={closeRef}
-        >
-          <summary className="flex items-center justify-between w-[200px] px-4 py-3 cursor-pointer">
-            {selectedLocale.label}
-          </summary>
-          <div className="w-[200px] overflow-auto border-t border-contrast/30 dark:border-white bg-contrast/30 max-h-36">
-            {countries &&
-              Object.keys(countries).map((countryPath) => {
-                const countryLocale = countries[countryPath];
-                const isSelected =
-                  countryLocale.language === selectedLocale.language &&
-                  countryLocale.country === selectedLocale.country;
+    <details>
+      <summary>{selectedLocale.label}</summary>
+      <div className="overflow-auto border-t py-2 bg-contrast w-full max-h-36">
+        {countries &&
+          Object.keys(countries).map((countryKey) => {
+            const locale = countries[countryKey];
+            const hreflang = `${locale.language}-${locale.country}`;
 
-                const countryUrlPath = getCountryUrlPath({
-                  countryLocale,
-                  defaultLocalePrefix,
-                  pathWithoutLocale,
-                });
-
-                return (
-                  <Country
-                    key={countryPath}
-                    closeDropdown={closeDropdown}
-                    countryUrlPath={countryUrlPath}
-                    isSelected={isSelected}
-                    countryLocale={countryLocale}
-                  />
-                );
-              })}
-          </div>
-        </details>
+            return (
+              <Form method="post" action="/locale" key={hreflang}>
+                <input type="hidden" name="language" value={locale.language} />
+                <input type="hidden" name="country" value={locale.country} />
+                <input
+                  type="hidden"
+                  name="path"
+                  value={`${strippedPathname}${search}`}
+                />
+                <button type="submit">{locale.label}</button>
+              </Form>
+            );
+          })}
       </div>
-    </section>
+    </details>
   );
-}
-
-function Country({closeDropdown, countryLocale, countryUrlPath, isSelected}) {
-  return (
-    <ChangeLocaleForm
-      key={countryLocale.country}
-      redirectTo={countryUrlPath}
-      buyerIdentity={{
-        countryCode: countryLocale.country,
-      }}
-    >
-      <Button
-        className={clsx([
-          'text-contrast dark:text-primary',
-          'bg-primary dark:bg-contrast w-full p-2 border-2 border-black transition flex justify-start',
-          'items-center text-left cursor-pointer py-2 px-4',
-        ])}
-        type="submit"
-        variant="primary"
-        onClick={closeDropdown}
-      >
-        {countryLocale.label}
-        {isSelected ? (
-          <span className="ml-2">
-            <IconCheck />
-          </span>
-        ) : null}
-      </Button>
-    </ChangeLocaleForm>
-  );
-}
-
-function ChangeLocaleForm({children, buyerIdentity, redirectTo}) {
-  return (
-    <CartForm
-      route="/cart"
-      action={CartForm.ACTIONS.BuyerIdentityUpdate}
-      inputs={{
-        buyerIdentity,
-      }}
-    >
-      <>
-        <input type="hidden" name="redirectTo" value={redirectTo} />
-        {children}
-      </>
-    </CartForm>
-  );
-}
-
-function getCountryUrlPath({
-  countryLocale,
-  defaultLocalePrefix,
-  pathWithoutLocale,
-}) {
-  let countryPrefixPath = '';
-  const countryLocalePrefix = `${countryLocale.language}-${countryLocale.country}`;
-
-  if (countryLocalePrefix !== defaultLocalePrefix) {
-    countryPrefixPath = `/${countryLocalePrefix.toLowerCase()}`;
-  }
-  return `${countryPrefixPath}${pathWithoutLocale}`;
 }

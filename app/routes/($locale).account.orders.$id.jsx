@@ -8,6 +8,7 @@ import {CUSTOMER_ORDER_QUERY} from '../graphql/customer-account/CustomerOrderQue
 
 import {statusMessage} from '~/lib/utils';
 import {Link, Heading, PageHeader, Text} from '~/components';
+import {CustomMoney} from '~/components/CustomMoney';
 
 export const meta = ({data}) => {
   return [{title: `Order ${data?.order?.name}`}];
@@ -134,7 +135,7 @@ export default function OrderRoute() {
                           <dt className="sr-only">Price</dt>
                           <dd className="truncate sm:hidden">
                             <Text size="fine" className="mt-4">
-                              <Money data={lineItem.variant.price} />
+                              <CustomMoney data={lineItem.variant.price} />
                             </Text>
                           </dd>
                           <dt className="sr-only">Quantity</dt>
@@ -147,14 +148,14 @@ export default function OrderRoute() {
                       </div>
                     </td>
                     <td className="hidden px-3 py-4 text-right align-top sm:align-middle sm:table-cell">
-                      <Money data={lineItem.variant.price} />
+                      <CustomMoney data={lineItem.variant.price} />
                     </td>
                     <td className="hidden px-3 py-4 text-right align-top sm:align-middle sm:table-cell">
                       {lineItem.quantity}
                     </td>
                     <td className="px-3 py-4 text-right align-top sm:align-middle sm:table-cell">
                       <Text>
-                        <Money data={lineItem.discountedTotalPrice} />
+                        <CustomMoney data={lineItem.discountedTotalPrice} />
                       </Text>
                     </td>
                   </tr>
@@ -183,7 +184,7 @@ export default function OrderRoute() {
                           -{discountPercentage}% OFF
                         </span>
                       ) : (
-                        discountValue && <Money data={discountValue} />
+                        discountValue && <CustomMoney data={discountValue} />
                       )}
                     </td>
                   </tr>
@@ -203,7 +204,7 @@ export default function OrderRoute() {
                     <Text>Subtotal</Text>
                   </th>
                   <td className="pt-6 pl-3 pr-4 text-right md:pr-3">
-                    <Money data={order.subtotalPriceV2} />
+                    <CustomMoney data={order.subtotalPriceV2} />
                   </td>
                 </tr>
                 <tr>
@@ -221,7 +222,7 @@ export default function OrderRoute() {
                     <Text>Tax</Text>
                   </th>
                   <td className="pt-4 pl-3 pr-4 text-right md:pr-3">
-                    <Money data={order.totalTaxV2} />
+                    <CustomMoney data={order.totalTaxV2} />
                   </td>
                 </tr>
                 <tr>
@@ -239,7 +240,7 @@ export default function OrderRoute() {
                     <Text>Total</Text>
                   </th>
                   <td className="pt-4 pl-3 pr-4 font-semibold text-right md:pr-3">
-                    <Money data={order.totalPriceV2} />
+                    <CustomMoney data={order.totalPriceV2} />
                   </td>
                 </tr>
               </tfoot>

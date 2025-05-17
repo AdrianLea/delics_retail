@@ -2,6 +2,9 @@ import clsx from 'clsx';
 import {useRef} from 'react';
 import {useScroll} from 'react-use';
 import {flattenConnection, CartForm, Image, Money} from '@shopify/hydrogen';
+import {useMatches} from 'react-router';
+
+import {CustomMoney} from './CustomMoney';
 
 import {
   Button,
@@ -166,6 +169,9 @@ function CartCheckoutActions({checkoutUrl}) {
 }
 
 function CartSummary({cost, layout, children = null}) {
+  const [root] = useMatches();
+  const {country: localeCountry} = root?.data.selectedLocale || {country: 'US'};
+
   const summary = {
     drawer: 'grid gap-4 p-6 border-t md:px-12 bg-white',
     page: 'y-10 grid gap-6 p-4 md:px-6 md:translate-y-4 bg-white rounded w-full',
@@ -181,13 +187,18 @@ function CartSummary({cost, layout, children = null}) {
           <Text as="dt">Subtotal</Text>
           <Text as="dd" data-test="subtotal">
             {cost?.subtotalAmount?.amount ? (
-              <Money data={cost?.subtotalAmount} />
+              <CustomMoney data={cost?.subtotalAmount} />
             ) : (
               '-'
             )}
           </Text>
         </div>
       </dl>
+      {localeCountry !== 'MY' && (
+        <div className="text-red-500 text-sm mt-2 italic">
+          * Prices shown are estimates. Final prices may vary at checkout.
+        </div>
+      )}
       {children}
     </section>
   );
@@ -338,7 +349,9 @@ function CartLinePrice({line, priceType = 'regular', ...passthroughProps}) {
     return null;
   }
 
-  return <Money withoutTrailingZeros {...passthroughProps} data={moneyV2} />;
+  return (
+    <CustomMoney withoutTrailingZeros {...passthroughProps} data={moneyV2} />
+  );
 }
 
 export function CartEmpty({hidden = false, layout = 'drawer', onClose}) {

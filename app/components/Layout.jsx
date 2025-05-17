@@ -17,6 +17,7 @@ import {
   Cart,
   CartLoading,
   Link,
+  CountrySelector,
 } from '~/components';
 import {useIsHomePath} from '~/lib/utils';
 import {useIsHydrated} from '~/hooks/useIsHydrated';
@@ -390,6 +391,7 @@ function DesktopHeader({isHome, menu, openCart, layout, content}) {
                 openCart={openCart}
                 isActive={isActive}
               />
+              <CountrySelector />
             </div>
           </div>
           <div className="">

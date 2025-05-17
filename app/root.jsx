@@ -25,7 +25,7 @@ import favicon from '../public/favicon.png';
 import {GenericError} from './components/GenericError';
 import {NotFound} from './components/NotFound';
 import styles from './styles/app.css';
-import {DEFAULT_LOCALE, parseMenu} from './lib/utils';
+import {DEFAULT_LOCALE, getLocaleFromRequest, parseMenu} from './lib/utils';
 import {KlaviyoOnsite} from './klaviyo/KlaviyoOnsite';
 
 import {Layout} from '~/components';
@@ -80,14 +80,13 @@ export async function loader({request, context}) {
   return defer({
     isLoggedIn: Boolean(customerAccessToken),
     layout,
-    selectedLocale: storefront.i18n,
+    selectedLocale: await getLocaleFromRequest(request),
     cart: cart.get(),
     shop: getShopAnalytics({
       storefront,
       publicStorefrontId: env.PUBLIC_STOREFRONT_ID,
     }),
     consent: {
-      checkoutDomain: env.PUBLIC_CHECKOUT_DOMAIN,
       withPrivacyBanner: true,
       storefrontAccessToken: env.PUBLIC_STOREFRONT_API_TOKEN,
     },

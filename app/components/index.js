@@ -23,4 +23,5 @@ export {Grid} from './Grid';
 export {FeaturedProducts} from './FeaturedProducts';
 export {AddToCartButton} from './AddToCartButton';
 export {CollectionShowcase} from './CollectionShowcase';
+export {CustomMoney} from './CustomMoney';
 export * from './Icon';

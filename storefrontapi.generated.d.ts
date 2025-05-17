@@ -867,6 +867,17 @@ export type ImageFeaturedProductsQuery = {
   };
 };
 
+export type CartBuyerIdentityUpdateMutationVariables = StorefrontAPI.Exact<{
+  cartId: StorefrontAPI.Scalars['ID']['input'];
+  buyerIdentity: StorefrontAPI.CartBuyerIdentityInput;
+}>;
+
+export type CartBuyerIdentityUpdateMutation = {
+  cartBuyerIdentityUpdate?: StorefrontAPI.Maybe<{
+    cart?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Cart, 'id'>>;
+  }>;
+};
+
 export type PageDetailsQueryVariables = StorefrontAPI.Exact<{
   language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
   handle: StorefrontAPI.Scalars['String']['input'];
@@ -1471,6 +1482,10 @@ interface GeneratedMutationTypes {
   '#graphql\n  mutation customerRecover($email: String!) {\n    customerRecover(email: $email) {\n      customerUserErrors {\n        code\n        field\n        message\n      }\n    }\n  }\n': {
     return: CustomerRecoverMutation;
     variables: CustomerRecoverMutationVariables;
+  };
+  '#graphql\n  mutation CartBuyerIdentityUpdate(\n    $cartId: ID!\n    $buyerIdentity: CartBuyerIdentityInput!\n  ) {\n    cartBuyerIdentityUpdate(cartId: $cartId, buyerIdentity: $buyerIdentity) {\n      cart {\n        id\n      }\n    }\n  }\n': {
+    return: CartBuyerIdentityUpdateMutation;
+    variables: CartBuyerIdentityUpdateMutationVariables;
   };
 }
 

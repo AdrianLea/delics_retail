@@ -12,7 +12,6 @@ import {Disclosure, Listbox} from '@headlessui/react';
 import {defer, redirect} from '@shopify/remix-oxygen';
 import {
   AnalyticsPageType,
-  Money,
   VariantSelector,
   getSelectedProductOptions,
   useOptimisticVariant,
@@ -37,6 +36,7 @@ import {
   Link,
   AddToCartButton,
   Button,
+  CustomMoney,
 } from '~/components';
 import {CUSTOMER_EMAIL_QUERY} from '~/graphql/customer-account/CustomerEmailQuery';
 import {getExcerpt} from '~/lib/utils';
@@ -316,13 +316,13 @@ export default function Product() {
                   {title}
                 </Heading>
                 <span>
-                  <Money
+                  <CustomMoney
                     withoutTrailingZeros
                     data={selectedVariant?.price}
                     as="span"
                   />
                   {isOnSale && (
-                    <Money
+                    <CustomMoney
                       withoutTrailingZeros
                       data={product?.selectedVariant?.compareAtPrice}
                       as="span"

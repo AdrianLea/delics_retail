@@ -237,25 +237,53 @@ export const DEFAULT_LOCALE = Object.freeze({
 });
 
 export function getLocaleFromRequest(request) {
+  // Get the user request URL
   const url = new URL(request.url);
-  const firstPathPart =
-    '/' + url.pathname.substring(1).split('/')[0].toLowerCase();
+  const path = url.pathname;
 
-  return countries[firstPathPart]
-    ? {
-        ...countries[firstPathPart],
-        pathPrefix: firstPathPart,
-      }
-    : {
-        ...countries['default'],
-        pathPrefix: '',
-      };
+  // Check for locale-specific path prefixes
+  if (path.startsWith('/au') || path.match(/^\/en-au($|\/)/)) {
+    return {
+      language: 'EN',
+      country: 'AU',
+      currency: 'AUD',
+      pathPrefix: '/au',
+    };
+  }
+
+  if (path.startsWith('/sg') || path.match(/^\/en-sg($|\/)/)) {
+    return {
+      language: 'EN',
+      country: 'SG',
+      currency: 'SGD',
+      pathPrefix: '/sg',
+    };
+  }
+
+  if (path.startsWith('/us') || path.match(/^\/en-us($|\/)/)) {
+    return {
+      language: 'EN',
+      country: 'US',
+      currency: 'USD',
+      pathPrefix: '/us',
+    };
+  }
+
+  // Default to Malaysia
+  return {
+    language: 'EN',
+    country: 'MY',
+    currency: 'MYR',
+    pathPrefix: '/my',
+  };
 }
 
 export function usePrefixPathWithLocale(path) {
   const [root] = useMatches();
   const selectedLocale = root.data?.selectedLocale ?? DEFAULT_LOCALE;
-
+  console.log(
+    `${selectedLocale.pathPrefix}${path.startsWith('/') ? path : '/' + path}`,
+  );
   return `${selectedLocale.pathPrefix}${
     path.startsWith('/') ? path : '/' + path
   }`;

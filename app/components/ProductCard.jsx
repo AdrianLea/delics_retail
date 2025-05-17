@@ -8,6 +8,8 @@ import {
 } from '@shopify/hydrogen';
 import {useState, useEffect, startTransition} from 'react';
 
+import {CustomMoney} from './CustomMoney';
+
 import {Link} from '~/components';
 import {getProductPlaceholder} from '~/lib/placeholders';
 
@@ -124,7 +126,7 @@ export function ProductCard({
             </h3>
             <div className="flex gap-4 ">
               <span className="flex gap-4 text-[0.69rem] pb-5">
-                <Money
+                <CustomMoney
                   withoutTrailingZeros
                   data={price}
                   className={`font-bold ${
