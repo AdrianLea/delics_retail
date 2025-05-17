@@ -172,7 +172,7 @@ export function MenuDrawer({isOpen, onClose, menu, content}) {
 
 function MenuMobileNav({menu, onClose, content}) {
   return (
-    <nav className="grid gap-4 p-6 sm:gap-6 sm:px-12 sm:py-8">
+    <nav className="grid gap-4 p-6 sm:gap-6 sm:px-12 sm:py-8 overflow-scroll">
       {/* Top level menu items */}
       {Object.keys(content).map((key) => {
         const section = content[key];

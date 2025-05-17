@@ -77,7 +77,7 @@ export function CountrySelector({isMobile = false}) {
         </div>
 
         {isOpen && (
-          <div className="bg-white rounded-md border border-gray-200 mb-4 overflow-hidden">
+          <div className="bg-white rounded-md border border-gray-200 mb-4">
             {countries &&
               Object.keys(countries).map((countryKey) => {
                 const locale = countries[countryKey];
