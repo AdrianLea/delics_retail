@@ -26,8 +26,14 @@ export function Link(props) {
 
   let toWithLocale = to;
 
-  if (typeof to === 'string') {
-    toWithLocale = selectedLocale ? `${selectedLocale.pathPrefix}${to}` : to;
+  if (typeof to === 'string' && selectedLocale) {
+    // Check if the URL already starts with the locale path prefix
+    const alreadyHasLocale =
+      to.startsWith(selectedLocale.pathPrefix + '/') ||
+      to === selectedLocale.pathPrefix;
+
+    // Only add the prefix if it's not already there
+    toWithLocale = alreadyHasLocale ? to : `${selectedLocale.pathPrefix}${to}`;
   }
 
   if (typeof className === 'function') {

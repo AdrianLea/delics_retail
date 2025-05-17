@@ -55,22 +55,22 @@ function Header({title, menu, layout}) {
   const isHome = useIsHomePath();
 
   const navContent = {
-    newArrivals: {title: 'New Arrivals', to: 'collections/new-arrivals'},
-    Dresses: {title: 'Dresses', to: 'collections/Dresses'},
-    Tops: {title: 'Tops', to: 'collections/Tops'},
-    Bottoms: {title: 'Bottoms', to: 'collections/Bottoms'},
+    newArrivals: {title: 'New Arrivals', to: '/collections/new-arrivals'},
+    Dresses: {title: 'Dresses', to: '/collections/Dresses'},
+    Tops: {title: 'Tops', to: '/collections/Tops'},
+    Bottoms: {title: 'Bottoms', to: '/collections/Bottoms'},
     Accessproes: {
       title: 'Accessories',
       items: [
-        {title: 'Bags', to: 'collections/Bags'},
-        {title: 'Sunglasses', to: 'collections/Sunglasses'},
+        {title: 'Bags', to: '/collections/Bags'},
+        {title: 'Sunglasses', to: '/collections/Sunglasses'},
       ],
     },
     Collections: {title: 'Collections', items: menu.items},
     StudentId: {
       title: 'Sleepy Student',
       items: [
-        {title: 'Sleepy Student', to: 'collections/sleepy-student'},
+        {title: 'Sleepy Student', to: '/collections/sleepy-student'},
         {title: 'ID Generator', to: '/image'},
       ],
     },
@@ -216,6 +216,7 @@ function MenuMobileNav({menu, onClose, content}) {
           </span>
         );
       })}
+      <CountrySelector isMobile={true} />
     </nav>
   );
 }

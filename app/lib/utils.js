@@ -247,7 +247,7 @@ export function getLocaleFromRequest(request) {
       language: 'EN',
       country: 'AU',
       currency: 'AUD',
-      pathPrefix: '/au',
+      pathPrefix: '/en-au',
     };
   }
 
@@ -256,7 +256,7 @@ export function getLocaleFromRequest(request) {
       language: 'EN',
       country: 'SG',
       currency: 'SGD',
-      pathPrefix: '/sg',
+      pathPrefix: '/en-sg',
     };
   }
 
@@ -265,7 +265,7 @@ export function getLocaleFromRequest(request) {
       language: 'EN',
       country: 'US',
       currency: 'USD',
-      pathPrefix: '/us',
+      pathPrefix: '/en-us',
     };
   }
 
@@ -274,7 +274,7 @@ export function getLocaleFromRequest(request) {
     language: 'EN',
     country: 'MY',
     currency: 'MYR',
-    pathPrefix: '/my',
+    pathPrefix: '/en-my',
   };
 }
 
