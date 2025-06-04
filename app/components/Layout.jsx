@@ -74,6 +74,7 @@ function Header({title, menu, layout}) {
         {title: 'ID Generator', to: '/image'},
       ],
     },
+    Sale: {title: 'Sale', to: '/collections/trophy-wife-bundle-sale'},
   };
 
   const {
