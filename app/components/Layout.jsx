@@ -794,15 +794,6 @@ function FooterMenu({menu}) {
           <FooterLink item={{to: '/shipping', title: 'Shipping'}} />
         </div>
         <div className="flex flex-col gap-1">
-          <h2 className="text-lg font-bold text-white">Rewards</h2>
-          <FooterLink
-            item={{
-              title: 'Unlock 10% off',
-              to: '/redeem',
-            }}
-          />
-        </div>
-        <div className="flex flex-col gap-1">
           <h2 className="text-lg font-bold text-white">Follow Us</h2>
           <ul className="py-2">
             <li className="inline-block pr-2">
