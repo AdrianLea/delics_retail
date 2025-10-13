@@ -122,6 +122,7 @@ export async function loader({params, request, context}) {
 
 export default function Collection() {
   const {collection, collections, appliedFilters} = useLoaderData();
+  const isSpecificCollection = collection.handle === 'sleepy-student'; // Replace with your actual collection handle
 
   return (
     <>
@@ -138,6 +139,19 @@ export default function Collection() {
                 {collection.description}
               </Text>
             </div>
+          </div>
+        )}
+
+        {isSpecificCollection && (
+          <div className="flex justify-center">
+            <Button
+              as="a"
+              href="/image"
+              variant="primary"
+              className="w-full max-w-md"
+            >
+              Generate SleepyStudent ID
+            </Button>
           </div>
         )}
       </PageHeader>

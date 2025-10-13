@@ -55,6 +55,7 @@ function Header({title, menu, layout}) {
   const isHome = useIsHomePath();
 
   const navContent = {
+    Sale: {title: 'Sale', to: '/Sale'},
     newArrivals: {title: 'New Arrivals', to: '/collections/new-arrivals'},
     Dresses: {title: 'Dresses', to: '/collections/Dresses'},
     Tops: {title: 'Tops', to: '/collections/Tops'},
@@ -67,14 +68,6 @@ function Header({title, menu, layout}) {
       ],
     },
     Collections: {title: 'Collections', items: menu.items},
-    StudentId: {
-      title: 'Sleepy Student',
-      items: [
-        {title: 'Sleepy Student', to: '/collections/sleepy-student'},
-        {title: 'ID Generator', to: '/image'},
-      ],
-    },
-    Sale: {title: 'Sale', to: '/collections/trophy-wife-bundle-sale'},
   };
 
   const {

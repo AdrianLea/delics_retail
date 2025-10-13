@@ -2,7 +2,6 @@ import {defer} from '@shopify/remix-oxygen';
 import {Suspense} from 'react';
 import {Await, useLoaderData} from '@remix-run/react';
 import {AnalyticsPageType} from '@shopify/hydrogen';
-import BeholdWidget from '@behold/react';
 
 import {CollectionShowcase, ProductCard, Grid, Link} from '~/components';
 import {PRODUCT_CARD_FRAGMENT} from '~/data/fragments';
@@ -185,7 +184,6 @@ export default function Homepage() {
       <p className="mx-auto font-bold text-3xl mt-28 mb-14 text-center">
         FIND US @DELICSWORLD
       </p>
-      <BeholdWidget feedId="lCjTMJ133zOPNzQ4j9mu" />
       <div className="m-14" />
     </>
   );
@@ -232,6 +230,7 @@ query heroimagesquery {
           }
         }
         value
+        key
       }
       handle
       title
@@ -259,6 +258,7 @@ query collectionShowcaseImageQuery($collectionName: String!) {
           }
         }
         value
+        key
       }
       handle
       title
