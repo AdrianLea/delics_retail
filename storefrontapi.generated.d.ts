@@ -1318,12 +1318,12 @@ export type CollectionProductsOnSaleQuery = {
       nodes: Array<
         Pick<
           StorefrontAPI.Product,
+          | 'availableForSale'
           | 'id'
           | 'title'
           | 'publishedAt'
           | 'handle'
           | 'vendor'
-          | 'availableForSale'
         > & {
           variants: {
             nodes: Array<
@@ -1566,7 +1566,7 @@ interface GeneratedQueryTypes {
     return: SaleCollectionsQuery;
     variables: SaleCollectionsQueryVariables;
   };
-  '#graphql\n  query CollectionProductsOnSale($handle: String!, $country: CountryCode, $language: LanguageCode)\n  @inContext(country: $country, language: $language) {\n    collection(handle: $handle) {\n      products(\n        first: 20,\n        filters: {\n          available: true,\n        }\n      ) {\n        nodes {\n          ...ProductCard\n          \n        }\n      }\n    }\n  }\n  #graphql\n  fragment ProductCard on Product {\n    id\n    title\n    publishedAt\n    handle\n    vendor\n    availableForSale\n    variants(first: 100) {\n      nodes {\n        id\n        availableForSale\n        image {\n          url\n          altText\n          width\n          height\n        }\n        price {\n          amount\n          currencyCode\n        }\n        compareAtPrice {\n          amount\n          currencyCode\n        }\n        selectedOptions {\n          name\n          value\n        }\n        product {\n          handle\n          title\n        }\n        currentlyNotInStock\n      }\n    }\n    metafields(identifiers: [{namespace: "custom", key: "backmedia"}]) {\n      id\n      reference {\n        ... on MediaImage {\n          id\n          image {\n            url\n          }\n          mediaContentType\n        }\n        ... on Video {\n          id\n          sources {\n            url\n            format\n            mimeType\n          }\n          mediaContentType\n        }\n      }\n    }\n  }\n\n': {
+  '#graphql\n  query CollectionProductsOnSale($handle: String!, $country: CountryCode, $language: LanguageCode)\n  @inContext(country: $country, language: $language) {\n    collection(handle: $handle) {\n      products(\n        first: 100,\n      ) {\n        nodes {\n          availableForSale,\n          ...ProductCard\n          \n        }\n      }\n    }\n  }\n  #graphql\n  fragment ProductCard on Product {\n    id\n    title\n    publishedAt\n    handle\n    vendor\n    availableForSale\n    variants(first: 100) {\n      nodes {\n        id\n        availableForSale\n        image {\n          url\n          altText\n          width\n          height\n        }\n        price {\n          amount\n          currencyCode\n        }\n        compareAtPrice {\n          amount\n          currencyCode\n        }\n        selectedOptions {\n          name\n          value\n        }\n        product {\n          handle\n          title\n        }\n        currentlyNotInStock\n      }\n    }\n    metafields(identifiers: [{namespace: "custom", key: "backmedia"}]) {\n      id\n      reference {\n        ... on MediaImage {\n          id\n          image {\n            url\n          }\n          mediaContentType\n        }\n        ... on Video {\n          id\n          sources {\n            url\n            format\n            mimeType\n          }\n          mediaContentType\n        }\n      }\n    }\n  }\n\n': {
     return: CollectionProductsOnSaleQuery;
     variables: CollectionProductsOnSaleQueryVariables;
   };

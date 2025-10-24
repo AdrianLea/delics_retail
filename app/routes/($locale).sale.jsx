@@ -66,10 +66,7 @@ export async function loader({request, context}) {
               parseFloat(variant.compareAtPrice.amount) >
                 parseFloat(variant.price.amount);
 
-            // Check if product is in stock
-            const isInStock = variant.availableForSale === true;
-
-            return isOnSale && isInStock;
+            return product.availableForSale && isOnSale;
           }) || [],
       };
 
@@ -131,7 +128,7 @@ export default function SalePage() {
       ) : (
         saleCollections.map((collection, index) => (
           <Section key={collection.id} divider={index > 0}>
-            <Heading as="h2" size="heading" className="mb-8 text-center">
+            <Heading as="h2" className="mx-auto">
               {collection.title} Sale
             </Heading>
             <Grid layout="products">
@@ -176,12 +173,10 @@ const COLLECTION_PRODUCTS_ON_SALE_QUERY = `#graphql
   @inContext(country: $country, language: $language) {
     collection(handle: $handle) {
       products(
-        first: 20,
-        filters: {
-          available: true,
-        }
+        first: 100,
       ) {
         nodes {
+          availableForSale,
           ...ProductCard
           
         }
