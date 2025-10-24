@@ -44,25 +44,66 @@ function Slider({images, className}) {
     }
   };
 
-  var urls = [];
-  for (let i = 0; i < images.collections.nodes.length + 1; i++) {
-    if (
-      images.collections.nodes[i] !== undefined &&
-      images.collections.nodes[i].metafields[0] !== null
-    ) {
-      let node = images.collections.nodes[i];
+  // Build a stable list of slide items from collection nodes
+  const nodes = images?.collections?.nodes ?? [];
+  const items = [];
 
-      urls.push([
-        node.metafields[0].reference.image.url,
-        node.metafields[1].reference.image.url,
-        node.metafields[2].value,
-        node.metafields[3].value,
-        node.onlineStoreUrl,
-        node.id,
-      ]);
+  for (let idx = 0; idx < nodes.length; idx++) {
+    const node = nodes[idx];
+    if (!node) continue;
+
+    const mfs = Array.isArray(node.metafields)
+      ? node.metafields.filter(Boolean)
+      : [];
+    const getMf = (key) => mfs.find((m) => m && m.key === key);
+
+    const desktop = getMf('herodesktop')?.reference?.image?.url;
+    const mobile = getMf('heromobile')?.reference?.image?.url ?? desktop; // fallback to desktop
+    const headerText = getMf('herodescriptiontext')?.value ?? '';
+    const buttonText = getMf('herobuttontext')?.value ?? '';
+    const link = node.onlineStoreUrl ?? '';
+    const id = node.id;
+
+    const orderRaw = getMf('sliderordernumber')?.value;
+    let order = undefined;
+    if (orderRaw != null && orderRaw !== '') {
+      const parsed = parseInt(orderRaw, 10);
+      if (!Number.isNaN(parsed)) order = parsed;
+    }
+    console.log(orderRaw, headerText);
+
+    if (desktop) {
+      items.push({
+        desktop,
+        mobile,
+        headerText,
+        buttonText,
+        link,
+        id,
+        order,
+        originalIndex: idx,
+      });
     }
   }
-  urls.reverse();
+
+  // Sort by numeric order; items without order go to the end preserving original index
+  items.sort((a, b) => {
+    const aKey =
+      typeof a.order === 'number' ? a.order : Number.POSITIVE_INFINITY;
+    const bKey =
+      typeof b.order === 'number' ? b.order : Number.POSITIVE_INFINITY;
+    if (aKey !== bKey) return aKey - bKey;
+    return a.originalIndex - b.originalIndex;
+  });
+
+  const urls = items.map((it) => [
+    it.desktop,
+    it.mobile,
+    it.headerText,
+    it.buttonText,
+    it.link,
+    it.id,
+  ]);
 
   useEffect(() => {
     ctx.current = gsap.context((self) => {

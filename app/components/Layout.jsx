@@ -55,7 +55,7 @@ function Header({title, menu, layout}) {
   const isHome = useIsHomePath();
 
   const navContent = {
-    Sale: {title: 'Sale', to: '/Sale'},
+    Sale: {title: 'Sale', to: '/collections/sale'},
     newArrivals: {title: 'New Arrivals', to: '/collections/new-arrivals'},
     Dresses: {title: 'Dresses', to: '/collections/Dresses'},
     Tops: {title: 'Tops', to: '/collections/Tops'},
