@@ -30,7 +30,7 @@ export function CollectionShowcase({
       <Link to={to} className="relative">
         <Image
           className={`w-full h-full object-cover  mx-auto md:aspect-[12/5] aspect-[1/1]`}
-          src={image.url}
+          src={image?.url}
           loading="lazy"
         ></Image>
         <div className="relative w-full h-full -translate-y-[100%] flex flex-col justify-center items-center text-center gap-1 sm:gap-3">

@@ -11,6 +11,40 @@ import Slider from '~/components/Slider';
 
 export const headers = routeHeaders;
 
+/**
+ * Validates and sanitizes a URL string
+ * Returns the sanitized URL if valid, or null if invalid
+ */
+function sanitizeUrl(urlString) {
+  if (!urlString || typeof urlString !== 'string') return null;
+
+  const trimmed = urlString.trim();
+  if (!trimmed) return null;
+
+  // If it starts with /, it's a relative URL - just validate it's not empty
+  if (trimmed.startsWith('/')) {
+    return trimmed;
+  }
+
+  // If it doesn't start with http:// or https://, prepend https://
+  let fullUrl = trimmed;
+  if (!trimmed.match(/^https?:\/\//i)) {
+    fullUrl = `https://${trimmed}`;
+  }
+
+  try {
+    const url = new URL(fullUrl);
+    // Only allow http and https protocols
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+      return null;
+    }
+    return url.toString();
+  } catch (e) {
+    // Invalid URL
+    return null;
+  }
+}
+
 export async function loader({params, context}) {
   const {language, country} = context.storefront.i18n;
 
@@ -22,46 +56,67 @@ export async function loader({params, context}) {
     // the the locale param must be invalid, send to the 404 page
     throw new Response(null, {status: 404});
   }
-
   const {shop} = await context.storefront.query(HOMEPAGE_SEO_QUERY);
-  const homepageCollectionList = [
-    'Sleepy Student 📓♡',
-    'Trophy Wives',
-    'LOVESICK',
-  ];
 
-  const collectionShowcasePromises = homepageCollectionList.map((collection) =>
-    context.storefront.query(HOMEPAGE_COLLECTION_SHOWCASE_QUERY, {
+  // Fetch all collections with homepage metafields
+  const {collections: allCollections} = await context.storefront.query(
+    HOMEPAGE_SECTIONS_QUERY,
+    {
       variables: {
-        collectionName: `title:${collection}`,
+        country: context.storefront.i18n.country,
+        language: context.storefront.i18n.language,
       },
-    }),
+    },
   );
+  // Filter and sort collections for homepage sections
+  const homepageSections = allCollections.nodes
+    .map((collection, idx) => {
+      const mfs = Array.isArray(collection.metafields)
+        ? collection.metafields.filter(Boolean)
+        : [];
+      const getMf = (key) => mfs.find((m) => m && m.key === key);
 
-  const collectionShowcaseImagesPromises = homepageCollectionList.map(
-    (collection) =>
-      context.storefront.query(COLLECTION_SHOWCASE_IMAGE_QUERY, {
-        variables: {
-          collectionName: `title:${collection}`,
-        },
-      }),
-  );
+      const showOnHomepage = getMf('showonhomepage')?.value === 'true';
+      const sectionType = getMf('homepagesectiontype')?.value || 'featured';
+      const orderRaw = getMf('homepageordernumber')?.value;
 
-  const collectionShowcaseData = await Promise.all([
-    ...collectionShowcasePromises,
-    ...collectionShowcaseImagesPromises,
-  ]);
+      // Parse custom title and link
+      const customTitle = getMf('homepagetitle')?.value || null;
+      const customLinkRaw = getMf('homepagelink')?.value;
+      const customLink = sanitizeUrl(customLinkRaw);
+
+      let order;
+      if (orderRaw != null && orderRaw !== '') {
+        const parsed = parseInt(orderRaw, 10);
+        if (!Number.isNaN(parsed)) order = parsed;
+      }
+
+      return {
+        collection,
+        showOnHomepage,
+        sectionType,
+        order,
+        customTitle,
+        customLink,
+        originalIndex: idx,
+      };
+    })
+    .filter((item) => item.showOnHomepage)
+    .sort((a, b) => {
+      const aKey =
+        typeof a.order === 'number' ? a.order : Number.POSITIVE_INFINITY;
+      const bKey =
+        typeof b.order === 'number' ? b.order : Number.POSITIVE_INFINITY;
+      if (aKey !== bKey) return aKey - bKey;
+      return a.originalIndex - b.originalIndex;
+    });
 
   const seo = seoPayload.home();
 
   return defer({
     shop,
     slider_images: context.storefront.query(HOMEPAGE_SLIDER_QUERY),
-    collectionShowcaseData,
-    newArrivalProducts: context.storefront.query(
-      HOMEPAGE_FEATURED_PRODUCTS_QUERY,
-    ),
-    featuredProducts: context.storefront.query(HOMEPAGE_BEST_SELLING_QUERY),
+    homepageSections,
     analytics: {
       pageType: AnalyticsPageType.home,
     },
@@ -70,10 +125,7 @@ export async function loader({params, context}) {
 }
 
 export default function Homepage() {
-  const {featuredProducts} = useLoaderData();
-  const {slider_images} = useLoaderData();
-  const {collectionShowcaseData} = useLoaderData();
-  const {newArrivalProducts} = useLoaderData();
+  const {slider_images, homepageSections} = useLoaderData();
 
   return (
     <>
@@ -94,92 +146,49 @@ export default function Homepage() {
           </Await>
         </Suspense>
       )}
+
       <div className="w-full h-screen -mt-[92px] md:-mt-[140px] bg-gray-100 mb-5"></div>
-      {/* <div className="my-[200px] md:w-[90%] mx-auto">
-        <h1 className="text-[40px] text-center font-bold">
-          What is Del'cs World?
-        </h1>
-        <br></br>
-        <p className="text-[20px] text-center">
-          DEL’CS WORLD is a female fashion label born and based in Kuala Lumpur,
-          Malaysia.
-        </p>
-        <br></br>
-        <p className="text-[20px] text-center">
-          The average DEL’CS wearer is the effortlessly cool girl you walked
-          past on the streets last week who you can’t stop thinking about.
-          They’re probably the best dressed in the room and yes, you should’ve
-          asked from their Instagram.
-        </p>
-        <br></br>
-        <p className="text-[20px] text-center">
-          They’re probably the best dressed in the room and yes, you should’ve
-          asked from their Instagram. Created by Youths, For Youths — our brand
-          creates staple quality pieces to bring young fashionable people
-          together for any occasion from lounging around after school to going
-          to a weekend pilates sesh, or a night out with your best friends.
-        </p>
-      </div> */}
 
-      {newArrivalProducts && (
-        <Suspense>
-          <Await resolve={newArrivalProducts}>
-            {({collections}) => {
-              return (
-                <FeaturedProductsSection
-                  products={collections.nodes[0].products.nodes}
-                  title={'NEW ARRIVALS'}
-                  to={'/collections/new-arrivals'}
-                />
-              );
-            }}
-          </Await>
-        </Suspense>
-      )}
+      {/* Dynamic homepage sections based on collection metafields */}
+      {homepageSections.map((section, index) => {
+        const {collection, sectionType, customTitle, customLink} = section;
 
-      {featuredProducts && (
-        <Suspense>
-          <Await resolve={featuredProducts}>
-            {({products}) => {
-              return (
-                <FeaturedProductsSection
-                  products={products.nodes}
-                  title={'BEST SELLERS'}
-                  to={'/collections/delcs-world-vol-2?sort=best-selling'}
-                />
-              );
-            }}
-          </Await>
-        </Suspense>
-      )}
+        // Determine the display title
+        const displayTitle = customTitle || collection.title.toUpperCase();
 
-      <section>
-        <Suspense>
-          <Await resolve={collectionShowcaseData}>
-            {(data) => {
-              const halfLength = data.length / 2;
-              const collectionShowcaseProducts = data.slice(0, halfLength);
-              const collectionShowcaseImages = data.slice(halfLength);
-              return collectionShowcaseProducts.map((resolve, index) => (
-                <CollectionShowcase
-                  count={4}
-                  products={resolve.collections.nodes[0].products.nodes}
-                  key={`key-${index}-1`}
-                  image={
-                    collectionShowcaseImages[index].collections.nodes[0]
-                      .metafields[0]?.reference.image
-                  }
-                  to={
-                    new URL(resolve.collections.nodes[0].onlineStoreUrl)
-                      .pathname
-                  }
-                  heading={`${resolve.collections.nodes[0].title.toUpperCase()} COLLECTION`}
-                />
-              ));
-            }}
-          </Await>
-        </Suspense>
-      </section>
+        // Determine the link URL
+        const linkUrl =
+          customLink || new URL(collection.onlineStoreUrl).pathname;
+
+        if (sectionType === 'showcase') {
+          return (
+            <CollectionShowcase
+              key={collection.id}
+              count={4}
+              products={collection.products.nodes}
+              image={
+                collection.metafields?.find(
+                  (m) => m && m.key === 'collectionspageimage',
+                )?.reference?.image
+              }
+              to={linkUrl}
+              heading={
+                customTitle ? displayTitle : `${displayTitle} COLLECTION`
+              }
+            />
+          );
+        }
+
+        // Default to featured section type
+        return (
+          <FeaturedProductsSection
+            key={collection.id}
+            products={collection.products.nodes}
+            title={displayTitle}
+            to={linkUrl}
+          />
+        );
+      })}
 
       <p className="mx-auto font-bold text-3xl mt-28 mb-14 text-center">
         FIND US @DELICSWORLD
@@ -241,33 +250,45 @@ query heroimagesquery {
   }
 }`;
 
-const COLLECTION_SHOWCASE_IMAGE_QUERY = `#graphql
-query collectionShowcaseImageQuery($collectionName: String!) {
-  collections(
-    first:1
-    query:$collectionName
-  ) {
-    nodes {
-      metafields(
-        identifiers: [{namespace: "custom", key: "collectionspageimage"}]
-      ) {
-        reference {
-          ... on MediaImage {
-            image {
-              url
+// Query to fetch collections with homepage metafields
+const HOMEPAGE_SECTIONS_QUERY = `#graphql
+  query HomepageSections($country: CountryCode, $language: LanguageCode)
+  @inContext(country: $country, language: $language) {
+    collections(first: 50) {
+      nodes {
+        id
+        title
+        handle
+        onlineStoreUrl
+        metafields(identifiers: [
+          {namespace: "custom", key: "showonhomepage"},
+          {namespace: "custom", key: "homepagesectiontype"},
+          {namespace: "custom", key: "homepageordernumber"},
+          {namespace: "custom", key: "collectionspageimage"},
+          {namespace: "custom", key: "homepagetitle"},
+          {namespace: "custom", key: "homepagelink"}
+        ]) {
+          key
+          value
+          namespace
+          reference {
+            ... on MediaImage {
+              image {
+                url
+              }
             }
           }
         }
-        value
-        key
+        products(first: 20, sortKey: BEST_SELLING) {
+          nodes {
+            ...ProductCard
+          }
+        }
       }
-      handle
-      title
-      onlineStoreUrl
-      id
     }
   }
-}`;
+  ${PRODUCT_CARD_FRAGMENT}
+`;
 
 const HOMEPAGE_SEO_QUERY = `#graphql
   query seoCollectionContent($country: CountryCode, $language: LanguageCode)

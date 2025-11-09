@@ -225,26 +225,94 @@ export type HeroimagesqueryQuery = {
   };
 };
 
-export type CollectionShowcaseImageQueryQueryVariables = StorefrontAPI.Exact<{
-  collectionName: StorefrontAPI.Scalars['String']['input'];
+export type HomepageSectionsQueryVariables = StorefrontAPI.Exact<{
+  country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
+  language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
 }>;
 
-export type CollectionShowcaseImageQueryQuery = {
+export type HomepageSectionsQuery = {
   collections: {
     nodes: Array<
       Pick<
         StorefrontAPI.Collection,
-        'handle' | 'title' | 'onlineStoreUrl' | 'id'
+        'id' | 'title' | 'handle' | 'onlineStoreUrl'
       > & {
         metafields: Array<
           StorefrontAPI.Maybe<
-            Pick<StorefrontAPI.Metafield, 'value' | 'key'> & {
+            Pick<StorefrontAPI.Metafield, 'key' | 'value' | 'namespace'> & {
               reference?: StorefrontAPI.Maybe<{
                 image?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Image, 'url'>>;
               }>;
             }
           >
         >;
+        products: {
+          nodes: Array<
+            Pick<
+              StorefrontAPI.Product,
+              | 'id'
+              | 'title'
+              | 'publishedAt'
+              | 'handle'
+              | 'vendor'
+              | 'availableForSale'
+            > & {
+              variants: {
+                nodes: Array<
+                  Pick<
+                    StorefrontAPI.ProductVariant,
+                    'id' | 'availableForSale' | 'currentlyNotInStock'
+                  > & {
+                    image?: StorefrontAPI.Maybe<
+                      Pick<
+                        StorefrontAPI.Image,
+                        'url' | 'altText' | 'width' | 'height'
+                      >
+                    >;
+                    price: Pick<
+                      StorefrontAPI.MoneyV2,
+                      'amount' | 'currencyCode'
+                    >;
+                    compareAtPrice?: StorefrontAPI.Maybe<
+                      Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>
+                    >;
+                    selectedOptions: Array<
+                      Pick<StorefrontAPI.SelectedOption, 'name' | 'value'>
+                    >;
+                    product: Pick<StorefrontAPI.Product, 'handle' | 'title'>;
+                  }
+                >;
+              };
+              metafields: Array<
+                StorefrontAPI.Maybe<
+                  Pick<StorefrontAPI.Metafield, 'id'> & {
+                    reference?: StorefrontAPI.Maybe<
+                      | (Pick<
+                          StorefrontAPI.MediaImage,
+                          'id' | 'mediaContentType'
+                        > & {
+                          image?: StorefrontAPI.Maybe<
+                            Pick<StorefrontAPI.Image, 'url'>
+                          >;
+                        })
+                      | (Pick<
+                          StorefrontAPI.Video,
+                          'id' | 'mediaContentType'
+                        > & {
+                          sources: Array<
+                            Pick<
+                              StorefrontAPI.VideoSource,
+                              'url' | 'format' | 'mimeType'
+                            >
+                          >;
+                        })
+                    >;
+                  }
+                >
+              >;
+            }
+          >;
+        };
       }
     >;
   };
@@ -1502,9 +1570,9 @@ interface GeneratedQueryTypes {
     return: HeroimagesqueryQuery;
     variables: HeroimagesqueryQueryVariables;
   };
-  '#graphql\nquery collectionShowcaseImageQuery($collectionName: String!) {\n  collections(\n    first:1\n    query:$collectionName\n  ) {\n    nodes {\n      metafields(\n        identifiers: [{namespace: "custom", key: "collectionspageimage"}]\n      ) {\n        reference {\n          ... on MediaImage {\n            image {\n              url\n            }\n          }\n        }\n        value\n        key\n      }\n      handle\n      title\n      onlineStoreUrl\n      id\n    }\n  }\n}': {
-    return: CollectionShowcaseImageQueryQuery;
-    variables: CollectionShowcaseImageQueryQueryVariables;
+  '#graphql\n  query HomepageSections($country: CountryCode, $language: LanguageCode)\n  @inContext(country: $country, language: $language) {\n    collections(first: 50) {\n      nodes {\n        id\n        title\n        handle\n        onlineStoreUrl\n        metafields(identifiers: [\n          {namespace: "custom", key: "showonhomepage"},\n          {namespace: "custom", key: "homepagesectiontype"},\n          {namespace: "custom", key: "homepageordernumber"},\n          {namespace: "custom", key: "collectionspageimage"},\n          {namespace: "custom", key: "homepagetitle"},\n          {namespace: "custom", key: "homepagelink"}\n        ]) {\n          key\n          value\n          namespace\n          reference {\n            ... on MediaImage {\n              image {\n                url\n              }\n            }\n          }\n        }\n        products(first: 20, sortKey: BEST_SELLING) {\n          nodes {\n            ...ProductCard\n          }\n        }\n      }\n    }\n  }\n  #graphql\n  fragment ProductCard on Product {\n    id\n    title\n    publishedAt\n    handle\n    vendor\n    availableForSale\n    variants(first: 100) {\n      nodes {\n        id\n        availableForSale\n        image {\n          url\n          altText\n          width\n          height\n        }\n        price {\n          amount\n          currencyCode\n        }\n        compareAtPrice {\n          amount\n          currencyCode\n        }\n        selectedOptions {\n          name\n          value\n        }\n        product {\n          handle\n          title\n        }\n        currentlyNotInStock\n      }\n    }\n    metafields(identifiers: [{namespace: "custom", key: "backmedia"}]) {\n      id\n      reference {\n        ... on MediaImage {\n          id\n          image {\n            url\n          }\n          mediaContentType\n        }\n        ... on Video {\n          id\n          sources {\n            url\n            format\n            mimeType\n          }\n          mediaContentType\n        }\n      }\n    }\n  }\n\n': {
+    return: HomepageSectionsQuery;
+    variables: HomepageSectionsQueryVariables;
   };
   '#graphql\n  query seoCollectionContent($country: CountryCode, $language: LanguageCode)\n  @inContext(country: $country, language: $language) {\n    shop {\n      name\n      description\n    }\n  }\n': {
     return: SeoCollectionContentQuery;

@@ -70,7 +70,6 @@ function Slider({images, className}) {
       const parsed = parseInt(orderRaw, 10);
       if (!Number.isNaN(parsed)) order = parsed;
     }
-    console.log(orderRaw, headerText);
 
     if (desktop) {
       items.push({
