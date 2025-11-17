@@ -1,7 +1,6 @@
 import {json} from '@shopify/remix-oxygen';
 import {useLoaderData} from '@remix-run/react';
-import {flattenConnection, AnalyticsPageType} from '@shopify/hydrogen';
-import {useEffect} from 'react';
+import {AnalyticsPageType} from '@shopify/hydrogen';
 
 import {
   PageHeader,
@@ -21,6 +20,18 @@ import {getImageLoadingPriority} from '~/lib/const';
 export const headers = routeHeaders;
 
 export async function loader({request, context}) {
+  // Get sale page metaobject for title and description
+  const {metaobjects: salePageMetaobjects} = await context.storefront.query(
+    SALE_PAGE_METAOBJECT_QUERY,
+  );
+
+  // Extract title and description from metaobject
+  const salePageData = salePageMetaobjects?.edges?.[0]?.node;
+  const salePageTitle = salePageData?.field1?.value || 'Sale';
+  const salePageDescription =
+    salePageData?.field2?.value ||
+    'Shop our best deals across all collections.';
+
   // Get sale collections from the storefront API
   const {collections} = await context.storefront.query(SALE_COLLECTIONS_QUERY, {
     variables: {
@@ -70,9 +81,18 @@ export async function loader({request, context}) {
           }) || [],
       };
 
+      // Extract custom header from metafield
+      const customHeader =
+        collection.metafields?.find(
+          (metafield) =>
+            metafield?.namespace === 'custom' &&
+            metafield?.key === 'salecollectionheader',
+        )?.value || null;
+
       return {
         ...collection,
         products: saleProducts,
+        customHeader,
       };
     }),
   );
@@ -81,12 +101,13 @@ export async function loader({request, context}) {
   const saleCollections = collectionsWithSaleProducts.filter(
     (collection) => collection.products.nodes.length > 0,
   );
+
   const seo = seoPayload.page({
     page: {
-      title: 'Sale',
+      title: salePageTitle,
       seo: {
-        title: 'Sale',
-        description: 'Shop our items on sale across all collections',
+        title: salePageTitle,
+        description: salePageDescription,
       },
     },
     url: request.url,
@@ -94,6 +115,8 @@ export async function loader({request, context}) {
 
   return json({
     saleCollections,
+    salePageTitle,
+    salePageDescription,
     analytics: {
       pageType: AnalyticsPageType.page,
     },
@@ -102,11 +125,11 @@ export async function loader({request, context}) {
 }
 
 export default function SalePage() {
-  const {saleCollections} = useLoaderData();
+  const {saleCollections, salePageTitle, salePageDescription} = useLoaderData();
 
   return (
     <>
-      <PageHeader heading="Sale">
+      <PageHeader heading={salePageTitle}>
         <div className="flex items-baseline justify-center w-full">
           <Text
             format
@@ -114,7 +137,7 @@ export default function SalePage() {
             as="p"
             className="inline-block text-center"
           >
-            Shop our best deals across all collections.
+            {salePageDescription}
           </Text>
         </div>
       </PageHeader>
@@ -129,7 +152,7 @@ export default function SalePage() {
         saleCollections.map((collection, index) => (
           <Section key={collection.id} divider={index > 0}>
             <Heading as="h2" className="mx-auto">
-              {collection.title} Sale
+              {collection.customHeader || `${collection.title} Sale`}
             </Heading>
             <Grid layout="products">
               {collection.products.nodes.map((product, i) => (
@@ -147,17 +170,40 @@ export default function SalePage() {
   );
 }
 
+// Query to fetch sale page metaobject for title and description
+const SALE_PAGE_METAOBJECT_QUERY = `#graphql
+  query SalePageMetaobject {
+    metaobjects(type: "salespage", first: 1) {
+      edges {
+        node {
+          id
+          handle
+          field1: field(key: "Title") {
+            value
+          }
+          field2: field(key: "Descriptions") {
+            value
+          }
+        }
+      }
+    }
+  }
+`;
+
 // Query to fetch all collections with showonsale metafield
 const SALE_COLLECTIONS_QUERY = `#graphql
   query SaleCollections($country: CountryCode, $language: LanguageCode)
   @inContext(country: $country, language: $language) {
-    collections(first: 20) {
+    collections(first: 100) {
       nodes {
         id
         title
         handle
         description
-        metafields(identifiers: [{namespace: "custom", key: "showonsale"}]) {
+        metafields(identifiers: [
+          {namespace: "custom", key: "showonsale"},
+          {namespace: "custom", key: "salecollectionheader"}
+        ]) {
           key
           value
           namespace

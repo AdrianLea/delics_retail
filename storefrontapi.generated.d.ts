@@ -786,6 +786,25 @@ export type CollectionsQuery = {
   };
 };
 
+export type SalePageMetaobjectQueryVariables = StorefrontAPI.Exact<{
+  [key: string]: never;
+}>;
+
+export type SalePageMetaobjectQuery = {
+  metaobjects: {
+    edges: Array<{
+      node: Pick<StorefrontAPI.Metaobject, 'id' | 'handle'> & {
+        field1?: StorefrontAPI.Maybe<
+          Pick<StorefrontAPI.MetaobjectField, 'value'>
+        >;
+        field2?: StorefrontAPI.Maybe<
+          Pick<StorefrontAPI.MetaobjectField, 'value'>
+        >;
+      };
+    }>;
+  };
+};
+
 export type SaleCollectionsQueryVariables = StorefrontAPI.Exact<{
   country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
   language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
@@ -1602,7 +1621,11 @@ interface GeneratedQueryTypes {
     return: CollectionsQuery;
     variables: CollectionsQueryVariables;
   };
-  '#graphql\n  query SaleCollections($country: CountryCode, $language: LanguageCode)\n  @inContext(country: $country, language: $language) {\n    collections(first: 20) {\n      nodes {\n        id\n        title\n        handle\n        description\n        metafields(identifiers: [{namespace: "custom", key: "showonsale"}]) {\n          key\n          value\n          namespace\n        }\n      }\n    }\n  }\n': {
+  '#graphql\n  query SalePageMetaobject {\n    metaobjects(type: "salespage", first: 1) {\n      edges {\n        node {\n          id\n          handle\n          field1: field(key: "Title") {\n            value\n          }\n          field2: field(key: "Descriptions") {\n            value\n          }\n        }\n      }\n    }\n  }\n': {
+    return: SalePageMetaobjectQuery;
+    variables: SalePageMetaobjectQueryVariables;
+  };
+  '#graphql\n  query SaleCollections($country: CountryCode, $language: LanguageCode)\n  @inContext(country: $country, language: $language) {\n    collections(first: 100) {\n      nodes {\n        id\n        title\n        handle\n        description\n        metafields(identifiers: [\n          {namespace: "custom", key: "showonsale"},\n          {namespace: "custom", key: "salecollectionheader"}\n        ]) {\n          key\n          value\n          namespace\n        }\n      }\n    }\n  }\n': {
     return: SaleCollectionsQuery;
     variables: SaleCollectionsQueryVariables;
   };
