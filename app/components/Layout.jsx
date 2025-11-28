@@ -53,7 +53,6 @@ export function Layout({children, layout}) {
 
 function Header({title, menu, layout}) {
   const isHome = useIsHomePath();
-
   const navContent = {
     Sale: {title: 'Sale', to: '/collections/sale'},
     newArrivals: {title: 'New Arrivals', to: '/collections/new-arrivals'},
@@ -67,6 +66,7 @@ function Header({title, menu, layout}) {
         {title: 'Sunglasses', to: '/collections/Sunglasses'},
       ],
     },
+    Brands: {title: 'Brands', to: '/brands'},
     Collections: {title: 'Collections', items: menu.items},
   };
 
