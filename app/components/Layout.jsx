@@ -133,7 +133,7 @@ function AnnouncementBar({isHome}) {
           : 'opacity-100 text-black bg-[#00FFEF]'
       }`}
     >
-      ˚.⋆꒰১ 5SGD SHIPPING FOR SINGAPOREAN USE "DELICSLOVESG" CODE ໒꒱⋆.˚
+      ˚.⋆꒰১ SINGAPOREANS GET 5 SGD OFF TOTAL ORDER: "DELICSLOVESG" CODE ໒꒱⋆.˚
     </div>
   );
 }
