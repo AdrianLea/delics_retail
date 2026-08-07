@@ -9,11 +9,9 @@ export function Loading() {
   const fetcher = useNavigation();
   const finishLoad = useRef(null);
   const startLoad = useRef(null);
-  const restart = useRef(null);
   useEffect(() => {
     ctx.current = gsap.context(() => {
-      restart.current = gsap.to(loaderBar.current, {width: 0, duration: 0});
-      startLoad.current = gsap.timeline();
+      startLoad.current = gsap.timeline({paused: true});
       startLoad.current
         .fromTo(
           loaderBar.current,
@@ -23,15 +21,11 @@ export function Loading() {
         .to(loaderBar.current, {width: '15%', duration: 0.1})
         .to(loaderBar.current, {width: '25%', duration: 0.4})
         .to(loaderBar.current, {width: '30%', duration: 10});
-      finishLoad.current = gsap.timeline();
+      finishLoad.current = gsap.timeline({paused: true});
       finishLoad.current
-        .fromTo(
-          loaderBar.current,
-          {width: '30%'},
-          {width: '100%', duration: 0.3},
-        )
+        .to(loaderBar.current, {width: '100%', duration: 0.3})
         .to(loaderBar.current, {opacity: 0, duration: 0.2})
-        .to(loaderBar.current, {width: 0, duration: 0});
+        .set(loaderBar.current, {width: 0, opacity: 1});
     });
 
     return () => ctx.current.revert();
@@ -40,11 +34,12 @@ export function Loading() {
   useEffect(() => {
     if (fetcher.state == 'idle' && loadEnded == false) {
       setLoadEnded(true);
-      startLoad.current.pause(0);
-      finishLoad.current.play(0);
+      startLoad.current.pause();
+      finishLoad.current.restart();
     } else if (fetcher.state == 'loading' && loadEnded == true) {
       setLoadEnded(false);
-      startLoad.current.play(0);
+      finishLoad.current.pause();
+      startLoad.current.restart();
     }
   }, [fetcher, loadEnded]);
 

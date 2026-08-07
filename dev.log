@@ -1,0 +1,17 @@
+Browserslist: caniuse-lite is outdated. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+
+  [32m[1mVITE[22m v5.1.7[39m  [2mready in [0m[1m1967[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m5173[22m/[39m
+[2m  [32m➜[39m  [1mNetwork[22m[2m: use [22m[1m--host[22m[2m to expose[22m
+[vite] connected.
+
+Warning: MiniOxygen couldn't load your app's entry point.
+
+Sourcemap for "C:/Users/adria/delics_retail/node_modules/@remix-run/react/dist/esm/components.js" points to missing source files
+Sourcemap for "C:/Users/adria/delics_retail/node_modules/.vite/deps_ssr/@remix-run_server-runtime.js" points to missing source files
+
+Warning: MiniOxygen couldn't load your app's entry point.
+

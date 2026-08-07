@@ -69,12 +69,10 @@ export const action = async ({request, context}) => {
     });
   }
 
-  // Use the host from the locale object, fallback to request host
-  const host = toLocale.host || new URL(request.url).host;
-
+  const requestUrl = new URL(request.url);
   const redirectUrl = new URL(
     `${toLocale.pathPrefix || ''}${path}`,
-    `http://${host}`,
+    `${requestUrl.protocol}//${requestUrl.host}`,
   );
 
   return redirect(redirectUrl, 302);

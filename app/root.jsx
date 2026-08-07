@@ -24,7 +24,8 @@ import favicon from '../public/favicon.png';
 
 import {GenericError} from './components/GenericError';
 import {NotFound} from './components/NotFound';
-import styles from './styles/app.css';
+import styles from './styles/app.css?url';
+import intlTelInputStyles from './intl-tel-input-master/build/css/intlTelInput.css?url';
 import {DEFAULT_LOCALE, getLocaleFromRequest, parseMenu} from './lib/utils';
 import {KlaviyoOnsite} from './klaviyo/KlaviyoOnsite';
 
@@ -60,7 +61,7 @@ export const links = () => {
     {rel: 'icon', type: 'image/svg+xml', href: favicon},
     {
       rel: 'stylesheet',
-      href: require('./intl-tel-input-master/build/css/intlTelInput.css'),
+      href: intlTelInputStyles,
     },
     {
       rel: 'stylesheet',

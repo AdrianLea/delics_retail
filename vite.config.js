@@ -1,6 +1,7 @@
-import {hydrogen, oxygen} from '@shopify/hydrogen/vite';
 import {defineConfig} from 'vite';
-import {remix} from '@remix-run/dev/vite';
+import {hydrogen} from '@shopify/hydrogen/vite';
+import {oxygen} from '@shopify/mini-oxygen/vite';
+import {vitePlugin as remix} from '@remix-run/dev';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
@@ -18,4 +19,12 @@ export default defineConfig({
     }),
     tsconfigPaths(),
   ],
+  build: {
+    assetsInlineLimit: 0,
+  },
+  ssr: {
+    optimizeDeps: {
+      include: ['typographic-base', 'react-use', 'fast-deep-equal'],
+    },
+  },
 });

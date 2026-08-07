@@ -1,5 +1,6 @@
 // Virtual entry point for the app
-import * as remixBuild from '@remix-run/dev/server-build';
+// eslint-disable-next-line import/no-unresolved
+import * as remixBuild from 'virtual:remix/server-build';
 import {
   createRequestHandler,
   getStorefrontHeaders,
