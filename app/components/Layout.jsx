@@ -127,10 +127,10 @@ function AnnouncementBar({isHome}) {
   }, [y]);
   return (
     <div
-      className={`announcement-bar w-full h-fit p-1 text-center font-bold text-sm transition duration-300 ${
+      className={`announcement-bar w-full h-fit p-2 text-center font-bold text-base transition duration-300 ${
         clientY < 10 && isHome
           ? ' bg-none text-white'
-          : 'opacity-100 text-white bg-black'
+          : 'opacity-100 text-white bg-teal-600'
       }`}
     >
       ˚.⋆꒰১ 5SGD SHIPPING FOR SINGAPOREAN USE "DELICSLOVESG" CODE ໒꒱⋆.˚
