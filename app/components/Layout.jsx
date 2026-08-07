@@ -133,7 +133,7 @@ function AnnouncementBar({isHome}) {
           : 'opacity-100 text-white bg-black'
       }`}
     >
-      FREE SHIPPING ABOVE MYR 300
+      ˚.⋆꒰১ 5SGD SHIPPING FOR SINGAPOREAN USE "DELICSLOVESG" CODE ໒꒱⋆.˚
     </div>
   );
 }
