@@ -118,13 +118,33 @@ function Header({title, menu, layout}) {
     </>
   );
 }
-
+const ANNOUNCEMENTS = [
+  'SINGAPOREANS GET 5 SGD OFF TOTAL ORDER: "DELICSLOVESG" CODE',
+  'MALAYSIANS GET 15 MYR OFF TOTAL ORDER: "DELICSLOVEMY" CODE',
+  'SHOP MYR250 FOR SUMMER 26' & GET 10% OFF TOTAL BILL',
+];
 function AnnouncementBar({isHome}) {
   const {y} = useWindowScroll();
   const [clientY, setClientY] = useState(0);
+  const [index, setIndex] = useState(0);
+  const [fade, setFade] = useState(true);
+
   useEffect(() => {
     setClientY(y);
   }, [y]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setFade(false);
+      setTimeout(() => {
+        setIndex((prev) => (prev + 1) % ANNOUNCEMENTS.length);
+        setFade(true);
+      }, 300);
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div
       className={`announcement-bar w-full h-fit p-2 text-center font-bold text-base transition duration-300 ${
@@ -133,7 +153,13 @@ function AnnouncementBar({isHome}) {
           : 'opacity-100 text-black bg-[#00FFEF]'
       }`}
     >
-      ˚.⋆꒰১ SINGAPOREANS GET 5 SGD OFF TOTAL ORDER: "DELICSLOVESG" CODE ໒꒱⋆.˚
+      <span
+        className={`inline-block transition-opacity duration-300 ${
+          fade ? 'opacity-100' : 'opacity-0'
+        }`}
+      >
+        {ANNOUNCEMENTS[index]}
+      </span>
     </div>
   );
 }
