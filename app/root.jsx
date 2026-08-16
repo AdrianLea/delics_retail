@@ -1,4 +1,3 @@
-import {KlaviyoFormTrigger} from '~/klaviyo/KlaviyoFormTrigger.client';
 import {defer} from '@shopify/remix-oxygen';
 import {
   isRouteErrorResponse,
@@ -29,6 +28,7 @@ import styles from './styles/app.css?url';
 import intlTelInputStyles from './intl-tel-input-master/build/css/intlTelInput.css?url';
 import {DEFAULT_LOCALE, getLocaleFromRequest, parseMenu} from './lib/utils';
 import {KlaviyoOnsite} from './klaviyo/KlaviyoOnsite';
+import {KlaviyoFormTrigger} from '~/klaviyo/KlaviyoFormTrigger.client';
 
 import {Layout} from '~/components';
 import {seoPayload} from '~/lib/seo.server';
