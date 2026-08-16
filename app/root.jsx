@@ -143,7 +143,6 @@ export default function App() {
         </Analytics.Provider>
         <ScrollRestoration nonce={nonce} />
         <Script src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=Rw7fmd" />
-        <Script src="https://unpkg.com/react-image-crop/dist/index.umd.cjs" />
         <Scripts nonce={nonce} />
         <LiveReload nonce={nonce} />
       </body>
