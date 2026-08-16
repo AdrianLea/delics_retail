@@ -121,7 +121,7 @@ function Header({title, menu, layout}) {
 const ANNOUNCEMENTS = [
   'SINGAPOREANS GET 5 SGD OFF TOTAL ORDER: "DELICSLOVESG" CODE',
   'MALAYSIANS GET 15 MYR OFF TOTAL ORDER: "DELICSLOVEMY" CODE',
-  'SHOP MYR250 FOR SUMMER 26' & GET 10% OFF TOTAL BILL',
+  'SHOP MYR250 FOR SUMMER 26\' & GET 10% OFF TOTAL BILL',
 ];
 function AnnouncementBar({isHome}) {
   const {y} = useWindowScroll();
