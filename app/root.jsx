@@ -1,3 +1,4 @@
+import {KlaviyoFormTrigger} from '~/klaviyo/KlaviyoFormTrigger.client';
 import {defer} from '@shopify/remix-oxygen';
 import {
   isRouteErrorResponse,
@@ -138,6 +139,7 @@ export default function App() {
             <Outlet />
           </Layout>
           <KlaviyoOnsite />
+          <KlaviyoFormTrigger />
         </Analytics.Provider>
         <ScrollRestoration nonce={nonce} />
         <Script src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=Rw7fmd" />
