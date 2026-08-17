@@ -33,7 +33,7 @@ export default async function handleRequest(
       '*.cloudfront.net',
       'https://cdnjs.cloudflare.com',
     ],
-    connectSrc: ['*.klaviyo.com', 'wss://flying-secondly-eft.ngrok-free.app:*'],
+    connectSrc: ['*.klaviyo.com', 'https://api-js.datadome.co', 'wss://flying-secondly-eft.ngrok-free.app:*'],
     imgSrc: [
       "'self'",
       'https://cdn.shopify.com',
