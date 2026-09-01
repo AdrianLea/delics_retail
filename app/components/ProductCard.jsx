@@ -44,36 +44,40 @@ export function ProductCard({
       soldOut = false;
     }
   }
-  function checkSale(compare, price) {
-    if (compare) {
-      return parseFloat(compare.amount) > parseFloat(price.amount);
-    } else {
-      return false;
-    }
-  }
-
-  useEffect(() => {
-    startTransition(() => {
-      if (checkSale(compareAtPrice, price)) {
-        setOnSale(true);
+      function checkSale(compare, price) {
+      if (compare) {
+        return parseFloat(compare.amount) > parseFloat(price.amount);
       } else {
-        setOnSale(false);
+        return false;
       }
+    }
 
-      if (label) {
-        setCardLabel(label);
-      } else if (soldOut === true) {
-        setCardLabel('SOLD OUT');
-      } else if (checkSale(compareAtPrice, price)) {
-        setCardLabel(
-          `${Math.round(
-            (1 - price.amount / compareAtPrice.amount) * 100,
-          )}% OFF`,
-        );
-      }
-    });
-  }, [compareAtPrice, price, label, soldOut]);
+    const isBackInStock =
+      !soldOut && (cardProduct.tags || []).includes('back-in-stock');
 
+    useEffect(() => {
+      startTransition(() => {
+        if (checkSale(compareAtPrice, price)) {
+          setOnSale(true);
+        } else {
+          setOnSale(false);
+        }
+
+        if (label) {
+          setCardLabel(label);
+        } else if (soldOut === true) {
+          setCardLabel('SOLD OUT');
+        } else if (isBackInStock) {
+          setCardLabel('BACK IN STOCK');
+        } else if (checkSale(compareAtPrice, price)) {
+          setCardLabel(
+            `${Math.round(
+              (1 - price.amount / compareAtPrice.amount) * 100,
+            )}% OFF`,
+          );
+        }
+      });
+    }, [compareAtPrice, price, label, soldOut, isBackInStock]);
   return (
     <div className="grid gap-2 relative">
       <Link
