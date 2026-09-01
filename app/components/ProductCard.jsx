@@ -121,9 +121,14 @@ export function ProductCard({
               />
             )}
           </div>
-          <div className="bg-black text-white font-bold font-nimubs rounded-sm absolute top-0 left-0 m-2 px-1 z-[35]">
-            <span>{cardLabel}</span>
-          </div>
+                 <div
+          className={clsx(
+            'font-bold font-nimubs rounded-sm absolute top-0 left-0 m-2 px-1 z-[35]',
+            isBackInStock ? 'bg-[#fbe4eb] text-[#77c5c5]' : 'bg-black text-white',
+          )}
+        >
+          <span>{cardLabel}</span>
+        </div>
           <div className="grid gap px-2">
             <h3 className="w-full overflow-hidden whitespace-nowrap text-ellipsis font-bold text-[80%] font-sans">
               {product.title}
