@@ -61,6 +61,7 @@ function Slider({images, className}) {
     const mobile = getMf('heromobile')?.reference?.image?.url ?? desktop; // fallback to desktop
     const headerText = getMf('herodescriptiontext')?.value ?? '';
     const buttonText = getMf('herobuttontext')?.value ?? '';
+    const titleText = getMf('herotitletext')?.value ?? '';
     const link = node.onlineStoreUrl ?? '';
     const id = node.id;
 
@@ -79,6 +80,7 @@ function Slider({images, className}) {
         buttonText,
         link,
         id,
+        titleText,
         order,
         originalIndex: idx,
       });
@@ -102,6 +104,7 @@ function Slider({images, className}) {
     it.buttonText,
     it.link,
     it.id,
+    it.titleText,
   ]);
 
   useEffect(() => {
@@ -111,6 +114,7 @@ function Slider({images, className}) {
       const links = gsap.utils.toArray('.information-holder');
       const text = links.map((link) => link.querySelector('.header'));
       const button = links.map((link) => link.querySelector('.link'));
+      const title = links.map((link) => link.querySelector('.hero-title'));
       anims.current = slide.map((slide, i) => {
         let tl = gsap.timeline({
           reversed: i === 0 ? false : true,
@@ -142,6 +146,18 @@ function Slider({images, className}) {
           },
           0.5,
         );
+        if (title[i]) {
+          tl.to(
+            title[i],
+            {
+              opacity: 1,
+              y: -40,
+              display: 'block',
+              duration: 0.6,
+            },
+            0.4,
+          );
+        }
         tl.to(
           button[i],
           {
@@ -214,8 +230,15 @@ function Slider({images, className}) {
               sizes="(max-width: 1024px) 100vw, 100vw"
             ></Image>
             <div
-              className={`information-holder absolute -translate-y-[50%] top-[50%] md:translate-y-0 md:top-[80%] md:left-[10%] font-mono left-[50%] -translate-x-[50%] md:translate-x-0 w-full`}
+              className={`information-holder absolute -translate-y-[50%] top-[50%] md:translate-y-0 ${
+                element[6] ? 'md:top-auto md:bottom-[12%]' : 'md:top-[80%]'
+              } md:left-[10%] font-mono left-[50%] -translate-x-[50%] md:translate-x-0 w-full`}
             >
+              {element[6] && (
+                <div className="hero-title hidden opacity-0 w-fit font-sans font-bold uppercase leading-none text-[#ffb7cb] text-[2.6rem] md:text-7xl lg:text-8xl text-center md:text-left m-auto md:m-0 mb-2 md:mb-4 drop-shadow-md">
+                  {element[6]}
+                </div>
+              )}
               <div
                 className={`header hidden font-bold opacity-0 w-fit font-inclusiveSans md:text-xl text-white bg-none m-auto md:m-0 text-[1.7rem] text-center md:normal-case uppercase`}
               ></div>
