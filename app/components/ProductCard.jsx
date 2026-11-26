@@ -12,6 +12,7 @@ import {CustomMoney} from './CustomMoney';
 
 import {Link} from '~/components';
 import {getProductPlaceholder} from '~/lib/placeholders';
+import {getBlackoutSale, blackoutPrice} from '~/lib/blackout';
 
 export function ProductCard({
   product,
@@ -51,16 +52,17 @@ export function ProductCard({
         return false;
       }
     }
-
     const isBackInStock =
       !soldOut && (cardProduct.tags || []).includes('back-in-stock');
-    // Blackout Sale label: shows on products tagged "Blackout Sale"
-    // until the sale ends (1 Dec 2026, 2:30am Melbourne time).
-    const BLACKOUT_SALE_END = new Date('2026-12-01T02:30:00+11:00');
-    const isBlackoutSale =
-      (cardProduct.tags || []).includes('Blackout Sale') &&
-      new Date() < BLACKOUT_SALE_END;
-
+      const blackout = getBlackoutSale(cardProduct.tags);
+    const isBlackoutSale = Boolean(blackout);
+    const blackoutFinal = blackout?.priceActive
+      ? blackoutPrice(price, blackout.percent)
+      : null;
+    const blackoutOriginal = checkSale(compareAtPrice, price)
+      ? compareAtPrice
+      : price;
+  
     useEffect(() => {
       startTransition(() => {
         if (checkSale(compareAtPrice, price)) {
@@ -75,6 +77,12 @@ export function ProductCard({
           setCardLabel('SOLD OUT');
         } else if (isBackInStock) {
           setCardLabel('BACK IN STOCK');
+        } else if (blackoutFinal) {
+          setCardLabel(
+            `${Math.round(
+              (1 - blackoutFinal.amount / blackoutOriginal.amount) * 100,
+            )}% OFF`,
+          );
         } else if (checkSale(compareAtPrice, price)) {
           setCardLabel(
             `${Math.round(
@@ -83,7 +91,7 @@ export function ProductCard({
           );
         }
       });
-    }, [compareAtPrice, price, label, soldOut, isBackInStock]);
+     }, [compareAtPrice, price, label, soldOut, isBackInStock, blackout?.priceActive]);
   return (
     <div className="grid gap-2 relative">
       <Link
@@ -145,6 +153,20 @@ export function ProductCard({
               {product.title}
             </h3>
             <div className="flex gap-4 ">
+              {blackoutFinal ? (
+              <span className="flex gap-4 text-[0.69rem] pb-5">
+                <CustomMoney
+                  withoutTrailingZeros
+                  data={blackoutOriginal}
+                  className="opacity-50 strike"
+                />
+                <CustomMoney
+                  withoutTrailingZeros
+                  data={blackoutFinal}
+                  className="font-bold text-black"
+                />
+              </span>
+              ) : (
               <span className="flex gap-4 text-[0.69rem] pb-5">
                 <CustomMoney
                   withoutTrailingZeros
@@ -160,6 +182,7 @@ export function ProductCard({
                   />
                 )}
               </span>
+              )}
             </div>
           </div>
         </div>
