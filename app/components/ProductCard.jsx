@@ -54,6 +54,12 @@ export function ProductCard({
 
     const isBackInStock =
       !soldOut && (cardProduct.tags || []).includes('back-in-stock');
+    // Blackout Sale label: shows on products tagged "Blackout Sale"
+    // until the sale ends (1 Dec 2026, 2:30am Melbourne time).
+    const BLACKOUT_SALE_END = new Date('2026-12-01T02:30:00+11:00');
+    const isBlackoutSale =
+      (cardProduct.tags || []).includes('Blackout Sale') &&
+      new Date() < BLACKOUT_SALE_END;
 
     useEffect(() => {
       startTransition(() => {
@@ -129,6 +135,11 @@ export function ProductCard({
         >
           <span>{cardLabel}</span>
         </div>
+          {isBlackoutSale && (
+          <div className="font-bold font-nimubs rounded-sm absolute top-0 right-0 m-2 px-1 z-[35] bg-black text-[#ffb7cb]">
+            <span>BLACKOUT SALE</span>
+          </div>
+        )}
           <div className="grid gap px-2">
             <h3 className="w-full overflow-hidden whitespace-nowrap text-ellipsis font-bold text-[80%] font-sans">
               {product.title}
