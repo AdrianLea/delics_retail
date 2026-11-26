@@ -235,7 +235,7 @@ function Slider({images, className}) {
               } md:left-[10%] font-mono left-[50%] -translate-x-[50%] md:translate-x-0 w-full`}
             >
               {element[6] && (
-                <div className="hero-title hidden opacity-0 w-fit font-sans font-bold uppercase leading-none text-[#ffb7cb] text-[2.6rem] md:text-7xl lg:text-8xl text-center md:text-left m-auto md:m-0 mb-2 md:mb-4 drop-shadow-md">
+                <div className="hero-title hidden opacity-0 w-fit font-sans font-bold uppercase leading-none text-pink-200 text-[2.6rem] md:text-7xl lg:text-8xl text-center md:text-left m-auto md:m-0 mb-2 md:mb-4 drop-shadow-md">
                   {element[6]}
                 </div>
               )}
