@@ -225,7 +225,7 @@ function FeaturedProductsSection({title, products, to}) {
 const HOMEPAGE_SLIDER_QUERY = `#graphql
 query heroimagesquery {
   collections(
-    first: 30,
+    first: 100,
     sortKey: ID,
   ) {
     nodes {
