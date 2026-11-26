@@ -43,6 +43,7 @@ import {getExcerpt} from '~/lib/utils';
 import {seoPayload} from '~/lib/seo.server';
 import {routeHeaders} from '~/data/cache';
 import {MEDIA_FRAGMENT, PRODUCT_CARD_FRAGMENT} from '~/data/fragments';
+import {getBlackoutSale, blackoutPrice} from '~/lib/blackout';
 export const headers = routeHeaders;
 
 export async function action({context, request}) {
@@ -252,6 +253,7 @@ export default function Product() {
     selectedVariant?.price?.amount &&
     selectedVariant?.compareAtPrice?.amount &&
     selectedVariant?.price?.amount < selectedVariant?.compareAtPrice?.amount;
+  const blackout = getBlackoutSale(product?.tags);
 
   useEffect(() => {
     if (nav.state === 'idle' && success == true) {
@@ -328,6 +330,25 @@ export default function Product() {
                 <Heading as="h1" className="whitespace-normal">
                   {title}
                 </Heading>
+                {blackout?.priceActive ? (
+                <span>
+                  <CustomMoney
+                    withoutTrailingZeros
+                    data={
+                      isOnSale
+                        ? selectedVariant?.compareAtPrice
+                        : selectedVariant?.price
+                    }
+                    as="span"
+                    className="opacity-50 strike mr-3"
+                  />
+                  <CustomMoney
+                    withoutTrailingZeros
+                    data={blackoutPrice(selectedVariant?.price, blackout.percent)}
+                    as="span"
+                  />
+                </span>
+                ) : (
                 <span>
                   <CustomMoney
                     withoutTrailingZeros
@@ -343,6 +364,7 @@ export default function Product() {
                     />
                   )}
                 </span>
+                )}
               </div>
               <Suspense
                 fallback={
@@ -838,6 +860,7 @@ const PRODUCT_QUERY = `#graphql
       id
       title
       vendor
+      tags
       handle
       descriptionHtml
       description
