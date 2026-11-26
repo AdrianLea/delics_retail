@@ -22,6 +22,7 @@ import {
 import {useIsHomePath} from '~/lib/utils';
 import {useIsHydrated} from '~/hooks/useIsHydrated';
 import {useCartFetchers} from '~/hooks/useCartFetchers';
+import {BLACKOUT_END} from '~/lib/blackout';
 
 export function Layout({children, layout}) {
   const {headerMenu, footerMenu} = layout;
@@ -54,6 +55,9 @@ export function Layout({children, layout}) {
 function Header({title, menu, layout}) {
   const isHome = useIsHomePath();
   const navContent = {
+    ...(new Date() < BLACKOUT_END
+      ? {Blackout: {title: 'Blackout Sale', to: '/collections/blackout-sale'}}
+      : {}),
     Sale: {title: 'Sale', to: '/collections/sale'},
     newArrivals: {title: 'New Arrivals', to: '/collections/new-arrivals'},
     Dresses: {title: 'Dresses', to: '/collections/Dresses'},
