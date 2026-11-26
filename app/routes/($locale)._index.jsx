@@ -230,8 +230,7 @@ query heroimagesquery {
   ) {
     nodes {
       metafields(
-        identifiers: [{namespace: "custom", key: "herodesktop"}, {namespace: "custom", key: "heromobile"}, {namespace: "custom", key: "herodescriptiontext"}, {namespace: "custom", key: "herobuttontext"}, {namespace: "custom", key: "sliderordernumber"}]
-      ) {
+      identifiers: [{namespace: "custom", key: "herodesktop"}, {namespace: "custom", key: "heromobile"}, {namespace: "custom", key: "herodescriptiontext"}, {namespace: "custom", key: "herobuttontext"}, {namespace: "custom", key: "sliderordernumber"}, {namespace: "custom", key: "herotitletext"}]
         reference {
           ... on MediaImage {
             image {
